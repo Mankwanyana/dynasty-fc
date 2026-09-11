@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Staff - Dynasty FC</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        .staff-page { padding: 40px 0; background: #f4f6f9; min-height: 100vh; }
+        .staff-page h1 { font-size: 32px; border-left: 5px solid #ffcc00; padding-left: 15px; margin-bottom: 5px; }
+        .staff-page .subtitle { color: #888; margin-bottom: 20px; }
+        .staff-table { width: 100%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-collapse: collapse; }
+        .staff-table th { background: #0a0a1a; color: #fff; padding: 14px 15px; text-align: left; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .staff-table td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 14px; }
+        .staff-table tr:hover { background: #f8f9fc; }
+        .btn-add { background: #ffcc00; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-bottom: 20px; }
+        .btn-add:hover { background: #e6b800; }
+        .badge { padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge.full-time { background: #d4edda; color: #155724; }
+        .badge.part-time { background: #fff3cd; color: #856404; }
+        .badge.volunteer { background: #cce5ff; color: #004085; }
+        .badge.contract { background: #f8d7da; color: #721c24; }
+        .loading { text-align: center; padding: 40px; color: #888; }
+        .error { text-align: center; padding: 40px; color: red; }
+        .actions { display: flex; gap: 8px; }
+        .actions a { color: #0a0a1a; padding: 4px 8px; border-radius: 4px; font-size: 13px; text-decoration: none; }
+        .actions a.edit { color: #ffcc00; }
+        .actions a.delete { color: #dc3545; }
+        @media (max-width: 768px) { .staff-table { font-size: 12px; } .staff-table th, .staff-table td { padding: 8px 10px; } }
+    </style>
+</head>
+<body>
+
+    <section class="staff-page">
+        <div class="container">
+            <h1><i class="fas fa-user-tie" style="color:#ffcc00;"></i> Staff Management</h1>
+            <p class="subtitle">Manage all staff members — data loaded from your MySQL database</p>
+
+            <button class="btn-add" onclick="alert('Add Staff form coming soon!')"><i class="fas fa-plus"></i> Add Staff</button>
+
+            <div id="staffContainer">
+                <div class="loading">Loading staff...</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container"><p>&copy; 2026 Dynasty Football Club. All rights reserved.</p></div>
+    </footer>
+
+    <script>
+        // ============================================================
+        // LOAD STAFF FROM DATABASE
+        // ============================================================
+        async function loadStaff() {
+            const container = document.getElementById('staffContainer');
+
+            try {
+                const res = await fetch('/api/staff');
+                const staff = await res.json();
+
+                if (staff.length === 0) {
+                    container.innerHTML = '<div class="error">No staff found in the database.</div>';
+                    return;
+                }
+
+                let table = `
+                    <table class="staff-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Contact</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                staff.forEach((s, index) => {
+                    const statusClass = s.employment_status ? s.employment_status.toLowerCase().replace(' ', '-') : '';
+                    table += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td><strong>${s.first_name || ''} ${s.last_name || ''}</strong></td>
+                            <td>${s.role || '-'}</td>
+                            <td><span class="badge ${statusClass}">${s.employment_status || '-'}</span></td>
+                            <td>${s.contact_email || '-'}</td>
+                            <td>${s.date_joined || '-'}</td>
+                            <td class="actions">
+                                <a href="#" class="edit" onclick="alert('Edit staff: ${s.first_name} ${s.last_name}')">✏️</a>
+                                <a href="#" class="delete" onclick="alert('Delete staff: ${s.first_name} ${s.last_name}')">🗑️</a>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                table += `
+                        </tbody>
+                    </table>
+                    <p style="margin-top:15px; color:#888; font-size:13px;">Showing ${staff.length} staff members</p>
+                `;
+
+                container.innerHTML = table;
+
+            } catch (error) {
+                console.error('Error loading staff:', error);
+                container.innerHTML = '<div class="error">❌ Error loading staff. Make sure your database is connected.</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadStaff);
+    </script>
+</body>
+</html>

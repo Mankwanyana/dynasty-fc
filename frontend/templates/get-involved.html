@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Get Involved - Dynasty FC</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        .navbar {
+            background: #0a0a1a;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo img {
+            height: 40px;
+        }
+        .nav-logo .brand-text .club-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .nav-logo .brand-text .club-name span {
+            color: #ffcc00;
+        }
+        .nav-logo .brand-text .tagline {
+            font-size: 10px;
+            color: #888;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-menu a {
+            color: #ccc;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            text-decoration: none;
+        }
+        .nav-menu a:hover {
+            color: #ffcc00;
+        }
+        .nav-menu .active {
+            color: #ffcc00;
+        }
+
+        .involved-page {
+            padding: 60px 0;
+            background: #f8f9fc;
+            min-height: 100vh;
+        }
+        .involved-page .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #0a0a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .page-header h1 i {
+            color: #ffcc00;
+            font-size: 44px;
+        }
+        .page-header p {
+            font-size: 18px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        .tab-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        .tab-btn {
+            width: 100%;
+            padding: 18px 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fff;
+            color: #888;
+            text-align: center;
+        }
+        .tab-btn:hover {
+            border-color: #ffcc00;
+            background: #fff8e1;
+        }
+        .tab-btn.active {
+            border-color: #ffcc00;
+            background: #ffcc00;
+            color: #0a0a1a;
+            box-shadow: 0 4px 20px rgba(255,204,0,0.3);
+        }
+        .tab-btn i {
+            margin-right: 10px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .why-section {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .why-section h2 {
+            font-size: 24px;
+            color: #0a0a1a;
+            border-left: 5px solid #ffcc00;
+            padding-left: 15px;
+            margin-bottom: 15px;
+        }
+        .why-section .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .why-section .benefit {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fc;
+            border-radius: 8px;
+        }
+        .why-section .benefit i {
+            font-size: 28px;
+            color: #ffcc00;
+            margin-bottom: 8px;
+        }
+        .why-section .benefit h4 {
+            font-size: 15px;
+            color: #0a0a1a;
+        }
+        .why-section .benefit p {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .donation-section {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .donation-section h2 {
+            font-size: 22px;
+            color: #0a0a1a;
+            margin-bottom: 5px;
+        }
+        .donation-section .form-subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .amount-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .amount-options .amount-btn {
+            padding: 10px 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            background: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            color: #0a0a1a;
+        }
+        .amount-options .amount-btn:hover {
+            border-color: #ffcc00;
+            background: #fff8e1;
+        }
+        .amount-options .amount-btn.active {
+            border-color: #ffcc00;
+            background: #ffcc00;
+            color: #0a0a1a;
+        }
+        .amount-options .amount-btn.custom {
+            border-style: dashed;
+        }
+        .custom-amount-input {
+            display: none;
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .custom-amount-input.show {
+            display: block;
+        }
+        .donation-section input, .donation-section textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+        .donation-section input:focus, .donation-section textarea:focus {
+            border-color: #ffcc00;
+            outline: none;
+        }
+        .donation-section textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .donation-section .btn-donate {
+            background: #ffcc00;
+            color: #0a0a1a;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .donation-section .btn-donate:hover {
+            background: #e6b800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,204,0,0.3);
+        }
+
+        .bank-details {
+            margin-top: 20px;
+            background: #f8f9fc;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #ffcc00;
+        }
+        .bank-details p {
+            margin: 6px 0;
+            font-size: 15px;
+            color: #444;
+        }
+        .bank-details strong {
+            color: #0a0a1a;
+        }
+        .bank-details .copy-btn {
+            background: #0a0a1a;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .bank-details .copy-btn:hover {
+            background: #ffcc00;
+            color: #0a0a1a;
+        }
+        .bank-note {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+        .bank-note p {
+            font-size: 14px;
+            color: #856404;
+            margin: 0;
+        }
+        .bank-note a {
+            color: #ffcc00;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .volunteer-section {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .volunteer-section h2 {
+            font-size: 22px;
+            color: #0a0a1a;
+            margin-bottom: 5px;
+        }
+        .volunteer-section .form-subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .volunteer-section input, .volunteer-section select, .volunteer-section textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-family: inherit;
+            background: #fff;
+        }
+        .volunteer-section input:focus, .volunteer-section select:focus, .volunteer-section textarea:focus {
+            border-color: #ffcc00;
+            outline: none;
+        }
+        .volunteer-section textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .volunteer-section .btn-volunteer {
+            background: #ffcc00;
+            color: #0a0a1a;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .volunteer-section .btn-volunteer:hover {
+            background: #e6b800;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background: #0a0a1a;
+            color: #fff;
+            padding: 30px 0 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .footer .footer-info {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        .footer .footer-info strong {
+            color: #fff;
+        }
+        .footer .footer-info a {
+            color: #aaa;
+            text-decoration: none;
+        }
+        .footer .footer-info a:hover {
+            color: #ffcc00;
+        }
+        .footer p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 32px;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .page-header h1 i {
+                font-size: 32px;
+            }
+            .tab-btn {
+                font-size: 16px;
+                padding: 15px 20px;
+            }
+            .why-section .benefits {
+                grid-template-columns: 1fr;
+            }
+            .amount-options .amount-btn {
+                padding: 8px 18px;
+                font-size: 13px;
+            }
+        }
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 26px;
+            }
+            .tab-btn {
+                font-size: 14px;
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="/images/logo.png" alt="Dynasty FC Logo" />
+                <div class="brand-text">
+                    <span class="club-name">Dynasty <span>FC</span></span>
+                    <span class="tagline">Integrated System</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/teams">Teams</a></li>
+                <li><a href="/fixtures">Fixtures</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/get-involved" class="active">Get Involved</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="involved-page">
+        <div class="container">
+
+            <div class="page-header">
+                <h1>
+                    <i class="fas fa-handshake"></i>
+                    Get Involved
+                </h1>
+                <p>Support Dynasty FC — whether through donations or volunteering your time</p>
+            </div>
+
+            <div class="tab-container">
+                <button class="tab-btn active" onclick="switchTab('donate')">
+                    <i class="fas fa-heart"></i> Donate
+                </button>
+                <button class="tab-btn" onclick="switchTab('volunteer')">
+                    <i class="fas fa-hand-heart"></i> Volunteer
+                </button>
+            </div>
+
+            <div id="donateTab" class="tab-content active">
+
+                <div class="why-section">
+                    <h2>Why Donate to Dynasty FC?</h2>
+                    <div class="benefits">
+                        <div class="benefit">
+                            <i class="fas fa-futbol"></i>
+                            <h4>Player Development</h4>
+                            <p>Fund training, coaching, and equipment for our youth players</p>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-hand-holding-heart"></i>
+                            <h4>Community Impact</h4>
+                            <p>Support outreach programs and community football initiatives</p>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-trophy"></i>
+                            <h4>Competitive Growth</h4>
+                            <p>Help our teams compete in leagues and tournaments</p>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-users"></i>
+                            <h4>Bright Futures 2026</h4>
+                            <p>Invest in the next generation of football champions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="donation-section">
+                    <h2>Make a Donation</h2>
+                    <p class="form-subtitle">Every contribution makes a difference</p>
+
+                    <form id="donationForm" onsubmit="handleDonation(event)">
+                        <label style="font-weight:600; font-size:14px; color:#0a0a1a; display:block; margin-bottom:8px;">Select Amount</label>
+                        <div class="amount-options">
+                            <button type="button" class="amount-btn active" onclick="selectAmount(this, 100)">R100</button>
+                            <button type="button" class="amount-btn" onclick="selectAmount(this, 250)">R250</button>
+                            <button type="button" class="amount-btn" onclick="selectAmount(this, 500)">R500</button>
+                            <button type="button" class="amount-btn" onclick="selectAmount(this, 1000)">R1,000</button>
+                            <button type="button" class="amount-btn custom" onclick="showCustomAmount()">Custom</button>
+                        </div>
+
+                        <input type="number" class="custom-amount-input" id="customAmount" placeholder="Enter amount (R)" min="1" />
+
+                        <input type="text" placeholder="Full Name" id="donorName" required />
+                        <input type="email" placeholder="Email Address" id="donorEmail" required />
+                        <input type="tel" placeholder="Phone Number (optional)" id="donorPhone" />
+                        <textarea placeholder="Message (optional)" id="donorMessage"></textarea>
+
+                        <button type="submit" class="btn-donate"><i class="fas fa-heart"></i> Donate Now</button>
+                    </form>
+
+                    <div class="bank-details">
+                        <p><strong>Bank:</strong> Nedbank</p>
+                        <p><strong>Account Holder:</strong> Dynasty Football Club</p>
+                        <p><strong>Account Number:</strong> 1234567890</p>
+                        <p><strong>Branch Code:</strong> 123456</p>
+                        <p><strong>Branch:</strong> Johannesburg</p>
+                        <p><strong>Reference:</strong> Donation + Your Name</p>
+                        <button class="copy-btn" onclick="copyBankDetails()">📋 Copy Bank Details</button>
+                    </div>
+
+                    <div class="bank-note">
+                        <p><i class="fas fa-info-circle"></i> After donation, please email us at
+                        <a href="mailto:admin@dynastyfc.co.za">admin@dynastyfc.co.za</a>
+                        with proof of payment.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="volunteerTab" class="tab-content">
+
+                <div class="why-section">
+                    <h2>Why Volunteer with Dynasty FC?</h2>
+                    <div class="benefits">
+                        <div class="benefit">
+                            <i class="fas fa-futbol"></i>
+                            <h4>Make a Difference</h4>
+                            <p>Help develop young champions in your community</p>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h4>Gain Experience</h4>
+                            <p>Valuable coaching and management experience</p>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-heart"></i>
+                            <h4>Be Part of Something</h4>
+                            <p>Join a passionate football community</p>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-users"></i>
+                            <h4>Build Connections</h4>
+                            <p>Meet new people and make lasting connections</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="volunteer-section">
+                    <h2>Apply to Volunteer</h2>
+                    <p class="form-subtitle">Your time and skills can make a difference!</p>
+
+                    <form id="volunteerForm" onsubmit="handleVolunteer(event)">
+                        <input type="text" id="volName" placeholder="Full Name *" required />
+                        <input type="email" id="volEmail" placeholder="Email Address *" required />
+                        <input type="tel" id="volPhone" placeholder="Phone Number" />
+
+                        <select id="volRole" required>
+                            <option value="">Select a role...</option>
+                            <option value="Coach">Coach</option>
+                            <option value="Assistant Coach">Assistant Coach</option>
+                            <option value="Team Manager">Team Manager</option>
+                            <option value="Medical Staff">Medical Staff</option>
+                            <option value="Grounds Keeper">Grounds Keeper</option>
+                            <option value="Administrator">Administrator</option>
+                            <option value="Events Coordinator">Events Coordinator</option>
+                            <option value="Fundraising">Fundraising</option>
+                            <option value="Other">Other</option>
+                        </select>
+
+                        <select id="volAvailability">
+                            <option value="Weekends">Weekends</option>
+                            <option value="Weekdays">Weekdays</option>
+                            <option value="Evenings">Evenings</option>
+                            <option value="Flexible">Flexible</option>
+                            <option value="As needed">As needed</option>
+                        </select>
+
+                        <textarea id="volMessage" rows="3" placeholder="Why do you want to volunteer?"></textarea>
+
+                        <button type="submit" class="btn-volunteer"><i class="fas fa-hand-heart"></i> Apply to Volunteer</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-info">
+                <strong>Fiat Grounds, Soweto</strong> • Johannesburg, South Africa<br />
+                <a href="tel:+27639111277">+27 63 911 1277</a> •
+                <a href="mailto:admin@dynastyfc.co.za">admin@dynastyfc.co.za</a> •
+                <a href="https://dynastyfc.co.za/" target="_blank">Website</a>
+            </div>
+            <p>&copy; 2026 Dynasty Football Club. All rights reserved.</p>
+        </div>
+    </footer>
+
+        <script>
+        function switchTab(tab) {
+            var contents = document.querySelectorAll('.tab-content');
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+            var buttons = document.querySelectorAll('.tab-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            if (tab === 'donate') {
+                document.getElementById('donateTab').classList.add('active');
+                buttons[0].classList.add('active');
+            } else {
+                document.getElementById('volunteerTab').classList.add('active');
+                buttons[1].classList.add('active');
+            }
+        }
+
+        var selectedAmount = 100;
+
+        function selectAmount(button, amount) {
+            var btns = document.querySelectorAll('.amount-btn');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].classList.remove('active');
+            }
+            button.classList.add('active');
+            selectedAmount = amount;
+            document.getElementById('customAmount').classList.remove('show');
+            document.getElementById('customAmount').value = '';
+        }
+
+        function showCustomAmount() {
+            var btns = document.querySelectorAll('.amount-btn');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].classList.remove('active');
+            }
+            document.querySelector('.amount-btn.custom').classList.add('active');
+            document.getElementById('customAmount').classList.add('show');
+            document.getElementById('customAmount').focus();
+        }
+
+        // ============================================================
+        // DONATION — Redirects to /donate page for real PayFast payment
+        // ============================================================
+        function handleDonation(event) {
+            event.preventDefault();
+            var name = document.getElementById('donorName').value.trim();
+            var email = document.getElementById('donorEmail').value.trim();
+            var customAmount = document.getElementById('customAmount').value;
+            var amount = selectedAmount;
+            if (customAmount && customAmount > 0) amount = customAmount;
+
+            if (!name || !email) {
+                alert('Please enter your name and email.');
+                return;
+            }
+
+            // Redirect to the dedicated /donate page which uses PayFast
+            window.location.href = '/donate';
+        }
+
+        function copyBankDetails() {
+            var details = 'Bank: Nedbank\nAccount Holder: Dynasty Football Club\nAccount Number: 1234567890\nBranch Code: 123456\nBranch: Johannesburg\nReference: Donation + Your Name';
+            navigator.clipboard.writeText(details).then(function() {
+                alert('Bank details copied to clipboard!');
+            }).catch(function() {
+                alert('Please copy the details manually.');
+            });
+        }
+
+        // ============================================================
+        // VOLUNTEER — Actually posts to /api/volunteer
+        // ============================================================
+        async function handleVolunteer(event) {
+            event.preventDefault();
+
+            var name = document.getElementById('volName').value.trim();
+            var email = document.getElementById('volEmail').value.trim();
+            var phone = document.getElementById('volPhone').value.trim();
+            var role = document.getElementById('volRole').value;
+            var availability = document.getElementById('volAvailability').value;
+            var message = document.getElementById('volMessage').value.trim();
+
+            if (!name || !email || !role) {
+                alert('Please fill in all required fields (Name, Email, Role).');
+                return;
+            }
+
+            var submitBtn = event.target.querySelector('button[type="submit"]');
+            var originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+            try {
+                const response = await fetch('/api/volunteer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        role: role,
+                        availability: availability,
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert('Thank you, ' + name + '! Your volunteer application has been submitted.\n\nWe will contact you within 48 hours.');
+                    document.getElementById('volunteerForm').reset();
+                } else {
+                    alert('Error: ' + (data.error || 'Something went wrong.'));
+                }
+            } catch (err) {
+                alert('Network error. Please try again.');
+                console.error('Error:', err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+    </script>

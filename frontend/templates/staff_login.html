@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Staff Login - Dynasty FC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .staff-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 55px 45px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            border-top: 6px solid #ffcc00;
+        }
+        .staff-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffcc00, #d4a900);
+            color: #0a0a1a;
+            font-size: 40px;
+            line-height: 90px;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 30px rgba(255,204,0,0.4);
+        }
+        h1 {
+            color: #0a0a1a;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #888;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffcc00;
+            padding: 14px 18px;
+            border-radius: 10px;
+            text-align: left;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #8a6d00;
+            line-height: 1.6;
+        }
+        .warning-box i { color: #d4a900; margin-right: 8px; }
+        .warning-box a { color: #d4a900; font-weight: 700; text-decoration: underline; }
+        .form-group { text-align: left; margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #0a0a1a;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            background: #fafafa;
+        }
+        .form-group input:focus {
+            border-color: #ffcc00;
+            outline: none;
+            background: #fff;
+        }
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: #0a0a1a;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-login:hover:not(:disabled) {
+            background: #ffcc00;
+            color: #0a0a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,204,0,0.4);
+        }
+        .btn-login:disabled { background: #ccc; cursor: not-allowed; }
+        .error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .error-msg.show { display: block; }
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #888;
+            text-decoration: none;
+        }
+        .back-link:hover { color: #ffcc00; }
+    </style>
+</head>
+<body>
+    <div class="staff-card">
+        <div class="staff-icon"><i class="fas fa-shield-alt"></i></div>
+        <h1>Staff Login</h1>
+        <p class="subtitle">Administrator access only</p>
+
+        <div class="warning-box">
+            <i class="fas fa-lock"></i>
+            This area is restricted to club staff. Players should use the <a href="/login">regular login</a>.
+        </div>
+
+        <div id="errorMsg" class="error-msg"></div>
+
+        <form id="staffLoginForm" onsubmit="handleStaffLogin(event)">
+            <div class="form-group">
+                <label for="emailInput">Staff Email</label>
+                <input type="email" id="emailInput" placeholder="Enter your email" required />
+            </div>
+            <div class="form-group">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" placeholder="Enter your password" required />
+            </div>
+            <button type="submit" class="btn-login" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> Log In to Dashboard
+            </button>
+        </form>
+        <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to website</a>
+    </div>
+
+    <script>
+        async function handleStaffLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('emailInput').value.trim();
+            const password = document.getElementById('passwordInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const btn = document.getElementById('loginBtn');
+
+            errorMsg.classList.remove('show');
+
+            if (!email || !password) {
+                errorMsg.textContent = 'Please enter both email and password.';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+
+            try {
+                const response = await fetch('/api/staff-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = '/dashboard';
+                } else {
+                    errorMsg.textContent = data.message || 'Invalid staff credentials.';
+                    errorMsg.classList.add('show');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Log In to Dashboard';
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Network error. Please try again.';
+                errorMsg.classList.add('show');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Log In to Dashboard';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# Environment files (secrets)
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+env/
+ENV/
+
+# Node
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Uploads (keep folder but not files)
+frontend/uploads/*
+!frontend/uploads/.gitkeep

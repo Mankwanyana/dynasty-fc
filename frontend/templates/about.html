@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>About - Dynasty FC</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ============================================================
+           NAVIGATION
+           ============================================================ */
+        .navbar {
+            background: #0a0a1a;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo img { height: 45px; }
+
+        .nav-logo .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-logo .brand-text .club-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .nav-logo .brand-text .club-name span { color: #ffcc00; }
+
+        .nav-logo .brand-text .tagline {
+            font-size: 11px;
+            color: #888;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: #ccc;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            text-decoration: none;
+        }
+
+        .nav-menu a:hover { color: #ffcc00; }
+        .nav-menu .active { color: #ffcc00; }
+
+        /* ============================================================
+           ABOUT HERO
+           ============================================================ */
+        .about-hero {
+            background-image: url('/images/about-hero.png');
+            background-size: cover;
+            background-position: center;
+            padding: 140px 0;
+            text-align: center;
+            position: relative;
+            min-height: 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 26, 0.65);
+        }
+
+        .about-hero-content {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            max-width: 1000px;
+            padding: 20px;
+        }
+
+        .about-hero-content .eyebrow {
+            display: inline-block;
+            font-size: 15px;
+            letter-spacing: 4px;
+            color: #ffcc00;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding: 8px 20px;
+            border: 2px solid #ffcc00;
+            border-radius: 30px;
+        }
+
+        .about-hero-content h1 {
+            font-size: 78px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 22px;
+            letter-spacing: 2px;
+            text-shadow: 0 6px 30px rgba(0,0,0,0.7);
+            line-height: 1.05;
+        }
+
+        .about-hero-content h1 span { color: #ffcc00; }
+
+        .about-hero-content p {
+            font-size: 26px;
+            color: #eee;
+            line-height: 1.7;
+            margin-top: 15px;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* ============================================================
+           CONTENT
+           ============================================================ */
+        .about-content {
+            padding: 100px 0;
+            background: #fff;
+        }
+
+        .about-content .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .about-content h2 {
+            font-size: 52px;
+            font-weight: 900;
+            color: #0a0a1a;
+            padding-left: 26px;
+            border-left: 8px solid #ffcc00;
+            margin-top: 80px;
+            margin-bottom: 35px;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .about-content h2:first-of-type { margin-top: 0; }
+
+        .about-content h2.no-border {
+            border-left: none;
+            padding-left: 0;
+        }
+
+        .about-content p {
+            font-size: 21px;
+            color: #2a2a2a;
+            line-height: 2;
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+
+        .about-content p strong {
+            color: #0a0a1a;
+            font-weight: 700;
+        }
+
+        .about-content .highlight-box {
+            background: #f8f9fc;
+            padding: 45px 55px;
+            border-radius: 20px;
+            border-left: 8px solid #ffcc00;
+            margin: 50px 0;
+        }
+
+        .about-content .highlight-box p {
+            font-size: 26px;
+            color: #0a0a1a;
+            font-style: italic;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .about-content .highlight-box i {
+            color: #ffcc00;
+            margin-right: 18px;
+            font-size: 34px;
+        }
+
+        /* ============================================================
+           TWO COLUMN — tighter gap, no giant empty space
+           ============================================================ */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin: 60px 0;
+        }
+
+        .two-column.reverse {
+            grid-template-columns: 1fr 1.15fr;
+        }
+
+        .two-column .image-col img {
+            width: 100%;
+            height: 100%;
+            max-height: 480px;
+            min-height: 380px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+            transition: transform 0.4s;
+        }
+
+        .two-column .image-col img:hover {
+            transform: scale(1.02);
+        }
+
+        .two-column .text-col h3 {
+            font-size: 38px;
+            font-weight: 900;
+            color: #0a0a1a;
+            margin-bottom: 24px;
+            border-left: 6px solid #ffcc00;
+            padding-left: 20px;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+        }
+
+        .two-column .text-col p {
+            font-size: 20px;
+            color: #2a2a2a;
+            line-height: 2;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .two-column .text-col p strong {
+            color: #0a0a1a;
+            font-weight: 700;
+        }
+
+        /* ============================================================
+           TIMELINE
+           ============================================================ */
+        .timeline-section {
+            background: #f8f9fc;
+            padding: 100px 0;
+        }
+
+        .timeline-section .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .timeline-section h2 {
+            font-size: 52px;
+            font-weight: 900;
+            color: #0a0a1a;
+            padding-left: 26px;
+            border-left: 8px solid #ffcc00;
+            margin-bottom: 50px;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 25px;
+            background: #fff;
+            padding: 35px 40px;
+            border-radius: 18px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.06);
+            border-left: 8px solid #ffcc00;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(12px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+
+        .timeline-item .year {
+            font-size: 24px;
+            font-weight: 900;
+            color: #d4a900;
+            min-width: 260px;
+            line-height: 1.3;
+        }
+
+        .timeline-item .desc {
+            font-size: 20px;
+            color: #2a2a2a;
+            line-height: 1.9;
+            font-weight: 400;
+        }
+
+        .timeline-item .desc strong {
+            color: #0a0a1a;
+            font-weight: 700;
+        }
+
+        /* ============================================================
+           ACHIEVEMENTS
+           ============================================================ */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .achievement-card {
+            background: #fff;
+            padding: 45px 40px;
+            border-radius: 18px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 6px solid #ffcc00;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+        }
+
+        .achievement-card .icon-wrap {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            background: #fff8e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .achievement-card i {
+            color: #d4a900;
+            font-size: 32px;
+        }
+
+        .achievement-card h4 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0a0a1a;
+            margin-bottom: 14px;
+            line-height: 1.25;
+            letter-spacing: -0.3px;
+        }
+
+        .achievement-card p {
+            font-size: 18px;
+            color: #444;
+            margin: 0;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        .achievement-card p strong {
+            color: #0a0a1a;
+            font-weight: 700;
+        }
+
+        /* ============================================================
+           VALUES — FULL WIDTH SECTION (fixed!)
+           ============================================================ */
+        .values-section {
+            padding: 100px 0;
+            background: #fff;
+        }
+
+        .values-section .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .values-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+
+        .values-header h2 {
+            font-size: 52px;
+            font-weight: 900;
+            color: #0a0a1a;
+            margin-bottom: 20px;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .values-header h2 span { color: #d4a900; }
+
+        .values-header p {
+            font-size: 20px;
+            color: #555;
+            line-height: 1.9;
+            font-weight: 400;
+        }
+
+        /* ---- 2 column layout: image | grid ---- */
+        .values-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .values-layout .values-image img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .value-item {
+            background: #f8f9fc;
+            padding: 30px 25px;
+            border-radius: 18px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .value-item:hover {
+            transform: translateY(-6px);
+            background: #fff;
+            border-color: #ffcc00;
+            box-shadow: 0 15px 40px rgba(255,204,0,0.2);
+        }
+
+        .value-item .icon {
+            font-size: 44px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .value-item h4 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0a0a1a;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .value-item p {
+            font-size: 15px;
+            color: #666;
+            margin: 0;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        /* fifth value spans full width when odd */
+        .value-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .values-footer-text {
+            max-width: 900px;
+            margin: 50px auto 0;
+            font-size: 19px;
+            color: #333;
+            line-height: 1.95;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        /* ============================================================
+           SUPPORT
+           ============================================================ */
+        .support-section {
+            background: #0a0a1a;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .support-section::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,204,0,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .support-section::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,204,0,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .support-section .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 0 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .support-section .section-label-dark {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: #ffcc00;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            padding: 8px 20px;
+            border: 2px solid #ffcc00;
+            border-radius: 30px;
+        }
+
+        .support-section h2 {
+            font-size: 52px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 30px;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .support-section h2 span { color: #ffcc00; }
+
+        .support-section p {
+            font-size: 21px;
+            color: #ccc;
+            line-height: 1.95;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .support-section p strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .support-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #ffcc00;
+            color: #0a0a1a;
+            padding: 18px 40px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 17px;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .support-cta:hover {
+            background: #e6b800;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,204,0,0.35);
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .footer {
+            background: #06060f;
+            color: #fff;
+            padding: 40px 0 25px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer .footer-info {
+            color: #999;
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 12px;
+        }
+
+        .footer .footer-info strong {
+            color: #fff;
+            font-size: 17px;
+        }
+
+        .footer .footer-info a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer .footer-info a:hover { color: #ffcc00; }
+
+        .footer p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 900px) {
+            .two-column,
+            .two-column.reverse {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .two-column .image-col img { min-height: 320px; max-height: 400px; }
+
+            .values-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .values-layout .values-image img { max-height: 380px; }
+
+            .about-hero-content h1 { font-size: 48px; }
+            .about-hero-content p { font-size: 20px; }
+
+            .about-content h2,
+            .timeline-section h2,
+            .values-header h2,
+            .support-section h2 { font-size: 36px; }
+
+            .two-column .text-col h3 { font-size: 28px; }
+
+            .timeline-item {
+                flex-direction: column;
+                gap: 12px;
+                padding: 28px 25px;
+            }
+
+            .timeline-item .year {
+                min-width: auto;
+                font-size: 20px;
+            }
+
+            .timeline-item .desc { font-size: 18px; }
+        }
+
+        @media (max-width: 600px) {
+            .about-hero { min-height: 380px; padding: 90px 0; }
+            .about-hero-content h1 { font-size: 38px; }
+            .about-hero-content p { font-size: 18px; }
+            .about-hero-content .eyebrow { font-size: 12px; letter-spacing: 2px; }
+
+            .about-content h2,
+            .timeline-section h2,
+            .values-header h2,
+            .support-section h2 { font-size: 30px; }
+
+            .about-content p { font-size: 17px; }
+            .two-column .text-col p { font-size: 17px; }
+            .two-column .text-col h3 { font-size: 24px; }
+
+            .highlight-box p { font-size: 20px !important; }
+            .highlight-box { padding: 30px 25px; }
+
+            .achievements-grid { grid-template-columns: 1fr; }
+            .achievement-card h4 { font-size: 22px; }
+            .achievement-card p { font-size: 16px; }
+
+            .values-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .value-item { padding: 22px 15px; }
+            .value-item .icon { font-size: 36px; }
+            .value-item h4 { font-size: 18px; }
+            .value-item p { font-size: 13px; }
+
+            .support-section p { font-size: 17px; }
+            .support-cta { font-size: 15px; padding: 16px 30px; }
+
+            .values-footer-text { font-size: 17px; }
+        }
+
+        @media (max-width: 400px) {
+            .values-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="/images/logo.png" alt="Dynasty FC Logo" />
+                <div class="brand-text">
+                    <span class="club-name">Dynasty <span>FC</span></span>
+                    <span class="tagline">Integrated System</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about" class="active">About</a></li>
+                <li><a href="/teams">Teams</a></li>
+                <li><a href="/fixtures">Fixtures</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/get-involved">Get Involved</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ABOUT HERO -->
+    <section class="about-hero">
+        <div class="about-hero-content">
+            <span class="eyebrow">Who We Are</span>
+            <h1>About <span>Dynasty FC</span></h1>
+            <p>Building Young Champions for a Stronger Tomorrow</p>
+        </div>
+    </section>
+
+    <!-- CONTENT -->
+    <section class="about-content">
+        <div class="container">
+
+            <h2>Our Identity &amp; Mission</h2>
+            <p>Dynasty Football Club is a <strong>registered Non-Profit Organisation (NPO)</strong> dedicated to youth development and community upliftment through sport. Based in Johannesburg, South Africa, we use football as a vehicle to mentor young athletes, keep youth away from social ills, and build a brighter future for the next generation.</p>
+            <p>Our programs don't just build footballers — they build <strong>confident, disciplined, and community-minded young leaders</strong> who carry the values they learn on the pitch into every part of their lives.</p>
+
+            <div class="highlight-box">
+                <p><i class="fas fa-quote-left"></i> Ubuntu is an African expression of togetherness, meaning that what I am is intrinsically linked to what we are.</p>
+            </div>
+
+            <!-- Journey -->
+            <h2>Our Journey</h2>
+            <div class="two-column">
+                <div class="image-col">
+                    <img src="/images/journey.png" alt="Our Journey" />
+                </div>
+                <div class="text-col">
+                    <h3>The Foundation</h3>
+                    <p>
+                        When Dynasty Founders met, they shared a <strong>deep passion for football</strong> and a concern about young people growing up in South Africa's toughest communities without mentors or role models. They believed football has the unique power to inspire young people to demand more for themselves — in character, leadership, and education.
+                    </p>
+                    <p>
+                        These passions became a dream, and in <strong>2016</strong>, that dream became a reality. With no sponsors, resources, or even a bank account, Dynasty's first intake of boys was drawn from communities within driving distance. They felt the only way to pursue their dream was to <strong>start doing what they could with what they had</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <h2>Our Journey Timeline</h2>
+
+            <div class="timeline-item">
+                <div class="year">2016 – The Foundation</div>
+                <div class="desc"><strong>Dynasty Football Club</strong> is born in Johannesburg with a vision to unite diverse communities through sport.</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="year">2017–2020 – Structural Growth</div>
+                <div class="desc">The club achieves official <strong>NPO status</strong>, standardising operations and establishing solid roots in local community structures.</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="year">2021–2024 – Competitive Expansion</div>
+                <div class="desc">Branching out to include dedicated <strong>youth development squads</strong> and launching a highly competitive <strong>women's football division</strong>.</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="year">2025–2026 – A Regional Force</div>
+                <div class="desc">Cementing our place in <strong>SAFA regional frameworks</strong>, hosting wide-scale trials, and serving as a vital launchpad for elite talent in Gauteng.</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- KEY ACHIEVEMENTS -->
+    <section class="timeline-section">
+        <div class="container">
+            <h2>Key Achievements</h2>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="icon-wrap"><i class="fas fa-check-circle"></i></div>
+                    <h4>Registered NPO Status</h4>
+                    <p>Fully registered and compliant with the South African Department of Social Development, ensuring <strong>structured governance and financial transparency</strong>.</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="icon-wrap"><i class="fas fa-shield-alt"></i></div>
+                    <h4>Youth Empowerment &amp; Safety</h4>
+                    <p>Provided a safe, disciplined, and positive environment for local youth, keeping them actively engaged away from crime and substance abuse.</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="icon-wrap"><i class="fas fa-futbol"></i></div>
+                    <h4>Grassroots Talent Development</h4>
+                    <p>Discovered and nurtured raw community talent, establishing <strong>structured training pathways</strong> for players to transition into competitive league football.</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="icon-wrap"><i class="fas fa-trophy"></i></div>
+                    <h4>Competitive League History</h4>
+                    <p>Fielded highly competitive, disciplined squads across regional divisions — including our senior structures and the <strong>Dynasty Ladies</strong>.</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="icon-wrap"><i class="fas fa-hand-holding-heart"></i></div>
+                    <h4>Holistic Mentorship</h4>
+                    <p>Delivered comprehensive character-building support focused on teamwork, leadership, and personal responsibility beyond the pitch.</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="icon-wrap"><i class="fas fa-users"></i></div>
+                    <h4>Community Trust</h4>
+                    <p>Built strong, reliable connections with local families, schools, and community leaders to promote <strong>social cohesion and unity</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MISSION & VISION -->
+    <section class="about-content">
+        <div class="container">
+            <div class="two-column reverse">
+                <div class="text-col">
+                    <h2 class="no-border">Our Vision &amp; Mission</h2>
+                    <h3>Mission</h3>
+                    <p>Holistically developing <strong>elite footballers</strong> towards becoming <strong>citizens of significance</strong>.</p>
+                    <h3>Vision</h3>
+                    <p>To develop <strong>servant leaders</strong> who impact the world.</p>
+                </div>
+                <div class="image-col">
+                    <img src="/images/mission.png" alt="Our Mission" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUES — NOW FULL WIDTH, FIXED LAYOUT -->
+    <section class="values-section">
+        <div class="container">
+
+            <div class="values-header">
+                <h2>Our <span>Core Values</span></h2>
+                <p>The five values below are the foundation of everything we do at Dynasty FC. They shape our culture, guide our decisions, and define the type of people we're raising.</p>
+            </div>
+
+            <div class="values-layout">
+                <div class="values-image">
+                    <img src="/images/values.png" alt="Our Values" />
+                </div>
+
+                <div class="values-grid">
+                    <div class="value-item">
+                        <span class="icon">🏆</span>
+                        <h4>Honour</h4>
+                        <p>Acting with integrity and respect</p>
+                    </div>
+                    <div class="value-item">
+                        <span class="icon">👨‍👩‍👧‍👦</span>
+                        <h4>Family</h4>
+                        <p>Building a supportive community</p>
+                    </div>
+                    <div class="value-item">
+                        <span class="icon">🌟</span>
+                        <h4>Positivity</h4>
+                        <p>Maintaining a winning mindset</p>
+                    </div>
+                    <div class="value-item">
+                        <span class="icon">⭐</span>
+                        <h4>Excellence</h4>
+                        <p>Striving for greatness in all we do</p>
+                    </div>
+                    <div class="value-item full-width">
+                        <span class="icon">🌱</span>
+                        <h4>Growth</h4>
+                        <p>Continuous learning, development, and self-improvement</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="values-footer-text">
+                We believe that creating the right culture and environment is crucial in raising the next generation of great leaders. Our five values underpin all that we do, giving coaches, staff, and players a clear reference point for the type of men and women we want to develop.
+            </p>
+
+        </div>
+    </section>
+
+    <!-- SUPPORT -->
+    <section class="support-section">
+        <div class="container">
+            <span class="section-label-dark">Partner With Us</span>
+            <h2>Why <span>Support Us?</span></h2>
+            <p>As a fully compliant NPO, Dynasty FC offers a <strong>structured, transparent, and high-impact ecosystem</strong> for corporate social investment (CSI) and community sponsorships.</p>
+            <p>Every partnership helps us expand our reach, provide better equipment, and support more young players on their journey toward a brighter future.</p>
+            <a href="/get-involved" class="support-cta">
+                Get Involved <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-info">
+                <strong>Fiat Grounds, Soweto</strong> • Johannesburg, South Africa<br />
+                <a href="tel:+27639111277">+27 63 911 1277</a> •
+                <a href="mailto:admin@dynastyfc.co.za">admin@dynastyfc.co.za</a> •
+                <a href="https://dynastyfc.co.za/" target="_blank">Website</a>
+            </div>
+            <p>&copy; 2026 Dynasty Football Club. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

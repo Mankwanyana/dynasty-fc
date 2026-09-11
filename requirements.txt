@@ -1,0 +1,11 @@
+flask
+flask-cors
+mysql-connector-python
+python-dotenv
+sendgrid
+requests
+Werkzeug
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+gunicorn

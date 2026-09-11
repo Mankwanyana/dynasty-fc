@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Contact - Dynasty FC</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        .navbar {
+            background: #0a0a1a;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo img { height: 40px; }
+        .nav-logo .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-logo .brand-text .club-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .nav-logo .brand-text .club-name span { color: #ffcc00; }
+        .nav-logo .brand-text .tagline {
+            font-size: 10px;
+            color: #888;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-menu a {
+            color: #ccc;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            text-decoration: none;
+        }
+        .nav-menu a:hover { color: #ffcc00; }
+        .nav-menu .active { color: #ffcc00; }
+
+        .video-hero {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            min-height: 350px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .video-hero video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+        .video-hero .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 10, 26, 0.55);
+            z-index: 1;
+        }
+        .video-hero .hero-content {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+            padding: 20px;
+            max-width: 800px;
+        }
+        .video-hero .hero-content h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+        .video-hero .hero-content h1 span { color: #ffcc00; }
+        .video-hero .hero-content p {
+            font-size: 18px;
+            color: #ddd;
+            margin-top: 5px;
+        }
+
+        .contact-page {
+            padding: 60px 0;
+            background: #f8f9fc;
+        }
+        .contact-page .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+        .contact-info {
+            background: #fff;
+            padding: 35px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .contact-info h2 {
+            font-size: 22px;
+            color: #0a0a1a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .contact-info .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 15px;
+            border-bottom: 1px solid #f0f0f5;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+        .contact-info .info-item:hover {
+            background: #fafafa;
+            transform: translateX(5px);
+        }
+        .contact-info .info-item:last-child {
+            border-bottom: none;
+        }
+        .contact-info .info-item i {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffcc00;
+            border-radius: 50%;
+            color: #0a0a1a;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .contact-info .info-item .text .label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .contact-info .info-item .text .value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0a0a1a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .contact-info .info-item .text .value .call-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #28a745;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+        .contact-info .info-item:hover .text .value .call-badge {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .contact-form {
+            background: #fff;
+            padding: 35px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .contact-form h2 {
+            font-size: 22px;
+            color: #0a0a1a;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .contact-form .form-subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+            background: #fafafa;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #ffcc00;
+            outline: none;
+            background: #fff;
+        }
+        .contact-form textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        .contact-form .btn-submit {
+            background: #ffcc00;
+            color: #0a0a1a;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .contact-form .btn-submit:hover {
+            background: #e6b800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,204,0,0.3);
+        }
+        .contact-form .btn-submit i {
+            margin-right: 8px;
+        }
+
+        .map-section {
+            margin-top: 50px;
+        }
+        .map-section h2 {
+            font-size: 22px;
+            color: #0a0a1a;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .map-container {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 380px;
+            border: none;
+        }
+
+        /* EMAIL CHOICE MODAL */
+        .email-modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(6px);
+            padding: 20px;
+        }
+        .email-modal-backdrop.active {
+            display: flex;
+        }
+        .email-modal {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 35px 30px;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            border-top: 6px solid #ffcc00;
+            position: relative;
+            animation: emailModalIn 0.3s ease;
+        }
+        @keyframes emailModalIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .email-modal .close-x {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 26px;
+            color: #bbb;
+            cursor: pointer;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+        .email-modal .close-x:hover { color: #dc3545; }
+        .email-modal .modal-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffcc00, #e6b800);
+            color: #0a0a1a;
+            font-size: 32px;
+            line-height: 70px;
+            margin: 0 auto 18px;
+            box-shadow: 0 10px 30px rgba(255,204,0,0.4);
+        }
+        .email-modal h3 {
+            font-size: 22px;
+            color: #0a0a1a;
+            margin-bottom: 6px;
+            font-weight: 800;
+        }
+        .email-modal .email-address {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 25px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+        }
+        .email-modal .email-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .email-modal .email-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s;
+            color: #0a0a1a;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .email-modal .email-option:hover {
+            border-color: #ffcc00;
+            background: #fff8e1;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,204,0,0.2);
+        }
+        .email-modal .email-option .opt-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .email-modal .email-option.gmail .opt-icon {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            color: #ea4335;
+        }
+        .email-modal .email-option.outlook .opt-icon {
+            background: #0078d4;
+            color: #fff;
+        }
+        .email-modal .email-option.mail .opt-icon {
+            background: #f3f4f6;
+            color: #0a0a1a;
+        }
+        .email-modal .email-option .opt-text {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            text-align: left;
+        }
+        .email-modal .email-option .opt-title {
+            font-weight: 700;
+            color: #0a0a1a;
+            font-size: 15px;
+        }
+        .email-modal .email-option .opt-sub {
+            font-size: 12px;
+            color: #888;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+        .email-modal .email-option .opt-arrow {
+            color: #bbb;
+            font-size: 14px;
+        }
+        .email-modal .email-option:hover .opt-arrow {
+            color: #d4a900;
+        }
+
+        .footer {
+            background: #0a0a1a;
+            color: #fff;
+            padding: 30px 0 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .footer .footer-info {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        .footer .footer-info strong { color: #fff; }
+        .footer .footer-info a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer .footer-info a:hover { color: #ffcc00; }
+        .footer p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .video-hero {
+                height: 40vh;
+                min-height: 280px;
+            }
+            .video-hero .hero-content h1 { font-size: 32px; }
+            .video-hero .hero-content p { font-size: 15px; }
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .map-container iframe { height: 250px; }
+        }
+        @media (max-width: 480px) {
+            .video-hero {
+                height: 35vh;
+                min-height: 220px;
+            }
+            .video-hero .hero-content h1 { font-size: 26px; }
+            .contact-info { padding: 25px 20px; }
+            .contact-form { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="/images/logo.png" alt="Dynasty FC Logo" />
+                <div class="brand-text">
+                    <span class="club-name">Dynasty <span>FC</span></span>
+                    <span class="tagline">Integrated System</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/teams">Teams</a></li>
+                <li><a href="/fixtures">Fixtures</a></li>
+                <li><a href="/contact" class="active">Contact</a></li>
+                <li><a href="/get-involved">Get Involved</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="video-hero">
+        <video autoplay muted loop playsinline>
+            <source src="/images/contact-hero.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Contact <span>Us</span></h1>
+            <p>Get in touch with Dynasty FC — we'd love to hear from you</p>
+        </div>
+    </section>
+
+    <section class="contact-page">
+        <div class="container">
+
+            <div class="contact-grid">
+
+                <div class="contact-info">
+                    <h2>Get in Touch</h2>
+
+                    <!-- PHONE -->
+                    <a href="tel:+27639111277" class="info-item" id="phoneItem">
+                        <i class="fas fa-phone"></i>
+                        <div class="text">
+                            <div class="label">Phone</div>
+                            <div class="value">
+                                +27 63 911 1277
+                                <span class="call-badge">Call Now →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- WHATSAPP — smart link (app on mobile, WhatsApp Desktop on desktop, web fallback) -->
+                    <a href="https://wa.me/27639111277?text=Hello%20Dynasty%20FC"
+                       id="whatsappLink"
+                       target="_blank"
+                       rel="noopener"
+                       class="info-item">
+                        <i class="fab fa-whatsapp" style="background:#25D366; color:#fff;"></i>
+                        <div class="text">
+                            <div class="label">WhatsApp</div>
+                            <div class="value">Chat on WhatsApp</div>
+                        </div>
+                    </a>
+
+                    <!-- EMAIL — opens choice modal -->
+                    <button type="button" class="info-item" onclick="openEmailModal()">
+                        <i class="fas fa-envelope"></i>
+                        <div class="text">
+                            <div class="label">Email</div>
+                            <div class="value">dynastyfcadmin@gmail.com</div>
+                        </div>
+                    </button>
+
+                    <!-- INSTAGRAM -->
+                    <a href="https://www.instagram.com/dynastyfc_2016" target="_blank" rel="noopener" class="info-item">
+                        <i class="fab fa-instagram" style="background:linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color:#fff;"></i>
+                        <div class="text">
+                            <div class="label">Instagram</div>
+                            <div class="value">@dynastyfc_2016</div>
+                        </div>
+                    </a>
+
+                    <!-- FACEBOOK -->
+                    <a href="https://web.facebook.com/DynastyFC2016/about" target="_blank" rel="noopener" class="info-item">
+                        <i class="fab fa-facebook-f" style="background:#1877F2; color:#fff;"></i>
+                        <div class="text">
+                            <div class="label">Facebook</div>
+                            <div class="value">facebook.com/DynastyFC2016</div>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div class="contact-form">
+                    <h2>Send a Message</h2>
+                    <p class="form-subtitle">We'll get back to you within 24 hours</p>
+
+                    <form id="contactForm" onsubmit="handleSubmit(event)">
+                        <input type="text" placeholder="Your Name" id="name" required />
+                        <input type="email" placeholder="Email Address" id="email" required />
+                        <input type="text" placeholder="Subject" id="subject" required />
+                        <textarea placeholder="Your Message" id="message" required></textarea>
+                        <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="map-section">
+                <h2><i class="fas fa-map-pin" style="color:#ffcc00;"></i> Find Us</h2>
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3582.123456789!2d28.123456!3d-26.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDA3JzI0LjYiUyAyOMKwMDcnMjQuNiJF!5e0!3m2!1sen!2sza!4v1234567890"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- EMAIL CHOICE MODAL -->
+    <div class="email-modal-backdrop" id="emailModal" onclick="closeEmailModalOnBackdrop(event)">
+        <div class="email-modal">
+            <button class="close-x" onclick="closeEmailModal()">&times;</button>
+            <div class="modal-icon"><i class="fas fa-envelope-open-text"></i></div>
+            <h3>Send Us an Email</h3>
+            <p class="email-address">dynastyfcadmin@gmail.com</p>
+
+            <div class="email-options">
+                <a class="email-option gmail"
+                   href="https://mail.google.com/mail/?view=cm&fs=1&to=dynastyfcadmin@gmail.com&su=Inquiry%20from%20Dynasty%20FC%20website"
+                   target="_blank" rel="noopener">
+                    <div class="opt-icon"><i class="fab fa-google"></i></div>
+                    <div class="opt-text">
+                        <span class="opt-title">Open in Gmail</span>
+                        <span class="opt-sub">Compose in your browser</span>
+                    </div>
+                    <span class="opt-arrow"><i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <a class="email-option outlook"
+                   href="https://outlook.live.com/mail/0/deeplink/compose?to=dynastyfcadmin@gmail.com&subject=Inquiry%20from%20Dynasty%20FC%20website"
+                   target="_blank" rel="noopener">
+                    <div class="opt-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="opt-text">
+                        <span class="opt-title">Open in Outlook</span>
+                        <span class="opt-sub">Compose in Outlook Web</span>
+                    </div>
+                    <span class="opt-arrow"><i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <a class="email-option mail"
+                   href="mailto:dynastyfcadmin@gmail.com?subject=Inquiry%20from%20Dynasty%20FC%20website">
+                    <div class="opt-icon"><i class="fas fa-desktop"></i></div>
+                    <div class="opt-text">
+                        <span class="opt-title">Use my default app</span>
+                        <span class="opt-sub">Apple Mail, Outlook desktop, etc.</span>
+                    </div>
+                    <span class="opt-arrow"><i class="fas fa-arrow-right"></i></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-info">
+                <strong>Fiat Grounds, Soweto</strong> • Johannesburg, South Africa<br />
+                <a href="tel:+27639111277">+27 63 911 1277</a> •
+                <a href="mailto:dynastyfcadmin@gmail.com">dynastyfcadmin@gmail.com</a> •
+                <a href="https://www.instagram.com/dynastyfc_2016" target="_blank">Instagram</a>
+            </div>
+            <p>&copy; 2026 Dynasty Football Club. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        // SMART WHATSAPP LINK
+        // - Mobile → wa.me (opens WhatsApp app)
+        // - Desktop → whatsapp:// (opens WhatsApp Desktop app)
+        // - If desktop app not installed → falls back to WhatsApp Web
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const waLink = document.getElementById('whatsappLink');
+            if (!waLink) return;
+
+            const phone = '27639111277';
+            const text = encodeURIComponent('Hello Dynasty FC');
+
+            const isMobile = /iPhone|iPad|iPod|Android|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                // Mobile → wa.me opens the mobile app
+                waLink.href = `https://wa.me/${phone}?text=${text}`;
+                return;
+            }
+
+            // Desktop → try to launch WhatsApp Desktop app
+            const desktopAppUrl = `whatsapp://send?phone=${phone}&text=${text}`;
+            const webFallbackUrl = `https://web.whatsapp.com/send?phone=${phone}&text=${text}`;
+
+            waLink.href = desktopAppUrl;
+
+            // If the desktop app doesn't open within 1.5 seconds, fall back to WhatsApp Web
+            waLink.addEventListener('click', function() {
+                setTimeout(function() {
+                    if (!document.hidden) {
+                        window.open(webFallbackUrl, '_blank');
+                    }
+                }, 1500);
+            }, { once: true });
+        });
+
+        // ============================================================
+        // EMAIL CHOICE MODAL
+        // ============================================================
+        function openEmailModal() {
+            document.getElementById('emailModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEmailModal() {
+            document.getElementById('emailModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeEmailModalOnBackdrop(event) {
+            if (event.target.id === 'emailModal') {
+                closeEmailModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeEmailModal();
+        });
+
+        // ============================================================
+        // CONTACT FORM SUBMIT
+        // ============================================================
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!name || !email || !subject || !message) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            try {
+                const response = await fetch('/api/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, subject, message })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Thank you, ' + name + '! Your message has been sent. We\'ll get back to you soon.');
+                    document.getElementById('contactForm').reset();
+                } else {
+                    alert('Error: ' + (data.error || 'Something went wrong.'));
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+                console.error('Error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+    </script>
+
+</body>
+</html>

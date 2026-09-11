@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Training - Dynasty FC</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        .training-page { padding: 40px 0; }
+        .training-page h1 { font-size: 36px; border-left: 5px solid #ffcc00; padding-left: 15px; margin-bottom: 30px; }
+        .session-card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .session-card .date { font-weight: 700; min-width: 100px; }
+        .session-card .info { flex: 1; padding: 0 20px; }
+        .session-card .info .team { font-weight: 600; }
+        .session-card .info .focus { color: #888; font-size: 14px; }
+        .session-card .status { padding: 5px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+        .session-card .status.completed { background: #d4edda; color: #155724; }
+        .session-card .status.upcoming { background: #fff3cd; color: #856404; }
+        .btn-add { background: #ffcc00; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-bottom: 20px; }
+        .btn-add:hover { background: #e6b800; }
+        .attendance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 10px; }
+        .attendance-item { background: #f8f9fc; padding: 8px 12px; border-radius: 8px; font-size: 14px; display: flex; justify-content: space-between; }
+        .attendance-item .present { color: green; }
+        .attendance-item .absent { color: red; }
+        .attendance-item .late { color: orange; }
+    </style>
+</head>
+<body>
+
+    <section class="training-page">
+        <div class="container">
+            <h1><i class="fas fa-dumbbell" style="color:#ffcc00;"></i> Training Management</h1>
+
+            <button class="btn-add" onclick="alert('Add Training Session form coming soon!')"><i class="fas fa-plus"></i> Add Session</button>
+
+            <h2 style="margin: 20px 0 15px; border-left: 5px solid #ffcc00; padding-left: 15px;">Upcoming Sessions</h2>
+
+            <div class="session-card">
+                <div class="date">06 Nov 2026</div>
+                <div class="info">
+                    <div class="team">First Team</div>
+                    <div class="focus">Tactical Drills</div>
+                </div>
+                <div class="status upcoming">Upcoming</div>
+            </div>
+
+            <div class="session-card">
+                <div class="date">07 Nov 2026</div>
+                <div class="info">
+                    <div class="team">Reserve Team</div>
+                    <div class="focus">Ball Control</div>
+                </div>
+                <div class="status upcoming">Upcoming</div>
+            </div>
+
+            <h2 style="margin: 30px 0 15px; border-left: 5px solid #ffcc00; padding-left: 15px;">Previous Sessions</h2>
+
+            <div class="session-card">
+                <div class="date">30 Oct 2026</div>
+                <div class="info">
+                    <div class="team">First Team</div>
+                    <div class="focus">Match Preparation</div>
+                </div>
+                <div class="status completed">Completed</div>
+            </div>
+
+            <div class="session-card">
+                <div class="date">28 Oct 2026</div>
+                <div class="info">
+                    <div class="team">U19 Academy</div>
+                    <div class="focus">Fitness</div>
+                </div>
+                <div class="status completed">Completed</div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container"><p>&copy; 2026 Dynasty Football Club. All rights reserved.</p></div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Donors - Dynasty FC</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        .donors-page { padding: 40px 0; background: #f4f6f9; min-height: 100vh; }
+        .donors-page h1 { font-size: 32px; border-left: 5px solid #ffcc00; padding-left: 15px; margin-bottom: 5px; }
+        .donors-page .subtitle { color: #888; margin-bottom: 20px; }
+        .donors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .donor-card { background: #fff; border-radius: 12px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s, box-shadow 0.3s; border-top: 4px solid #ffcc00; }
+        .donor-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .donor-card .donor-icon { font-size: 40px; color: #ffcc00; margin-bottom: 10px; }
+        .donor-card h3 { font-size: 18px; color: #0a0a1a; margin-bottom: 5px; }
+        .donor-card .donor-type { font-size: 14px; color: #ffcc00; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .donor-card .donor-industry { font-size: 14px; color: #888; margin: 5px 0; }
+        .donor-card .donor-amount { font-size: 20px; font-weight: 700; color: #28a745; margin-top: 8px; }
+        .donor-card .donor-contact { font-size: 13px; color: #888; margin-top: 8px; }
+        .donor-card .donor-contact a { color: #ffcc00; text-decoration: none; }
+        .donor-card .donor-contact a:hover { text-decoration: underline; }
+        .btn-add { background: #ffcc00; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-bottom: 20px; }
+        .btn-add:hover { background: #e6b800; }
+        .loading { text-align: center; padding: 40px; color: #888; }
+        .error { text-align: center; padding: 40px; color: red; }
+        @media (max-width: 768px) { .donors-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <section class="donors-page">
+        <div class="container">
+            <h1><i class="fas fa-handshake" style="color:#ffcc00;"></i> Donor & Sponsor Management</h1>
+            <p class="subtitle">Manage all donors and sponsors — data loaded from your MySQL database</p>
+
+            <button class="btn-add" onclick="alert('Add Donor form coming soon!')"><i class="fas fa-plus"></i> Add Donor</button>
+
+            <div id="donorsContainer">
+                <div class="loading">Loading donors...</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container"><p>&copy; 2026 Dynasty Football Club. All rights reserved.</p></div>
+    </footer>
+
+    <script>
+        // ============================================================
+        // LOAD DONORS FROM DATABASE
+        // ============================================================
+        async function loadDonors() {
+            const container = document.getElementById('donorsContainer');
+
+            try {
+                const res = await fetch('/api/donors');
+                const donors = await res.json();
+
+                if (donors.length === 0) {
+                    container.innerHTML = '<div class="error">No donors found in the database.</div>';
+                    return;
+                }
+
+                let grid = '<div class="donors-grid">';
+
+                donors.forEach(d => {
+                    const amount = parseFloat(d.total_amount || 0);
+                    grid += `
+                        <div class="donor-card">
+                            <div class="donor-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                            <h3>${d.donor_name || 'Unknown'}</h3>
+                            <div class="donor-type">${d.donor_type || 'Donor'}</div>
+                            <div class="donor-industry">${d.industry || 'N/A'}</div>
+                            <div class="donor-amount">R${amount.toFixed(2)}</div>
+                            <div class="donor-contact">
+                                <i class="fas fa-gift"></i> ${d.number_of_contributions || 0} contribution(s)
+                            </div>
+                        </div>
+                    `;
+                });
+
+                grid += '</div>';
+                grid += `<p style="margin-top:15px; color:#888; font-size:13px;">Showing ${donors.length} donors</p>`;
+
+                container.innerHTML = grid;
+
+            } catch (error) {
+                console.error('Error loading donors:', error);
+                container.innerHTML = '<div class="error">❌ Error loading donors. Make sure your database is connected.</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDonors);
+    </script>
+</body>
+</html>

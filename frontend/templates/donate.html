@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Donate - Dynasty FC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f8f9fc;
+            color: #0a0a1a;
+            min-height: 100vh;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: #0a0a1a;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo img { height: 40px; }
+        .nav-logo .brand-text .club-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .nav-logo .brand-text .club-name span { color: #ffcc00; }
+        .nav-logo .brand-text .tagline {
+            font-size: 10px;
+            color: #888;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-menu a {
+            color: #ccc;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            text-decoration: none;
+        }
+        .nav-menu a:hover { color: #ffcc00; }
+        .nav-menu .active { color: #ffcc00; }
+
+        /* ===== PAGE ===== */
+        .donate-page {
+            padding: 60px 20px 80px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #0a0a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 8px;
+        }
+        .page-header h1 i { color: #ffcc00; font-size: 38px; }
+        .page-header p {
+            font-size: 17px;
+            color: #777;
+        }
+
+        /* ===== FORM CARD ===== */
+        .donate-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 40px 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border-top: 5px solid #ffcc00;
+        }
+
+        .donate-card h2 {
+            font-size: 22px;
+            color: #0a0a1a;
+            margin-bottom: 5px;
+        }
+        .donate-card .subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* ===== AMOUNT BUTTONS ===== */
+        .amount-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .amount-btn {
+            padding: 16px 8px;
+            border: 2px solid #e0e0e0;
+            background: #fff;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0a0a1a;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .amount-btn:hover {
+            border-color: #ffcc00;
+            background: #fff8e1;
+        }
+        .amount-btn.active {
+            border-color: #ffcc00;
+            background: #ffcc00;
+            color: #0a0a1a;
+            box-shadow: 0 4px 15px rgba(255,204,0,0.3);
+        }
+
+        /* ===== FORM FIELDS ===== */
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #0a0a1a;
+            margin-bottom: 6px;
+            margin-top: 18px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border 0.2s;
+            background: #fff;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #ffcc00;
+        }
+        textarea { resize: vertical; min-height: 70px; }
+
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* ===== SUBMIT BUTTON ===== */
+        .btn-donate {
+            width: 100%;
+            background: #0a0a1a;
+            color: #fff;
+            padding: 16px;
+            border: none;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 28px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-donate:hover {
+            background: #ffcc00;
+            color: #0a0a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,204,0,0.4);
+        }
+        .btn-donate:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .secure-note {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            margin-top: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .secure-note i { color: #10b981; }
+
+        /* ===== MESSAGES ===== */
+        .msg {
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        .msg.error {
+            background: #fee;
+            color: #c00;
+            border: 1px solid #fcc;
+            display: block;
+        }
+        .msg.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+            display: block;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #0a0a1a;
+            color: #fff;
+            padding: 30px 0 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .footer .footer-info {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        .footer .footer-info strong { color: #fff; }
+        .footer .footer-info a {
+            color: #aaa;
+            text-decoration: none;
+        }
+        .footer .footer-info a:hover { color: #ffcc00; }
+        .footer p { color: #666; font-size: 13px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .page-header h1 { font-size: 30px; }
+            .donate-card { padding: 30px 22px; }
+            .amount-grid { grid-template-columns: repeat(2, 1fr); }
+            .row-2 { grid-template-columns: 1fr; }
+            .nav-menu { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="/images/logo.png" alt="Dynasty FC Logo" />
+                <div class="brand-text">
+                    <span class="club-name">Dynasty <span>FC</span></span>
+                    <span class="tagline">Integrated System</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/teams">Teams</a></li>
+                <li><a href="/fixtures">Fixtures</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/get-involved">Get Involved</a></li>
+                <li><a href="/donate" class="active">Donate</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- DONATE PAGE -->
+    <section class="donate-page">
+
+        <div class="page-header">
+            <h1><i class="fas fa-heart"></i> Make a Donation</h1>
+            <p>Your support powers the next generation of football stars</p>
+        </div>
+
+        <div class="donate-card">
+            <h2>Choose Your Amount</h2>
+            <p class="subtitle">100% secure payment via PayFast</p>
+
+            <div class="msg" id="msg"></div>
+
+            <form id="donateForm">
+                <div class="amount-grid">
+                    <button type="button" class="amount-btn" data-amount="50">R50</button>
+                    <button type="button" class="amount-btn active" data-amount="100">R100</button>
+                    <button type="button" class="amount-btn" data-amount="250">R250</button>
+                    <button type="button" class="amount-btn" data-amount="500">R500</button>
+                    <button type="button" class="amount-btn" data-amount="1000">R1,000</button>
+                    <button type="button" class="amount-btn" data-amount="2500">R2,500</button>
+                </div>
+
+                <label for="customAmount">Or enter a custom amount (R)</label>
+                <input type="number" id="customAmount" placeholder="e.g. 750" min="10" step="1" />
+
+                <label for="donorName">Full Name *</label>
+                <input type="text" id="donorName" placeholder="Your full name" required />
+
+                <label for="donorEmail">Email Address *</label>
+                <input type="email" id="donorEmail" placeholder="you@example.com" required />
+
+                <div class="row-2">
+                    <div>
+                        <label for="donorPhone">Phone (optional)</label>
+                        <input type="tel" id="donorPhone" placeholder="+27 ..." />
+                    </div>
+                    <div>
+                        <label for="isAnonymous">Show my name?</label>
+                        <select id="isAnonymous">
+                            <option value="0">Yes - show my name</option>
+                            <option value="1">No - stay anonymous</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label for="donorMessage">Message (optional)</label>
+                <textarea id="donorMessage" placeholder="Leave a short message..."></textarea>
+
+                <button type="submit" class="btn-donate" id="submitBtn">
+                    <i class="fas fa-lock"></i> Donate Securely via PayFast
+                </button>
+
+                <p class="secure-note">
+                    <i class="fas fa-shield-alt"></i> Your payment is safe and encrypted
+                </p>
+            </form>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-info">
+                <strong>Fiat Grounds, Soweto</strong> • Johannesburg, South Africa<br />
+                <a href="tel:+27639111277">+27 63 911 1277</a> •
+                <a href="mailto:admin@dynastyfc.co.za">admin@dynastyfc.co.za</a> •
+                <a href="https://dynastyfc.co.za/" target="_blank">Website</a>
+            </div>
+            <p>&copy; 2026 Dynasty Football Club. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        let selectedAmount = 100;
+
+        // Amount button selection
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedAmount = parseFloat(btn.dataset.amount);
+                document.getElementById('customAmount').value = '';
+            });
+        });
+
+        // Custom amount input
+        document.getElementById('customAmount').addEventListener('input', (e) => {
+            if (e.target.value) {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+                selectedAmount = parseFloat(e.target.value) || 0;
+            }
+        });
+
+        // Form submission
+        const form = document.getElementById('donateForm');
+        const msg = document.getElementById('msg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            msg.className = 'msg';
+            msg.style.display = 'none';
+
+            const amount = selectedAmount;
+            if (!amount || amount < 10) {
+                msg.textContent = 'Minimum donation is R10';
+                msg.className = 'msg error';
+                return;
+            }
+
+            const payload = {
+                amount: amount,
+                name: document.getElementById('donorName').value.trim(),
+                email: document.getElementById('donorEmail').value.trim(),
+                phone: document.getElementById('donorPhone').value.trim(),
+                message: document.getElementById('donorMessage').value.trim(),
+                is_anonymous: document.getElementById('isAnonymous').value === '1'
+            };
+
+            if (!payload.name || !payload.email) {
+                msg.textContent = 'Name and email are required';
+                msg.className = 'msg error';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to PayFast...';
+
+            try {
+                const res = await fetch('/api/donate/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (data.success && data.payfast_url) {
+                    // Auto-submit form to PayFast
+                    const formEl = document.createElement('form');
+                    formEl.method = 'POST';
+                    formEl.action = data.payfast_url;
+
+                    Object.entries(data.payfast_data).forEach(([k, v]) => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = k;
+                        input.value = v;
+                        formEl.appendChild(input);
+                    });
+
+                    document.body.appendChild(formEl);
+                    formEl.submit();
+                } else {
+                    msg.textContent = data.error || 'Something went wrong. Please try again.';
+                    msg.className = 'msg error';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-lock"></i> Donate Securely via PayFast';
+                }
+            } catch (err) {
+                msg.textContent = 'Network error: ' + err.message;
+                msg.className = 'msg error';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-lock"></i> Donate Securely via PayFast';
+            }
+        });
+    </script>
+
+</body>
+</html>

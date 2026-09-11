@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Access Denied - Dynasty FC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 55px 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+            border-top: 6px solid #dc3545;
+        }
+        .icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: #fff;
+            font-size: 44px;
+            line-height: 90px;
+            margin: 0 auto 25px;
+        }
+        h1 {
+            color: #0a0a1a;
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .btn {
+            display: inline-block;
+            background: #ffcc00;
+            color: #0a0a1a;
+            padding: 14px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #e6b800;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #0a0a1a;
+            border: 2px solid #0a0a1a;
+        }
+        .btn-outline:hover {
+            background: #0a0a1a;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon"><i class="fas fa-lock"></i></div>
+        <h1>Access Denied</h1>
+        <p>You don't have permission to view this page. This area is restricted to staff members.</p>
+        <a href="/" class="btn"><i class="fas fa-home"></i> Back to Home</a>
+        <a href="/login" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Login as Staff</a>
+    </div>
+</body>
+</html>

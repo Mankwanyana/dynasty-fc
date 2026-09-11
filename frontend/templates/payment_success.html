@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Dynasty FC</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #0a1f44 0%, #1a3a6e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .check {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            font-size: 50px;
+            line-height: 80px;
+            margin: 0 auto 25px;
+            animation: pop 0.5s ease;
+        }
+        @keyframes pop {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        h1 {
+            color: #0a1f44;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .ref {
+            background: #f3f4f6;
+            border-radius: 10px;
+            padding: 15px;
+            font-family: monospace;
+            color: #0a1f44;
+            font-weight: bold;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+        .btn {
+            display: inline-block;
+            background: #0a1f44;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #d4af37;
+            color: #0a1f44;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="check">✓</div>
+        <h1>Thank You for Your Donation!</h1>
+        <p>Your generous contribution helps Dynasty FC grow and support our young players.</p>
+        <p><strong>Payment Reference:</strong></p>
+        <div class="ref" id="ref">Loading...</div>
+        <p>We've sent a confirmation email to you. Keep an eye on your inbox!</p>
+        <a href="/" class="btn">Back to Home</a>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const ref = params.get('ref') || params.get('m_payment_id') || 'N/A';
+        document.getElementById('ref').textContent = ref;
+    </script>
+</body>
+</html>

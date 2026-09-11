@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Teams - Dynasty FC</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        .teams-page {
+            min-height: 100vh;
+            background-image: url('/images/greenhero.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 40px 0 60px;
+            position: relative;
+        }
+        .teams-page::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 20, 10, 0.75);
+            z-index: 0;
+        }
+        .teams-page .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .teams-page h1 {
+            font-size: 42px;
+            border-left: 5px solid #ffcc00;
+            padding-left: 15px;
+            margin-bottom: 5px;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .teams-page .subtitle {
+            color: #88ddbb;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .team-badges {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .team-badge {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.1);
+            color: #88ddff;
+            border: 2px solid rgba(255,255,255,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .team-badge:hover {
+            border-color: #ffcc00;
+            background: rgba(255,204,0,0.15);
+            transform: translateY(-2px);
+        }
+        .team-badge.active {
+            border-color: #ffcc00;
+            background: #ffcc00;
+            color: #0a0a1a;
+            box-shadow: 0 4px 20px rgba(255,204,0,0.3);
+        }
+        .team-badge .count {
+            background: rgba(0,0,0,0.2);
+            color: #88ddff;
+            border-radius: 50%;
+            padding: 0 10px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .team-badge.active .count {
+            background: rgba(255,255,255,0.2);
+            color: #0a0a1a;
+        }
+        .team-section {
+            display: none;
+            background: rgba(10, 30, 20, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 30px;
+        }
+        .team-section.active { display: block; }
+        .team-section .team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+        .team-section .team-header h2 {
+            font-size: 28px;
+            color: #fff;
+        }
+        .team-section .team-header h2 i { color: #ffcc00; }
+        .team-section .team-header .team-count {
+            color: #88ddbb;
+            font-size: 14px;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .coach-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(135deg, rgba(255,204,0,0.15), rgba(255,204,0,0.05));
+            border: 2px solid rgba(255,204,0,0.3);
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 25px;
+        }
+        .coach-card .coach-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #ffcc00;
+            color: #0a0a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+        .coach-card .coach-info .coach-label {
+            color: #ffcc00;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .coach-card .coach-info .coach-name {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        .coach-card .coach-info .coach-role {
+            color: #88ddbb;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.1);
+            color: #88ddbb;
+        }
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        .tab-btn.active {
+            background: #ffcc00;
+            color: #0a0a1a;
+            box-shadow: 0 4px 15px rgba(255,204,0,0.3);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 15px;
+        }
+        .player-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+        .player-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .player-card .jersey-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #ffcc00;
+            color: #0a0a1a;
+            font-weight: 900;
+            font-size: 16px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(255,204,0,0.4);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .player-card .player-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: rgba(255,204,0,0.2);
+            color: #ffcc00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 26px;
+            border: 2px solid rgba(255,204,0,0.3);
+        }
+        .player-card .player-avatar.position-goalkeeper { background: rgba(59,130,246,0.2); color: #60a5fa; border-color: rgba(59,130,246,0.4); }
+        .player-card .player-avatar.position-defender   { background: rgba(34,197,94,0.2);  color: #4ade80; border-color: rgba(34,197,94,0.4); }
+        .player-card .player-avatar.position-midfielder { background: rgba(245,158,11,0.2); color: #fbbf24; border-color: rgba(245,158,11,0.4); }
+        .player-card .player-avatar.position-forward    { background: rgba(239,68,68,0.2);  color: #f87171; border-color: rgba(239,68,68,0.4); }
+        .player-card .player-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+        .player-card .player-position {
+            font-size: 13px;
+            color: #88ddbb;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .player-card .injury-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .player-card .injury-badge.injured { background: #dc3545; color: #fff; }
+        .player-card .injury-badge.fit { background: #28a745; color: #fff; }
+        .no-players {
+            text-align: center;
+            padding: 30px;
+            color: #88ddbb;
+            font-size: 16px;
+            grid-column: 1 / -1;
+        }
+        .matches-section {
+            margin-top: 30px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .matches-section h3 {
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 15px;
+            border-left: 5px solid #ffcc00;
+            padding-left: 15px;
+        }
+        .match-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.3s;
+            border-radius: 8px;
+        }
+        .match-card:hover { background: rgba(255,255,255,0.05); }
+        .match-card:last-child { border-bottom: none; }
+        .match-card .match-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .match-card .match-info .match-date {
+            font-weight: 600;
+            color: #ffcc00;
+            min-width: 80px;
+        }
+        .match-card .match-info .match-teams {
+            font-weight: 600;
+            color: #fff;
+        }
+        .match-card .match-info .match-teams .vs {
+            color: #88ddbb;
+            margin: 0 8px;
+            font-weight: 400;
+        }
+        .match-card .match-info .match-venue {
+            font-size: 13px;
+            color: #88ddbb;
+        }
+        .match-card .match-result {
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .match-card .match-result .win { color: #28a745; }
+        .match-card .match-result .loss { color: #dc3545; }
+        .match-card .match-result .draw { color: #ffc107; }
+        .match-card .btn-view-match {
+            padding: 8px 20px;
+            border: 2px solid #ffcc00;
+            border-radius: 25px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            color: #ffcc00;
+        }
+        .match-card .btn-view-match:hover {
+            background: #ffcc00;
+            color: #0a0a1a;
+        }
+        .match-card .btn-view-match .predict-icon { margin-right: 5px; }
+        .no-matches {
+            text-align: center;
+            padding: 20px;
+            color: #88ddbb;
+            font-size: 14px;
+        }
+
+        /* ============================================================
+           TOAST NOTIFICATION (LOG IN FIRST)
+           ============================================================ */
+        .toast-notice {
+            position: fixed;
+            top: 90px;
+            right: 30px;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            border: 2px solid #ffcc00;
+            border-radius: 14px;
+            padding: 20px 25px;
+            max-width: 380px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(255,204,0,0.3);
+            z-index: 10000;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast-notice.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .toast-notice .toast-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ffcc00;
+            color: #0a0a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,204,0,0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255,204,0,0); }
+        }
+        .toast-notice .toast-content h4 {
+            color: #ffcc00;
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .toast-notice .toast-content p {
+            color: #ddd;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .toast-notice .toast-content p strong {
+            color: #fff;
+            font-weight: 700;
+        }
+        .toast-notice .toast-redirect {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #88ddbb;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .toast-notice .toast-redirect i {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            .toast-notice {
+                top: 80px;
+                right: 15px;
+                left: 15px;
+                max-width: none;
+            }
+        }
+
+        /* MODAL */
+        .match-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .match-modal.active { display: flex; }
+        .match-modal .modal-content {
+            background: linear-gradient(145deg, #0a1a0a, #1a2a1a);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 550px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        .match-modal .modal-content .close-modal {
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+            color: #88ddbb;
+            background: none;
+            border: none;
+        }
+        .match-modal .modal-content .close-modal:hover { color: #ffcc00; }
+        .match-modal .modal-content h2 {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 5px;
+            margin-top: 0;
+        }
+        .match-modal .modal-content .match-teams-modal {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        .match-modal .modal-content .match-teams-modal .vs {
+            color: #88ddbb;
+            margin: 0 10px;
+        }
+        .match-modal .modal-content .match-detail {
+            color: #88ddbb;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .match-modal .modal-content .countdown {
+            background: rgba(0,0,0,0.4);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .match-modal .modal-content .countdown .numbers {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffcc00;
+        }
+        .match-modal .modal-content .countdown .numbers span {
+            display: block;
+            font-size: 12px;
+            font-weight: 400;
+            color: #88ddbb;
+        }
+        .match-modal .modal-content .predict-section { margin: 20px 0; }
+        .match-modal .modal-content .predict-section h4 {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .match-modal .modal-content .predict-section .score-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .match-modal .modal-content .predict-section .score-input input {
+            width: 60px;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+        }
+        .match-modal .modal-content .predict-section .score-input input:focus {
+            border-color: #ffcc00;
+            outline: none;
+        }
+        .match-modal .modal-content .predict-section .score-input .vs-text {
+            font-weight: 700;
+            color: #88ddbb;
+        }
+        .match-modal .modal-content .btn-predict {
+            width: 100%;
+            padding: 14px;
+            background: #ffcc00;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            color: #0a0a1a;
+            margin-top: 10px;
+        }
+        .match-modal .modal-content .btn-predict:hover {
+            background: #e6b800;
+        }
+        .match-modal .modal-content .vote-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .match-modal .modal-content .vote-section h4 {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .match-modal .modal-content .vote-section .vote-options {
+            display: flex;
+            gap: 10px;
+        }
+        .match-modal .modal-content .vote-section .vote-options button {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            cursor: pointer;
+            font-weight: 600;
+            color: #fff;
+        }
+        .match-modal .modal-content .vote-section .vote-options button:hover {
+            border-color: #ffcc00;
+            background: rgba(255,204,0,0.15);
+        }
+        .match-modal .modal-content .vote-section .vote-options button.selected {
+            border-color: #ffcc00;
+            background: rgba(255,204,0,0.2);
+            color: #ffcc00;
+        }
+
+        @media (max-width: 768px) {
+            .team-badge { padding: 8px 16px; font-size: 12px; }
+            .tab-btn { padding: 8px 16px; font-size: 12px; }
+            .player-grid { grid-template-columns: repeat(2, 1fr); }
+            .match-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            .match-card .match-info {
+                flex-direction: column;
+                gap: 5px;
+            }
+            .team-section { padding: 20px; }
+            .teams-page h1 { font-size: 30px; }
+            .coach-card { flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .player-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ✅ TOAST NOTIFICATION FOR "LOG IN FIRST" -->
+    <div class="toast-notice" id="loginToast">
+        <div class="toast-icon"><i class="fas fa-lock"></i></div>
+        <div class="toast-content">
+            <h4>Log In Required</h4>
+            <p>Please <strong>log in first</strong> to predict match scores.</p>
+            <div class="toast-redirect">
+                <i class="fas fa-spinner"></i> Redirecting to login page...
+            </div>
+        </div>
+    </div>
+
+    <section class="teams-page">
+        <div class="container">
+
+            <h1>⚽ Our Teams</h1>
+            <p class="subtitle">Discover the champions of Dynasty FC</p>
+
+            <div class="team-badges">
+                <button class="team-badge active" onclick="switchTeam('dynamights')">
+                    <i class="fas fa-bolt"></i> Dynamights <span class="count" id="count-dynamights">0</span>
+                </button>
+                <button class="team-badge" onclick="switchTeam('diamonddivas')">
+                    <i class="fas fa-gem"></i> Diamond Divas <span class="count" id="count-diamonddivas">0</span>
+                </button>
+            </div>
+
+            <!-- DYNAMIGHTS -->
+            <div id="team-dynamights" class="team-section active">
+                <div class="team-header">
+                    <h2><i class="fas fa-bolt"></i> Dynamights</h2>
+                    <span class="team-count" id="dynamights-count">0 Players</span>
+                </div>
+                <div class="coach-card">
+                    <div class="coach-avatar"><i class="fas fa-user-tie"></i></div>
+                    <div class="coach-info">
+                        <div class="coach-label">Head Coach</div>
+                        <div class="coach-name" id="coach-name-dynamights">Loading...</div>
+                        <div class="coach-role" id="coach-role-dynamights">Dynamights</div>
+                    </div>
+                </div>
+                <div class="tab-container">
+                    <button class="tab-btn active" onclick="switchTab('dynamights', 'u15')">🏆 UNDER 15</button>
+                    <button class="tab-btn" onclick="switchTab('dynamights', 'u10')">🌟 UNDER 10</button>
+                </div>
+                <div id="dynamights-u15" class="tab-content active">
+                    <div class="player-grid" id="dynamights-u15-grid">
+                        <div class="no-players">Loading players...</div>
+                    </div>
+                </div>
+                <div id="dynamights-u10" class="tab-content">
+                    <div class="player-grid" id="dynamights-u10-grid">
+                        <div class="no-players">Loading players...</div>
+                    </div>
+                </div>
+                <div class="matches-section" id="dynamights-matches">
+                    <h3>📅 Upcoming Matches</h3>
+                    <div class="no-matches">Loading matches...</div>
+                </div>
+            </div>
+
+            <!-- DIAMOND DIVAS -->
+            <div id="team-diamonddivas" class="team-section">
+                <div class="team-header">
+                    <h2><i class="fas fa-gem"></i> Diamond Divas</h2>
+                    <span class="team-count" id="diamonddivas-count">0 Players</span>
+                </div>
+                <div class="coach-card">
+                    <div class="coach-avatar"><i class="fas fa-user-tie"></i></div>
+                    <div class="coach-info">
+                        <div class="coach-label">Head Coach</div>
+                        <div class="coach-name" id="coach-name-diamonddivas">Loading...</div>
+                        <div class="coach-role" id="coach-role-diamonddivas">Diamond Divas</div>
+                    </div>
+                </div>
+                <div class="tab-container">
+                    <button class="tab-btn active" onclick="switchTab('diamonddivas', 'u15')">🏆 UNDER 15</button>
+                    <button class="tab-btn" onclick="switchTab('diamonddivas', 'u10')">🌟 UNDER 10</button>
+                </div>
+                <div id="diamonddivas-u15" class="tab-content active">
+                    <div class="player-grid" id="diamonddivas-u15-grid">
+                        <div class="no-players">Loading players...</div>
+                    </div>
+                </div>
+                <div id="diamonddivas-u10" class="tab-content">
+                    <div class="player-grid" id="diamonddivas-u10-grid">
+                        <div class="no-players">Loading players...</div>
+                    </div>
+                </div>
+                <div class="matches-section" id="diamonddivas-matches">
+                    <h3>📅 Upcoming Matches</h3>
+                    <div class="no-matches">Loading matches...</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="match-modal" id="matchModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeMatchModal()">&times;</button>
+            <h2>⚽ Match Preview</h2>
+            <div class="match-teams-modal" id="modalTeams">Team A <span class="vs">vs</span> Team B</div>
+            <div class="match-detail" id="modalDetail">📅 Date • 🏟️ Venue • ⏰ Time</div>
+            <div class="countdown" id="modalCountdown">
+                <div class="numbers">
+                    <div id="days">0<span>DAYS</span></div>
+                    <div id="hours">0<span>HRS</span></div>
+                    <div id="minutes">0<span>MIN</span></div>
+                    <div id="seconds">0<span>SEC</span></div>
+                </div>
+            </div>
+            <div class="predict-section">
+                <h4>Predict a score for this match!</h4>
+                <div class="score-input">
+                    <input type="number" id="homeScore" value="2" min="0" max="10" />
+                    <span class="vs-text">VS</span>
+                    <input type="number" id="awayScore" value="1" min="0" max="10" />
+                </div>
+                <button class="btn-predict" onclick="savePrediction()">
+                    <i class="fas fa-save"></i> Submit Prediction
+                </button>
+            </div>
+            <div class="vote-section">
+                <h4>Who will win?</h4>
+                <div class="vote-options">
+                    <button onclick="castVote('home', this)">Home Win</button>
+                    <button onclick="castVote('draw', this)">Draw</button>
+                    <button onclick="castVote('away', this)">Away Win</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var currentMatchId = null;
+
+        function switchTeam(team) {
+            document.querySelectorAll('.team-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.team-badge').forEach(b => b.classList.remove('active'));
+            document.getElementById('team-' + team).classList.add('active');
+            event.target.closest('.team-badge').classList.add('active');
+        }
+
+        function switchTab(team, age) {
+            var parent = document.getElementById('team-' + team);
+            parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(team + '-' + age).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function getPositionInfo(position) {
+            const p = (position || '').toLowerCase();
+            if (p.includes('goal')) return { icon: 'fa-hand-paper', cls: 'position-goalkeeper' };
+            if (p.includes('defend')) return { icon: 'fa-shield-alt', cls: 'position-defender' };
+            if (p.includes('mid')) return { icon: 'fa-running', cls: 'position-midfielder' };
+            if (p.includes('forward') || p.includes('striker') || p.includes('attack')) return { icon: 'fa-futbol', cls: 'position-forward' };
+            return { icon: 'fa-user', cls: '' };
+        }
+
+        async function loadPlayers(teamGroup, ageGroup, gridId) {
+            const grid = document.getElementById(gridId);
+            try {
+                const url = `/api/players-teams?team_group=${teamGroup}&age_group=${ageGroup}`;
+                const response = await fetch(url);
+                const players = await response.json();
+
+                if (!players || players.length === 0) {
+                    grid.innerHTML = `<div class="no-players">No players in ${teamGroup} ${ageGroup} yet.</div>`;
+                    return;
+                }
+
+                grid.innerHTML = players.map(p => {
+                    const pos = getPositionInfo(p.position);
+                    const isInjured = p.is_injured == 1 || p.is_injured === true;
+                    const badge = isInjured
+                        ? '<span class="injury-badge injured">⚠️ Injured</span>'
+                        : '<span class="injury-badge fit">✅ Fit</span>';
+                    const jersey = p.jersey_number ? `#${p.jersey_number}` : '—';
+
+                    return `
+                        <div class="player-card">
+                            <div class="jersey-badge">${jersey}</div>
+                            <div class="player-avatar ${pos.cls}">
+                                <i class="fas ${pos.icon}"></i>
+                            </div>
+                            <div class="player-name">${p.first_name} ${p.last_name}</div>
+                            <div class="player-position">${p.position || 'Player'}</div>
+                            ${badge}
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading players:', error);
+                grid.innerHTML = `<div class="no-players">Failed to load players.</div>`;
+            }
+        }
+
+        async function loadMatches(teamGroup, containerId) {
+            const container = document.getElementById(containerId);
+            try {
+                const response = await fetch(`/api/team-matches?team_group=${teamGroup}`);
+                const matches = await response.json();
+
+                if (!matches || matches.length === 0) {
+                    container.innerHTML = `<h3>📅 Upcoming Matches</h3><div class="no-matches">No matches scheduled yet.</div>`;
+                    return;
+                }
+
+                const upcoming = matches.filter(m => !m.is_completed);
+                const completed = matches.filter(m => m.is_completed);
+
+                let html = '<h3>📅 Upcoming Matches</h3>';
+
+                if (upcoming.length === 0) {
+                    html += '<div class="no-matches">No upcoming matches.</div>';
+                } else {
+                    upcoming.forEach(m => {
+                        html += `
+                            <div class="match-card">
+                                <div class="match-info">
+                                    <div class="match-date">${formatDate(m.match_date)}</div>
+                                    <div class="match-teams">
+                                        ${m.home_team} <span class="vs">vs</span> ${m.away_team}
+                                    </div>
+                                    <div class="match-venue">🏟️ ${m.venue} • ${m.match_time}</div>
+                                </div>
+                                <button class="btn-view-match" onclick="checkLoginAndPredict(${m.match_id}, '${m.home_team}', '${m.away_team}', '${m.match_date}', '${m.match_time}', '${m.venue}')">
+                                    <i class="fas fa-chart-line predict-icon"></i> Predict Score
+                                </button>
+                            </div>
+                        `;
+                    });
+                }
+
+                html += '<h3 style="margin-top:25px;">📊 Latest Results</h3>';
+
+                if (completed.length === 0) {
+                    html += '<div class="no-matches">No results yet.</div>';
+                } else {
+                    completed.forEach(m => {
+                        const resultClass = m.home_score > m.away_score ? 'win' : (m.home_score < m.away_score ? 'loss' : 'draw');
+                        html += `
+                            <div class="match-card">
+                                <div class="match-info">
+                                    <div class="match-date">${formatDate(m.match_date)}</div>
+                                    <div class="match-teams">
+                                        ${m.home_team} <span class="vs">vs</span> ${m.away_team}
+                                    </div>
+                                    <div class="match-venue">🏟️ ${m.venue}</div>
+                                </div>
+                                <div class="match-result">
+                                    <span class="${resultClass}">${m.home_score} - ${m.away_score}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading matches:', error);
+                container.innerHTML = `<h3>📅 Upcoming Matches</h3><div class="no-matches">Failed to load matches.</div>`;
+            }
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return d.getDate() + ' ' + months[d.getMonth()];
+        }
+
+        async function updatePlayerCounts() {
+            try {
+                const dRes = await fetch('/api/players-teams?team_group=Dynamights');
+                const dynamights = await dRes.json();
+                document.getElementById('count-dynamights').textContent = dynamights.length;
+                document.getElementById('dynamights-count').textContent = dynamights.length + ' Players';
+
+                const divasRes = await fetch('/api/players-teams?team_group=Diamond Divas');
+                const divas = await divasRes.json();
+                document.getElementById('count-diamonddivas').textContent = divas.length;
+                document.getElementById('diamonddivas-count').textContent = divas.length + ' Players';
+            } catch (error) {
+                console.error('Error updating counts:', error);
+            }
+        }
+
+        async function loadCoaches() {
+            try {
+                const res = await fetch('/api/staff');
+                const staff = await res.json();
+                if (!Array.isArray(staff)) return;
+
+                const dynCoach = staff.find(s => (s.role || '').includes('Dynamights U15'));
+                if (dynCoach) {
+                    document.getElementById('coach-name-dynamights').textContent = dynCoach.first_name + ' ' + dynCoach.last_name;
+                    document.getElementById('coach-role-dynamights').textContent = dynCoach.role;
+                }
+
+                const divaCoach = staff.find(s => (s.role || '').includes('Diamond Divas U15'));
+                if (divaCoach) {
+                    document.getElementById('coach-name-diamonddivas').textContent = divaCoach.first_name + ' ' + divaCoach.last_name;
+                    document.getElementById('coach-role-diamonddivas').textContent = divaCoach.role;
+                }
+            } catch (err) {
+                console.error('Error loading coaches:', err);
+            }
+        }
+
+        // ============================================================
+        // ✅ CHECK LOGIN BEFORE PREDICTING (with toast notification)
+        // ============================================================
+        async function checkLoginAndPredict(matchId, homeTeam, awayTeam, date, time, venue) {
+            try {
+                const res = await fetch('/api/check-session');
+                const data = await res.json();
+
+                if (!data.logged_in) {
+                    // ✅ NOT LOGGED IN — Show toast notification, then redirect
+                    showLoginToastAndRedirect();
+                    return;
+                }
+
+                // ✅ LOGGED IN — Open prediction modal
+                openMatchModal(matchId, homeTeam, awayTeam, date, time, venue);
+            } catch (err) {
+                alert('Network error. Please try again.');
+            }
+        }
+
+        function showLoginToastAndRedirect() {
+            const toast = document.getElementById('loginToast');
+            toast.classList.add('show');
+
+            // Redirect after 2.5 seconds so user can read the message
+            setTimeout(() => {
+                window.location.href = '/login?next=' + encodeURIComponent('/teams');
+            }, 2500);
+        }
+
+        function openMatchModal(matchId, homeTeam, awayTeam, date, time, venue) {
+            currentMatchId = matchId;
+            document.getElementById('modalTeams').innerHTML = `${homeTeam} <span class="vs">vs</span> ${awayTeam}`;
+            document.getElementById('modalDetail').innerHTML = `📅 ${date} • 🏟️ ${venue} • ⏰ ${time}`;
+            document.getElementById('matchModal').classList.add('active');
+            startCountdown(date);
+        }
+
+        function closeMatchModal() {
+            document.getElementById('matchModal').classList.remove('active');
+            currentMatchId = null;
+        }
+
+        function startCountdown(matchDate) {
+            const target = new Date(matchDate + 'T18:00:00').getTime();
+            function update() {
+                const now = new Date().getTime();
+                const diff = target - now;
+                if (diff <= 0) {
+                    document.getElementById('days').innerHTML = '0<span>DAYS</span>';
+                    document.getElementById('hours').innerHTML = '0<span>HRS</span>';
+                    document.getElementById('minutes').innerHTML = '0<span>MIN</span>';
+                    document.getElementById('seconds').innerHTML = '0<span>SEC</span>';
+                    return;
+                }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('days').innerHTML = days + '<span>DAYS</span>';
+                document.getElementById('hours').innerHTML = hours + '<span>HRS</span>';
+                document.getElementById('minutes').innerHTML = minutes + '<span>MIN</span>';
+                document.getElementById('seconds').innerHTML = seconds + '<span>SEC</span>';
+            }
+            update();
+            setInterval(update, 1000);
+        }
+
+        async function savePrediction() {
+            if (!currentMatchId) { alert('No match selected.'); return; }
+            const homeScore = document.getElementById('homeScore').value;
+            const awayScore = document.getElementById('awayScore').value;
+
+            try {
+                const response = await fetch('/api/match-predictions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ match_id: currentMatchId, home_score: homeScore, away_score: awayScore })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Prediction saved! 🍀 It will appear on the staff dashboard.');
+                    closeMatchModal();
+                } else {
+                    alert('Error: ' + (data.error || 'Please log in to predict.'));
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        async function castVote(vote, element) {
+            if (!currentMatchId) { alert('No match selected.'); return; }
+            try {
+                const response = await fetch('/api/match-votes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ match_id: currentMatchId, vote: vote })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.querySelectorAll('.vote-options button').forEach(b => b.classList.remove('selected'));
+                    element.classList.add('selected');
+                    alert('Vote recorded! 🗳️');
+                } else {
+                    alert('Error: ' + (data.error || 'Please log in to vote.'));
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPlayers('Dynamights', 'U15', 'dynamights-u15-grid');
+            loadPlayers('Dynamights', 'U10', 'dynamights-u10-grid');
+            loadPlayers('Diamond Divas', 'U15', 'diamonddivas-u15-grid');
+            loadPlayers('Diamond Divas', 'U10', 'diamonddivas-u10-grid');
+
+            loadMatches('Dynamights', 'dynamights-matches');
+            loadMatches('Diamond Divas', 'diamonddivas-matches');
+
+            updatePlayerCounts();
+            loadCoaches();
+        });
+    </script>
+
+</body>
+</html>
