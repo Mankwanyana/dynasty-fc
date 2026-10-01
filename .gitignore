@@ -1,29 +1,62 @@
-# Environment files (secrets)
-.env
-.env.local
+# ============================================================
+# DYNASTY FC — GITIGNORE
+# Keep secrets, uploads, logs, and cache out of the repo
+# ============================================================
 
-# Python
+# --- Environment / secrets (NEVER commit real .env) ---
+.env
+.env.*
+*.env
+
+# --- Allow the template (must come LAST to win) ---
+!.env.example
+
+# --- Python ---
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
 *.egg-info/
+.venv/
 venv/
 env/
 ENV/
 
-# Node
-node_modules/
+# --- Flask / app data ---
+instance/
+uploads/
+*.log
+logs/
+.flaskenv
 
-# IDE
+# --- Database dumps (contain real data) ---
+*.sql
+*.sqlite
+*.db
+*.dump
+
+# --- Editor / OS ---
 .vscode/
 .idea/
-
-# OS
 .DS_Store
 Thumbs.db
+*.swp
+*.swo
+*~
 
-# Logs
-*.log
+# --- Node ---
+node_modules/
+npm-debug.log*
 
-# Uploads (keep folder but not files)
-frontend/uploads/*
-!frontend/uploads/.gitkeep
+# --- Testing ---
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Backups ---
+*.bak
+*.backup
+backup/

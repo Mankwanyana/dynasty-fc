@@ -45,20 +45,10 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx'}
 
 # ============================================================
-# PAYFAST CONFIG
+# APP BASE URL (for Google OAuth + emails)
 # ============================================================
 
-PAYFAST_MERCHANT_ID  = os.getenv('PAYFAST_MERCHANT_ID')
-PAYFAST_MERCHANT_KEY = os.getenv('PAYFAST_MERCHANT_KEY')
-PAYFAST_PASSPHRASE   = os.getenv('PAYFAST_PASSPHRASE')
-PAYFAST_SANDBOX      = os.getenv('PAYFAST_SANDBOX', 'True').lower() == 'true'
-APP_BASE_URL         = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5000')
-
-PAYFAST_URL = (
-    'https://sandbox.payfast.co.za/eng/process'
-    if PAYFAST_SANDBOX
-    else 'https://www.payfast.co.za/eng/process'
-)
+APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5001')
 
 # ============================================================
 # GOOGLE OAUTH CONFIG
@@ -81,7 +71,6 @@ ADMIN_EMAIL         = os.getenv('ADMIN_EMAIL', SENDGRID_FROM_EMAIL)
 # ============================================================
 
 def _serialize_row(row):
-    """Convert MySQL types (timedelta, date, datetime, Decimal) to JSON-friendly values."""
     clean = {}
     for k, v in row.items():
         if isinstance(v, timedelta):
@@ -202,8 +191,8 @@ def about(): return render_template('about.html')
 @app.route('/teams')
 def teams(): return render_template('teams.html')
 
-@app.route('/fixtures')
-def fixtures(): return render_template('fixtures.html')
+@app.route('/gallery')
+def gallery_page(): return render_template('gallery.html')
 
 @app.route('/contact')
 def contact(): return render_template('contact.html')
@@ -217,14 +206,14 @@ def register_page(): return render_template('register.html')
 @app.route('/get-involved')
 def get_involved(): return render_template('get-involved.html')
 
-@app.route('/donate')
-def donate_page(): return render_template('donate.html')
+@app.route('/news-updates')
+def news_updates(): return render_template('news_updates.html')
 
-@app.route('/payment-success')
-def payment_success(): return render_template('payment_success.html')
+@app.route('/team-news')
+def team_news(): return redirect('/news-updates')
 
-@app.route('/payment-cancel')
-def payment_cancel(): return render_template('payment_cancel.html')
+@app.route('/upcoming-events')
+def upcoming_events(): return redirect('/news-updates')
 
 
 # ============================================================
@@ -534,6 +523,239 @@ def staff_login_api():
 
 
 # ============================================================
+# TESTIMONIALS
+# ============================================================
+
+@app.route('/api/testimonials/public', methods=['GET'])
+def get_public_testimonials():
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT testimonial_id, author_name, author_role, content, approved_at
+            FROM testimonials
+            WHERE status = 'approved'
+            ORDER BY approved_at DESC
+        """)
+        return jsonify(_serialize_rows(cursor.fetchall()))
+    except Exception as e:
+        print(f"❌ /api/testimonials/public ERROR: {e}")
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/testimonials', methods=['GET'])
+@staff_required
+def get_all_testimonials():
+    status = request.args.get('status')
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        query = """
+            SELECT t.*, u.username, u.email
+            FROM testimonials t
+            JOIN users u ON t.user_id = u.user_id
+        """
+        params = []
+        if status and status in ['pending', 'approved', 'rejected']:
+            query += " WHERE t.status = %s"
+            params.append(status)
+        query += " ORDER BY t.created_at DESC"
+
+        cursor.execute(query, params)
+        return jsonify(_serialize_rows(cursor.fetchall()))
+    except Exception as e:
+        print(f"❌ /api/testimonials ERROR: {e}")
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/testimonials', methods=['POST'])
+@login_required
+def create_testimonial():
+    data = request.json
+    author_name = (data.get('author_name') or '').strip()
+    author_role = (data.get('author_role') or '').strip()
+    content = (data.get('content') or '').strip()
+
+    if not author_name or not author_role or not content:
+        return jsonify({'error': 'All fields required'}), 400
+
+    if len(content) > 1000:
+        return jsonify({'error': 'Testimonial too long (max 1000 characters)'}), 400
+
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO testimonials (user_id, author_name, author_role, content, status)
+            VALUES (%s, %s, %s, %s, 'pending')
+        """, (session['user_id'], author_name, author_role, content))
+        conn.commit()
+
+        try:
+            send_email(
+                ADMIN_EMAIL,
+                f"New Testimonial Submitted by {author_name}",
+                f"""
+                <h2>New Testimonial Awaiting Approval</h2>
+                <p><b>Name:</b> {author_name}</p>
+                <p><b>Role:</b> {author_role}</p>
+                <p><b>Testimonial:</b></p>
+                <blockquote>{content}</blockquote>
+                """
+            )
+        except Exception as e:
+            print(f"Email error: {e}")
+
+        return jsonify({'success': True, 'message': 'Testimonial submitted for review'})
+    except Exception as e:
+        print(f"❌ /api/testimonials POST ERROR: {e}")
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/testimonials/<int:tid>/status', methods=['PUT'])
+@staff_required
+def update_testimonial_status(tid):
+    data = request.json
+    status = data.get('status')
+
+    if status not in ['approved', 'rejected', 'pending']:
+        return jsonify({'error': 'Invalid status'}), 400
+
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        if status == 'approved':
+            cursor.execute("""
+                UPDATE testimonials
+                SET status = %s, approved_at = NOW(), approved_by = %s
+                WHERE testimonial_id = %s
+            """, (status, session['user_id'], tid))
+        else:
+            cursor.execute("""
+                UPDATE testimonials
+                SET status = %s
+                WHERE testimonial_id = %s
+            """, (status, tid))
+        conn.commit()
+        return jsonify({'success': True, 'message': f'Testimonial {status}'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/testimonials/<int:tid>', methods=['DELETE'])
+@staff_required
+def delete_testimonial(tid):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM testimonials WHERE testimonial_id = %s", (tid,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Testimonial deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+# ============================================================
+# GALLERY
+# ============================================================
+
+@app.route('/api/gallery', methods=['GET'])
+def get_gallery():
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT g.*, u.username AS uploader_name
+            FROM gallery_photos g
+            LEFT JOIN users u ON g.uploaded_by = u.user_id
+            ORDER BY g.uploaded_at DESC
+        """)
+        return jsonify(_serialize_rows(cursor.fetchall()))
+    except Exception as e:
+        print(f"❌ /api/gallery ERROR: {e}")
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/gallery', methods=['POST'])
+@staff_required
+def upload_gallery_photo():
+    data = request.json
+    title = (data.get('title') or '').strip()
+    caption = (data.get('caption') or '').strip()
+    team_group = data.get('team_group', 'General')
+    file_path = (data.get('file_path') or '').strip()
+
+    if not file_path:
+        return jsonify({'error': 'File path required'}), 400
+
+    if team_group not in ['Dynamights', 'Diamond Divas', 'General']:
+        team_group = 'General'
+
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO gallery_photos (title, caption, team_group, file_path, uploaded_by)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (title, caption, team_group, file_path, session['user_id']))
+        conn.commit()
+        return jsonify({
+            'success': True,
+            'message': 'Photo added to gallery',
+            'photo_id': cursor.lastrowid
+        })
+    except Exception as e:
+        print(f"❌ /api/gallery POST ERROR: {e}")
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/gallery/<int:photo_id>', methods=['DELETE'])
+@staff_required
+def delete_gallery_photo(photo_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM gallery_photos WHERE photo_id = %s", (photo_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Photo deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+# ============================================================
 # NEWSLETTERS
 # ============================================================
 
@@ -568,6 +790,23 @@ def create_newsletter():
         )
         conn.commit()
         return jsonify({'success': True, 'message': 'Newsletter created'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/newsletters/<int:newsletter_id>', methods=['DELETE'])
+@staff_required
+def delete_newsletter(newsletter_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM newsletters WHERE newsletter_id = %s", (newsletter_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Newsletter deleted'})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     finally:
@@ -631,6 +870,23 @@ def mark_message_read(message_id):
         if conn: conn.close()
 
 
+@app.route('/api/messages/<int:message_id>', methods=['DELETE'])
+@staff_required
+def delete_message(message_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM messages WHERE message_id = %s", (message_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Message deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
 # ============================================================
 # VOLUNTEER
 # ============================================================
@@ -673,8 +929,25 @@ def get_volunteers():
         if conn: conn.close()
 
 
+@app.route('/api/volunteer/<int:volunteer_id>', methods=['DELETE'])
+@staff_required
+def delete_volunteer(volunteer_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM volunteer_applications WHERE volunteer_id = %s", (volunteer_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Volunteer application deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
 # ============================================================
-# DONORS PAGE
+# DONORS PAGE (Staff-managed — public-facing page removed)
 # ============================================================
 
 @app.route('/api/donors-page', methods=['GET'])
@@ -706,6 +979,23 @@ def create_donor_page():
         )
         conn.commit()
         return jsonify({'success': True})
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/donors-page/<int:donor_id>', methods=['DELETE'])
+@staff_required
+def delete_donor_page(donor_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM donors_page WHERE donor_id = %s", (donor_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Donor deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
         if conn: conn.close()
@@ -745,6 +1035,23 @@ def upload_document():
         )
         conn.commit()
         return jsonify({'success': True})
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/documents/<int:document_id>', methods=['DELETE'])
+@staff_required
+def delete_document(document_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM documents_vault WHERE document_id = %s", (document_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Document deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
         if conn: conn.close()
@@ -861,6 +1168,25 @@ def update_match_result(match_id):
         )
         conn.commit()
         return jsonify({'success': True, 'message': 'Result updated'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/team-matches/<int:match_id>', methods=['DELETE'])
+@staff_required
+def delete_team_match(match_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM match_predictions WHERE match_id = %s", (match_id,))
+        cursor.execute("DELETE FROM match_votes WHERE match_id = %s", (match_id,))
+        cursor.execute("DELETE FROM team_matches WHERE match_id = %s", (match_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Match deleted'})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     finally:
@@ -1009,6 +1335,80 @@ def get_vote_results(match_id):
 
 
 # ============================================================
+# DONATIONS (Staff-only view — no public payment)
+# ============================================================
+
+@app.route('/api/donations', methods=['GET'])
+@staff_required
+def list_donations():
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM donations ORDER BY created_at DESC")
+        return jsonify(_serialize_rows(cursor.fetchall()))
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/donations', methods=['POST'])
+@staff_required
+def record_donation():
+    """Staff manually records a donation received (e.g. bank transfer)."""
+    data = request.json
+    name = (data.get('donor_name') or '').strip()
+    email = (data.get('donor_email') or '').strip()
+    phone = (data.get('donor_phone') or '').strip()
+    message = (data.get('message') or '').strip()
+    is_anonymous = bool(data.get('is_anonymous', False))
+
+    try:
+        amount = float(data.get('amount', 0))
+    except (TypeError, ValueError):
+        return jsonify({'error': 'Invalid amount'}), 400
+
+    if not name or amount <= 0:
+        return jsonify({'error': 'Donor name and valid amount required'}), 400
+
+    payment_ref = f"MANUAL-{uuid.uuid4().hex[:8].upper()}"
+
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO donations
+            (donor_name, donor_email, donor_phone, amount, message, is_anonymous, payment_status, payment_ref, paid_at)
+            VALUES (%s, %s, %s, %s, %s, %s, 'paid', %s, NOW())
+        """, (name, email, phone, amount, message, 1 if is_anonymous else 0, payment_ref))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Donation recorded', 'reference': payment_ref})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/donations/<int:donation_id>', methods=['DELETE'])
+@staff_required
+def delete_donation(donation_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM donations WHERE donation_id = %s", (donation_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Donation deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+# ============================================================
 # GENERIC DATA
 # ============================================================
 
@@ -1147,6 +1547,23 @@ def create_player():
         if conn: conn.close()
 
 
+@app.route('/api/players/<int:player_id>', methods=['DELETE'])
+@staff_required
+def delete_player(player_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM players WHERE player_id = %s", (player_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Player deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
 @app.route('/api/staff', methods=['POST'])
 @staff_required
 def create_staff():
@@ -1165,6 +1582,23 @@ def create_staff():
               data.get('contact_email'), data.get('contact_phone')))
         conn.commit()
         return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/staff/<int:staff_id>', methods=['DELETE'])
+@staff_required
+def delete_staff(staff_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM staff WHERE staff_id = %s", (staff_id,))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Staff deleted'})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     finally:
@@ -1222,134 +1656,6 @@ def serve_upload(filename):
 
 
 # ============================================================
-# PAYFAST PAYMENTS
-# ============================================================
-
-def _payfast_signature(data_dict):
-    ordered = []
-    for k, v in data_dict.items():
-        if v is not None and str(v).strip() != '':
-            ordered.append(f"{k}={urllib.parse.quote_plus(str(v).strip())}")
-    param_string = '&'.join(ordered)
-    if PAYFAST_PASSPHRASE:
-        param_string += f"&passphrase={urllib.parse.quote_plus(PAYFAST_PASSPHRASE)}"
-    return hashlib.md5(param_string.encode()).hexdigest()
-
-
-@app.route('/api/donate/start', methods=['POST'])
-def donate_start():
-    data = request.json
-    try:
-        amount = float(data.get('amount', 0))
-    except (TypeError, ValueError):
-        return jsonify({'success': False, 'error': 'Invalid amount'}), 400
-    name = (data.get('name') or '').strip()
-    email = (data.get('email') or '').strip()
-    if amount < 10:
-        return jsonify({'success': False, 'error': 'Minimum is R10'}), 400
-    if not name or not email:
-        return jsonify({'success': False, 'error': 'Name and email required'}), 400
-
-    payment_ref = f"DYN-{uuid.uuid4().hex[:10].upper()}"
-    conn = None; cursor = None
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO donations (donor_name, donor_email, donor_phone, amount, message, is_anonymous, payment_status, payment_ref)
-            VALUES (%s, %s, %s, %s, %s, %s, 'pending', %s)
-        """, (name, email, data.get('phone'), amount, data.get('message'), 1 if data.get('is_anonymous') else 0, payment_ref))
-        conn.commit()
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
-    finally:
-        if cursor: cursor.close()
-        if conn: conn.close()
-
-    name_parts = name.split()
-    payfast_data = {
-        'merchant_id': PAYFAST_MERCHANT_ID,
-        'merchant_key': PAYFAST_MERCHANT_KEY,
-        'return_url': f'{APP_BASE_URL}/payfast/return',
-        'cancel_url': f'{APP_BASE_URL}/payfast/cancel',
-        'notify_url': f'{APP_BASE_URL}/payfast/notify',
-        'name_first': name_parts[0] if name_parts else '',
-        'name_last': ' '.join(name_parts[1:]) if len(name_parts) > 1 else '',
-        'email_address': email,
-        'm_payment_id': payment_ref,
-        'amount': f'{amount:.2f}',
-        'item_name': 'Donation to Dynasty FC',
-        'item_description': 'Support our youth',
-        'custom_str1': 'donation',
-    }
-    payfast_data['signature'] = _payfast_signature(payfast_data)
-
-    return jsonify({
-        'success': True,
-        'payfast_url': PAYFAST_URL,
-        'payfast_data': payfast_data,
-        'payment_ref': payment_ref
-    })
-
-
-@app.route('/payfast/notify', methods=['POST'])
-def payfast_notify():
-    form = request.form.to_dict()
-    received_sig = form.pop('signature', None)
-    computed_sig = _payfast_signature(form)
-    if received_sig != computed_sig:
-        return 'Invalid signature', 400
-
-    payment_ref = form.get('m_payment_id')
-    pf_payment_id = form.get('pf_payment_id')
-    payment_status = form.get('payment_status')
-
-    conn = None; cursor = None
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        if payment_status == 'COMPLETE':
-            cursor.execute("""
-                UPDATE donations SET payment_status = 'paid', payfast_pf_id = %s,
-                payfast_data = %s, paid_at = NOW() WHERE payment_ref = %s
-            """, (pf_payment_id, json.dumps(form), payment_ref))
-        conn.commit()
-    except Exception as e:
-        print(f"DB error: {e}")
-        return 'DB error', 500
-    finally:
-        if cursor: cursor.close()
-        if conn: conn.close()
-
-    return 'OK', 200
-
-
-@app.route('/payfast/return', methods=['GET', 'POST'])
-def payfast_return():
-    ref = request.args.get('m_payment_id') or request.form.get('m_payment_id', 'N/A')
-    return redirect(f'/payment-success?ref={ref}')
-
-
-@app.route('/payfast/cancel', methods=['GET', 'POST'])
-def payfast_cancel():
-    return redirect('/payment-cancel')
-
-
-@app.route('/api/donations', methods=['GET'])
-@staff_required
-def list_donations():
-    conn = None; cursor = None
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM donations ORDER BY created_at DESC")
-        return jsonify(_serialize_rows(cursor.fetchall()))
-    finally:
-        if cursor: cursor.close()
-        if conn: conn.close()
-
-
-# ============================================================
 # STATIC FILES
 # ============================================================
 
@@ -1373,11 +1679,11 @@ if __name__ == '__main__':
         print("🚀 DYNASTY FC SERVER RUNNING")
         print("=" * 60)
         print("📱 On your phone (same WiFi):")
-        print("   http://192.168.1.76:5000")
+        print("   http://192.168.1.76:5001")
         print("")
         print("💻 On this Mac:")
-        print("   http://127.0.0.1:5000")
+        print("   http://127.0.0.1:5001")
         print("=" * 60)
-        app.run(debug=True, host='0.0.0.0', port=5000)
+        app.run(debug=True, host='0.0.0.0', port=5001)
     else:
         print("❌ Database connection failed. Check your credentials.")

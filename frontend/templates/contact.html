@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
         .navbar {
-            background: #0a0a1a;
+            background: #0a1a33;
             padding: 15px 0;
             position: sticky;
             top: 0;
@@ -23,44 +23,21 @@
             margin: 0 auto;
             padding: 0 20px;
         }
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .nav-logo { display: flex; align-items: center; gap: 10px; }
         .nav-logo img { height: 40px; }
-        .nav-logo .brand-text {
-            display: flex;
-            flex-direction: column;
-        }
-        .nav-logo .brand-text .club-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #fff;
-        }
-        .nav-logo .brand-text .club-name span { color: #ffcc00; }
+        .nav-logo .brand-text { display: flex; flex-direction: column; }
+        .nav-logo .brand-text .club-name { font-size: 18px; font-weight: 700; color: #fff; }
+        .nav-logo .brand-text .club-name span { color: #b8944a; }
         .nav-logo .brand-text .tagline {
-            font-size: 10px;
-            color: #888;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+            font-size: 10px; color: #888; letter-spacing: 3px; text-transform: uppercase;
         }
-        .nav-menu {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
+        .nav-menu { list-style: none; display: flex; gap: 20px; align-items: center; }
         .nav-menu a {
-            color: #ccc;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.3s;
-            padding: 5px 10px;
-            text-decoration: none;
+            color: #ccc; font-size: 14px; font-weight: 500;
+            transition: color 0.3s; padding: 5px 10px; text-decoration: none;
         }
-        .nav-menu a:hover { color: #ffcc00; }
-        .nav-menu .active { color: #ffcc00; }
+        .nav-menu a:hover { color: #d4af6a; }
+        .nav-menu .active { color: #d4af6a; }
 
         .video-hero {
             position: relative;
@@ -75,19 +52,16 @@
         }
         .video-hero video {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
         }
         .video-hero .overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10, 10, 26, 0.55);
+            background: rgba(6, 15, 31, 0.55);
             z-index: 1;
         }
         .video-hero .hero-content {
@@ -104,7 +78,7 @@
             margin-bottom: 8px;
             letter-spacing: 2px;
         }
-        .video-hero .hero-content h1 span { color: #ffcc00; }
+        .video-hero .hero-content h1 span { color: #d4af6a; }
         .video-hero .hero-content p {
             font-size: 18px;
             color: #ddd;
@@ -134,7 +108,7 @@
         }
         .contact-info h2 {
             font-size: 22px;
-            color: #0a0a1a;
+            color: #0a1a33;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -167,9 +141,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #ffcc00;
+            background: #b8944a;
             border-radius: 50%;
-            color: #0a0a1a;
+            color: #0a1a33;
             font-size: 16px;
             flex-shrink: 0;
         }
@@ -182,7 +156,7 @@
         .contact-info .info-item .text .value {
             font-size: 16px;
             font-weight: 600;
-            color: #0a0a1a;
+            color: #0a1a33;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -213,7 +187,7 @@
         }
         .contact-form h2 {
             font-size: 22px;
-            color: #0a0a1a;
+            color: #0a1a33;
             margin-bottom: 5px;
             text-align: center;
         }
@@ -237,7 +211,7 @@
         }
         .contact-form input:focus,
         .contact-form textarea:focus {
-            border-color: #ffcc00;
+            border-color: #b8944a;
             outline: none;
             background: #fff;
         }
@@ -246,8 +220,8 @@
             resize: vertical;
         }
         .contact-form .btn-submit {
-            background: #ffcc00;
-            color: #0a0a1a;
+            background: #b8944a;
+            color: #0a1a33;
             border: none;
             padding: 14px 35px;
             border-radius: 8px;
@@ -258,9 +232,9 @@
             width: 100%;
         }
         .contact-form .btn-submit:hover {
-            background: #e6b800;
+            background: #d4af6a;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255,204,0,0.3);
+            box-shadow: 0 4px 15px rgba(184,148,74,0.3);
         }
         .contact-form .btn-submit i {
             margin-right: 8px;
@@ -271,7 +245,7 @@
         }
         .map-section h2 {
             font-size: 22px;
-            color: #0a0a1a;
+            color: #0a1a33;
             text-align: center;
             margin-bottom: 15px;
         }
@@ -286,7 +260,6 @@
             border: none;
         }
 
-        /* EMAIL CHOICE MODAL */
         .email-modal-backdrop {
             display: none;
             position: fixed;
@@ -299,9 +272,7 @@
             backdrop-filter: blur(6px);
             padding: 20px;
         }
-        .email-modal-backdrop.active {
-            display: flex;
-        }
+        .email-modal-backdrop.active { display: flex; }
         .email-modal {
             background: #fff;
             border-radius: 20px;
@@ -310,7 +281,7 @@
             width: 100%;
             text-align: center;
             box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-            border-top: 6px solid #ffcc00;
+            border-top: 6px solid #b8944a;
             position: relative;
             animation: emailModalIn 0.3s ease;
         }
@@ -320,8 +291,7 @@
         }
         .email-modal .close-x {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 15px; right: 20px;
             font-size: 26px;
             color: #bbb;
             cursor: pointer;
@@ -334,16 +304,16 @@
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ffcc00, #e6b800);
-            color: #0a0a1a;
+            background: linear-gradient(135deg, #b8944a, #d4af6a);
+            color: #0a1a33;
             font-size: 32px;
             line-height: 70px;
             margin: 0 auto 18px;
-            box-shadow: 0 10px 30px rgba(255,204,0,0.4);
+            box-shadow: 0 10px 30px rgba(184,148,74,0.4);
         }
         .email-modal h3 {
             font-size: 22px;
-            color: #0a0a1a;
+            color: #0a1a33;
             margin-bottom: 6px;
             font-weight: 800;
         }
@@ -370,15 +340,15 @@
             cursor: pointer;
             text-decoration: none;
             transition: all 0.25s;
-            color: #0a0a1a;
+            color: #0a1a33;
             font-weight: 600;
             font-size: 15px;
         }
         .email-modal .email-option:hover {
-            border-color: #ffcc00;
-            background: #fff8e1;
+            border-color: #b8944a;
+            background: #f5ecdc;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,204,0,0.2);
+            box-shadow: 0 8px 20px rgba(184,148,74,0.2);
         }
         .email-modal .email-option .opt-icon {
             width: 40px;
@@ -401,7 +371,7 @@
         }
         .email-modal .email-option.mail .opt-icon {
             background: #f3f4f6;
-            color: #0a0a1a;
+            color: #0a1a33;
         }
         .email-modal .email-option .opt-text {
             display: flex;
@@ -411,7 +381,7 @@
         }
         .email-modal .email-option .opt-title {
             font-weight: 700;
-            color: #0a0a1a;
+            color: #0a1a33;
             font-size: 15px;
         }
         .email-modal .email-option .opt-sub {
@@ -425,11 +395,11 @@
             font-size: 14px;
         }
         .email-modal .email-option:hover .opt-arrow {
-            color: #d4a900;
+            color: #d4af6a;
         }
 
         .footer {
-            background: #0a0a1a;
+            background: #0a1a33;
             color: #fff;
             padding: 30px 0 20px;
             text-align: center;
@@ -447,7 +417,7 @@
             text-decoration: none;
             transition: color 0.3s;
         }
-        .footer .footer-info a:hover { color: #ffcc00; }
+        .footer .footer-info a:hover { color: #d4af6a; }
         .footer p {
             color: #666;
             font-size: 13px;
@@ -492,7 +462,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/about">About</a></li>
                 <li><a href="/teams">Teams</a></li>
-                <li><a href="/fixtures">Fixtures</a></li>
+                <li><a href="/gallery">Gallery</a></li>
                 <li><a href="/contact" class="active">Contact</a></li>
                 <li><a href="/get-involved">Get Involved</a></li>
                 <li><a href="/dashboard">Dashboard</a></li>
@@ -521,7 +491,6 @@
                 <div class="contact-info">
                     <h2>Get in Touch</h2>
 
-                    <!-- PHONE -->
                     <a href="tel:+27639111277" class="info-item" id="phoneItem">
                         <i class="fas fa-phone"></i>
                         <div class="text">
@@ -533,7 +502,6 @@
                         </div>
                     </a>
 
-                    <!-- WHATSAPP — smart link (app on mobile, WhatsApp Desktop on desktop, web fallback) -->
                     <a href="https://wa.me/27639111277?text=Hello%20Dynasty%20FC"
                        id="whatsappLink"
                        target="_blank"
@@ -546,7 +514,6 @@
                         </div>
                     </a>
 
-                    <!-- EMAIL — opens choice modal -->
                     <button type="button" class="info-item" onclick="openEmailModal()">
                         <i class="fas fa-envelope"></i>
                         <div class="text">
@@ -555,7 +522,6 @@
                         </div>
                     </button>
 
-                    <!-- INSTAGRAM -->
                     <a href="https://www.instagram.com/dynastyfc_2016" target="_blank" rel="noopener" class="info-item">
                         <i class="fab fa-instagram" style="background:linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color:#fff;"></i>
                         <div class="text">
@@ -564,7 +530,6 @@
                         </div>
                     </a>
 
-                    <!-- FACEBOOK -->
                     <a href="https://web.facebook.com/DynastyFC2016/about" target="_blank" rel="noopener" class="info-item">
                         <i class="fab fa-facebook-f" style="background:#1877F2; color:#fff;"></i>
                         <div class="text">
@@ -591,7 +556,7 @@
             </div>
 
             <div class="map-section">
-                <h2><i class="fas fa-map-pin" style="color:#ffcc00;"></i> Find Us</h2>
+                <h2><i class="fas fa-map-pin" style="color:#b8944a;"></i> Find Us</h2>
                 <div class="map-container">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3582.123456789!2d28.123456!3d-26.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDA3JzI0LjYiUyAyOMKwMDcnMjQuNiJF!5e0!3m2!1sen!2sza!4v1234567890"
@@ -605,7 +570,6 @@
         </div>
     </section>
 
-    <!-- EMAIL CHOICE MODAL -->
     <div class="email-modal-backdrop" id="emailModal" onclick="closeEmailModalOnBackdrop(event)">
         <div class="email-modal">
             <button class="close-x" onclick="closeEmailModal()">&times;</button>
@@ -662,12 +626,6 @@
     </footer>
 
     <script>
-        // ============================================================
-        // SMART WHATSAPP LINK
-        // - Mobile → wa.me (opens WhatsApp app)
-        // - Desktop → whatsapp:// (opens WhatsApp Desktop app)
-        // - If desktop app not installed → falls back to WhatsApp Web
-        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             const waLink = document.getElementById('whatsappLink');
             if (!waLink) return;
@@ -678,18 +636,15 @@
             const isMobile = /iPhone|iPad|iPod|Android|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
             if (isMobile) {
-                // Mobile → wa.me opens the mobile app
                 waLink.href = `https://wa.me/${phone}?text=${text}`;
                 return;
             }
 
-            // Desktop → try to launch WhatsApp Desktop app
             const desktopAppUrl = `whatsapp://send?phone=${phone}&text=${text}`;
             const webFallbackUrl = `https://web.whatsapp.com/send?phone=${phone}&text=${text}`;
 
             waLink.href = desktopAppUrl;
 
-            // If the desktop app doesn't open within 1.5 seconds, fall back to WhatsApp Web
             waLink.addEventListener('click', function() {
                 setTimeout(function() {
                     if (!document.hidden) {
@@ -699,9 +654,6 @@
             }, { once: true });
         });
 
-        // ============================================================
-        // EMAIL CHOICE MODAL
-        // ============================================================
         function openEmailModal() {
             document.getElementById('emailModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -722,9 +674,6 @@
             if (e.key === 'Escape') closeEmailModal();
         });
 
-        // ============================================================
-        // CONTACT FORM SUBMIT
-        // ============================================================
         async function handleSubmit(event) {
             event.preventDefault();
 

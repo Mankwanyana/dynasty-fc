@@ -7,16 +7,13 @@
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        /* ============================================================
-           LOGIN OVERLAY
-           ============================================================ */
         .login-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 10, 26, 0.92);
+            background: rgba(6, 15, 31, 0.92);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -42,13 +39,13 @@
 
         .login-box .lock-icon {
             font-size: 48px;
-            color: #ffcc00;
+            color: #b8944a;
             margin-bottom: 15px;
         }
 
         .login-box h2 {
             font-size: 22px;
-            color: #0a0a1a;
+            color: #0a1a33;
             margin-bottom: 5px;
         }
 
@@ -70,27 +67,27 @@
         }
 
         .login-box input:focus {
-            border-color: #ffcc00;
+            border-color: #b8944a;
             outline: none;
         }
 
         .login-box .btn-login {
             width: 100%;
             padding: 14px;
-            background: #ffcc00;
+            background: #b8944a;
             border: none;
             border-radius: 10px;
             font-size: 16px;
             font-weight: 700;
-            color: #0a0a1a;
+            color: #0a1a33;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .login-box .btn-login:hover {
-            background: #e6b800;
+            background: #d4af6a;
             transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(255,204,0,0.3);
+            box-shadow: 0 4px 20px rgba(184,148,74,0.3);
         }
 
         .login-box .error-message {
@@ -103,9 +100,7 @@
             border-radius: 8px;
         }
 
-        .login-box .error-message.show {
-            display: block;
-        }
+        .login-box .error-message.show { display: block; }
 
         .login-box .secure-badge {
             margin-top: 15px;
@@ -113,25 +108,17 @@
             color: #888;
         }
 
-        .login-box .secure-badge i {
-            color: #28a745;
-        }
+        .login-box .secure-badge i { color: #28a745; }
 
-        /* ============================================================
-           DASHBOARD CONTAINER
-           ============================================================ */
         .dashboard-container {
             display: flex;
             min-height: 100vh;
             background: #f4f6f9;
         }
 
-        /* ============================================================
-           SIDEBAR
-           ============================================================ */
         .sidebar {
             width: 260px;
-            background: #0a0a1a;
+            background: #0a1a33;
             color: #fff;
             padding: 20px 0;
             min-height: 100vh;
@@ -161,9 +148,7 @@
             font-weight: 700;
         }
 
-        .sidebar .logo h2 span {
-            color: #ffcc00;
-        }
+        .sidebar .logo h2 span { color: #b8944a; }
 
         .sidebar .logo .tagline {
             font-size: 10px;
@@ -195,9 +180,9 @@
         }
 
         .sidebar .sidebar-menu li a.active {
-            background: rgba(255,204,0,0.05);
-            color: #ffcc00;
-            border-left-color: #ffcc00;
+            background: rgba(184,148,74,0.08);
+            color: #d4af6a;
+            border-left-color: #b8944a;
         }
 
         .sidebar .sidebar-menu li a i {
@@ -208,8 +193,8 @@
 
         .sidebar .sidebar-menu li a .badge {
             margin-left: auto;
-            background: #ffcc00;
-            color: #0a0a1a;
+            background: #b8944a;
+            color: #0a1a33;
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 11px;
@@ -218,11 +203,6 @@
 
         .sidebar .sidebar-menu li a .badge.danger {
             background: #dc3545;
-            color: #fff;
-        }
-
-        .sidebar .sidebar-menu li a .badge.success {
-            background: #28a745;
             color: #fff;
         }
 
@@ -239,18 +219,16 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: #ffcc00;
+            background: #b8944a;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #0a0a1a;
+            color: #0a1a33;
             font-weight: 700;
             font-size: 18px;
         }
 
-        .sidebar .user-info .user-details {
-            flex: 1;
-        }
+        .sidebar .user-info .user-details { flex: 1; }
 
         .sidebar .user-info .user-details .name {
             font-weight: 600;
@@ -273,26 +251,21 @@
 
         .sidebar .user-info .logout-btn:hover {
             background: rgba(255,255,255,0.05);
-            color: #ffcc00;
+            color: #d4af6a;
         }
 
-        /* ============================================================
-           MAIN CONTENT
-           ============================================================ */
         .main-content {
             flex: 1;
             padding: 30px;
             overflow-y: auto;
         }
 
-        .main-content .page-header {
-            margin-bottom: 30px;
-        }
+        .main-content .page-header { margin-bottom: 30px; }
 
         .main-content .page-header h1 {
             font-size: 28px;
-            color: #0a0a1a;
-            border-left: 5px solid #ffcc00;
+            color: #0a1a33;
+            border-left: 5px solid #b8944a;
             padding-left: 15px;
             font-weight: 700;
         }
@@ -302,20 +275,9 @@
             margin-top: 5px;
         }
 
-        /* ============================================================
-           CONTENT PANELS
-           ============================================================ */
-        .content-panel {
-            display: none;
-        }
+        .content-panel { display: none; }
+        .content-panel.active { display: block; }
 
-        .content-panel.active {
-            display: block;
-        }
-
-        /* ============================================================
-           STATS CARDS
-           ============================================================ */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -329,7 +291,7 @@
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             text-align: center;
-            border-left: 4px solid #ffcc00;
+            border-left: 4px solid #b8944a;
         }
 
         .stat-card h3 {
@@ -342,13 +304,10 @@
         .stat-card .number {
             font-size: 30px;
             font-weight: 700;
-            color: #0a0a1a;
+            color: #0a1a33;
             margin-top: 5px;
         }
 
-        /* ============================================================
-           QUICK ACCESS MODULES
-           ============================================================ */
         .quick-access-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -375,13 +334,13 @@
 
         .quick-access-card i {
             font-size: 28px;
-            color: #ffcc00;
+            color: #b8944a;
             margin-bottom: 8px;
         }
 
         .quick-access-card h4 {
             font-size: 14px;
-            color: #0a0a1a;
+            color: #0a1a33;
         }
 
         .quick-access-card p {
@@ -390,9 +349,6 @@
             margin-top: 2px;
         }
 
-        /* ============================================================
-           TABLES
-           ============================================================ */
         .table-container {
             background: #fff;
             border-radius: 12px;
@@ -411,22 +367,22 @@
 
         .table-container .table-header h2 {
             font-size: 18px;
-            color: #0a0a1a;
+            color: #0a1a33;
         }
 
         .table-container .table-header .btn-add {
-            background: #ffcc00;
+            background: #b8944a;
             border: none;
             padding: 8px 20px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            color: #0a0a1a;
+            color: #0a1a33;
         }
 
         .table-container .table-header .btn-add:hover {
-            background: #e6b800;
+            background: #d4af6a;
             transform: translateY(-2px);
         }
 
@@ -450,12 +406,11 @@
             padding: 12px 15px;
             border-bottom: 1px solid #eee;
             font-size: 14px;
-            color: #0a0a1a;
+            color: #0a1a33;
+            vertical-align: middle;
         }
 
-        table tr:hover {
-            background: #f8f9fc;
-        }
+        table tr:hover { background: #f8f9fc; }
 
         table .status-badge {
             padding: 3px 12px;
@@ -474,36 +429,122 @@
             color: #721c24;
         }
 
+        table .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        table .status-badge.approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        table .status-badge.rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
         table .btn-action {
-            padding: 5px 12px;
+            padding: 6px 12px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
             transition: all 0.3s;
+            margin-right: 4px;
+            white-space: nowrap;
         }
 
         table .btn-action.view {
-            background: #ffcc00;
-            color: #0a0a1a;
+            background: #b8944a;
+            color: #0a1a33;
         }
 
-        table .btn-action.view:hover {
-            background: #e6b800;
+        table .btn-action.view:hover { background: #d4af6a; }
+
+        table .btn-action.approve {
+            background: #28a745;
+            color: #fff;
         }
+
+        table .btn-action.approve:hover { background: #218838; }
+
+        table .btn-action.reject {
+            background: #ffc107;
+            color: #0a1a33;
+        }
+
+        table .btn-action.reject:hover { background: #e0a800; }
 
         table .btn-action.delete {
             background: #dc3545;
             color: #fff;
         }
 
-        table .btn-action.delete:hover {
+        table .btn-action.delete:hover { background: #c82333; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #eee;
+            aspect-ratio: 4 / 3;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item .gallery-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(10,26,51,0.95), transparent);
+            padding: 15px;
+            color: #fff;
+        }
+
+        .gallery-item .gallery-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .gallery-item .gallery-info p {
+            font-size: 12px;
+            color: #ccc;
+        }
+
+        .gallery-item .gallery-delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(220, 53, 69, 0.9);
+            color: #fff;
+            border: none;
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .gallery-item .gallery-delete:hover {
             background: #c82333;
         }
 
-        /* ============================================================
-           RECENT ACTIVITY
-           ============================================================ */
         .activity-item {
             display: flex;
             justify-content: space-between;
@@ -512,22 +553,83 @@
             font-size: 14px;
         }
 
-        .activity-item:last-child {
-            border-bottom: none;
+        .activity-item:last-child { border-bottom: none; }
+
+        .activity-item .time { color: #888; font-size: 12px; }
+
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
         }
 
-        .activity-item .time {
-            color: #888;
-            font-size: 12px;
+        .modal-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        /* ============================================================
-           RESPONSIVE
-           ============================================================ */
+        .modal-box h2 { margin-bottom: 20px; color: #0a1a33; }
+
+        .modal-box input,
+        .modal-box textarea,
+        .modal-box select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .modal-box input:focus,
+        .modal-box textarea:focus,
+        .modal-box select:focus {
+            border-color: #b8944a;
+            outline: none;
+        }
+
+        .modal-box .btn-submit {
+            background: #b8944a;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            font-size: 15px;
+            color: #0a1a33;
+        }
+
+        .modal-box .btn-submit:hover { background: #d4af6a; }
+
+        .modal-box .btn-cancel {
+            margin-top: 10px;
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .modal-box .btn-cancel:hover { background: #c82333; }
+
         @media (max-width: 768px) {
-            .dashboard-container {
-                flex-direction: column;
-            }
+            .dashboard-container { flex-direction: column; }
 
             .sidebar {
                 width: 100%;
@@ -536,53 +638,26 @@
                 position: relative;
             }
 
-            .main-content {
-                padding: 20px;
-            }
+            .main-content { padding: 20px; }
 
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .quick-access-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .table-container {
-                padding: 15px;
-            }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .quick-access-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .table-container { padding: 15px; }
         }
 
         @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .quick-access-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar .sidebar-menu li a {
-                font-size: 13px;
-                padding: 10px 15px;
-            }
-
-            .main-content .page-header h1 {
-                font-size: 22px;
-            }
-
-            .login-box {
-                padding: 30px 20px;
-                margin: 15px;
-            }
+            .stats-grid { grid-template-columns: 1fr; }
+            .quick-access-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .sidebar .sidebar-menu li a { font-size: 13px; padding: 10px 15px; }
+            .main-content .page-header h1 { font-size: 22px; }
+            .login-box { padding: 30px 20px; margin: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================
-    LOGIN OVERLAY
-    ============================================================ -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
             <div class="lock-icon"><i class="fas fa-lock"></i></div>
@@ -603,16 +678,9 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    DASHBOARD CONTAINER (Hidden until logged in)
-    ============================================================ -->
     <div id="dashboardContent" style="display:none;">
-
         <div class="dashboard-container">
 
-            <!-- ============================================================
-            SIDEBAR
-            ============================================================ -->
             <aside class="sidebar">
                 <div class="logo">
                     <span class="football-icon"><i class="fas fa-futbol"></i></span>
@@ -621,17 +689,18 @@
                 </div>
 
                 <ul class="sidebar-menu">
-                    <li><a href="#" class="active" onclick="showPanel('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
-                    <li><a href="#" onclick="showPanel('messages')"><i class="fas fa-envelope"></i> Messages <span class="badge danger" id="unreadBadge">0</span></a></li>
-                    <li><a href="#" onclick="showPanel('volunteers')"><i class="fas fa-hand-heart"></i> Volunteers</a></li>
-                    <li><a href="#" onclick="showPanel('newsletters')"><i class="fas fa-newspaper"></i> Newsletters</a></li>
-                    <li><a href="#" onclick="showPanel('matches')"><i class="fas fa-calendar-alt"></i> Matches</a></li>
-                    <li><a href="#" onclick="showPanel('predictions')"><i class="fas fa-chart-line"></i> Predictions</a></li>
-                    <li><a href="#" onclick="showPanel('players')"><i class="fas fa-users"></i> Players</a></li>
-                    <li><a href="#" onclick="showPanel('staff')"><i class="fas fa-user-tie"></i> Staff</a></li>
-                    <li><a href="#" onclick="showPanel('finance')"><i class="fas fa-money-bill-wave"></i> Finance</a></li>
-                    <li><a href="#" onclick="showPanel('inventory')"><i class="fas fa-boxes"></i> Inventory</a></li>
-                    <li><a href="#" onclick="showPanel('donors')"><i class="fas fa-handshake"></i> Donors</a></li>
+                    <li><a href="#" class="active" onclick="showPanel('dashboard'); return false;"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                    <li><a href="#" onclick="showPanel('messages'); return false;"><i class="fas fa-envelope"></i> Messages <span class="badge danger" id="unreadBadge">0</span></a></li>
+                    <li><a href="#" onclick="showPanel('volunteers'); return false;"><i class="fas fa-hand-heart"></i> Volunteers</a></li>
+                    <li><a href="#" onclick="showPanel('newsletters'); return false;"><i class="fas fa-newspaper"></i> Newsletters</a></li>
+                    <li><a href="#" onclick="showPanel('testimonials'); return false;"><i class="fas fa-quote-left"></i> Testimonials <span class="badge danger" id="pendingTestimonialsBadge">0</span></a></li>
+                    <li><a href="#" onclick="showPanel('gallery'); return false;"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="#" onclick="showPanel('matches'); return false;"><i class="fas fa-calendar-alt"></i> Matches</a></li>
+                    <li><a href="#" onclick="showPanel('predictions'); return false;"><i class="fas fa-chart-line"></i> Predictions</a></li>
+                    <li><a href="#" onclick="showPanel('players'); return false;"><i class="fas fa-users"></i> Players</a></li>
+                    <li><a href="#" onclick="showPanel('staff'); return false;"><i class="fas fa-user-tie"></i> Staff</a></li>
+                    <li><a href="#" onclick="showPanel('finance'); return false;"><i class="fas fa-money-bill-wave"></i> Finance</a></li>
+                    <li><a href="#" onclick="showPanel('inventory'); return false;"><i class="fas fa-boxes"></i> Inventory</a></li>
                 </ul>
 
                 <div class="user-info">
@@ -640,34 +709,26 @@
                         <div class="name" id="userName">Admin</div>
                         <div class="role" id="userRole">System Administrator</div>
                     </div>
-                    <a href="#" class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i></a>
+                    <a href="#" class="logout-btn" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i></a>
                 </div>
             </aside>
 
-            <!-- ============================================================
-            MAIN CONTENT
-            ============================================================ -->
             <main class="main-content">
 
-                <!-- ============================================================
-                PANEL: DASHBOARD
-                ============================================================ -->
                 <div id="panel-dashboard" class="content-panel active">
                     <div class="page-header">
                         <h1>Executive Dashboard</h1>
                         <p>Welcome to the Dynasty Integrated System — live data from your database</p>
                     </div>
 
-                    <!-- Stats Cards -->
                     <div class="stats-grid" id="statsGrid">
                         <div class="stat-card"><h3>Players</h3><div class="number" id="statPlayers">0</div></div>
                         <div class="stat-card"><h3>Messages</h3><div class="number" id="statMessages">0</div></div>
                         <div class="stat-card"><h3>Volunteers</h3><div class="number" id="statVolunteers">0</div></div>
-                        <div class="stat-card"><h3>Documents</h3><div class="number" id="statDocuments">0</div></div>
+                        <div class="stat-card"><h3>Photos</h3><div class="number" id="statPhotos">0</div></div>
                     </div>
 
-                    <!-- Quick Access -->
-                    <h2 style="font-size:18px; margin-bottom:15px; color:#0a0a1a;">Quick Access</h2>
+                    <h2 style="font-size:18px; margin-bottom:15px; color:#0a1a33;">Quick Access</h2>
                     <div class="quick-access-grid">
                         <div class="quick-access-card" onclick="showPanel('players')">
                             <i class="fas fa-users"></i>
@@ -679,29 +740,18 @@
                             <h4>Staff</h4>
                             <p>Manage staff records</p>
                         </div>
-                        <div class="quick-access-card" onclick="showPanel('finance')">
-                            <i class="fas fa-money-bill-wave"></i>
-                            <h4>Finance</h4>
-                            <p>Income & expenses</p>
-                        </div>
-                        <div class="quick-access-card" onclick="showPanel('inventory')">
-                            <i class="fas fa-boxes"></i>
-                            <h4>Inventory</h4>
-                            <p>Track assets</p>
+                        <div class="quick-access-card" onclick="showPanel('gallery')">
+                            <i class="fas fa-images"></i>
+                            <h4>Gallery</h4>
+                            <p>Upload team photos</p>
                         </div>
                         <div class="quick-access-card" onclick="showPanel('messages')">
                             <i class="fas fa-envelope"></i>
                             <h4>Messages</h4>
                             <p>View messages</p>
                         </div>
-                        <div class="quick-access-card" onclick="showPanel('volunteers')">
-                            <i class="fas fa-hand-heart"></i>
-                            <h4>Volunteers</h4>
-                            <p>View applications</p>
-                        </div>
                     </div>
 
-                    <!-- Recent Activity -->
                     <div class="table-container" style="margin-top:30px;">
                         <h2 style="margin-bottom:15px;">Recent Activity</h2>
                         <div id="recentActivity">
@@ -710,9 +760,6 @@
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: MESSAGES
-                ============================================================ -->
                 <div id="panel-messages" class="content-panel">
                     <div class="page-header">
                         <h1>Messages</h1>
@@ -738,9 +785,6 @@
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: VOLUNTEERS
-                ============================================================ -->
                 <div id="panel-volunteers" class="content-panel">
                     <div class="page-header">
                         <h1>Volunteers</h1>
@@ -756,24 +800,20 @@
                                     <th>Role</th>
                                     <th>Availability</th>
                                     <th>Date</th>
-                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="volunteersTableBody">
-                                <tr><td colspan="7" style="text-align:center;color:#888;">Loading volunteers...</td></tr>
+                                <tr><td colspan="6" style="text-align:center;color:#888;">Loading volunteers...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: NEWSLETTERS
-                ============================================================ -->
                 <div id="panel-newsletters" class="content-panel">
                     <div class="page-header">
                         <h1>Newsletters</h1>
-                        <p>Create and manage newsletters for the homepage.</p>
+                        <p>Create and manage newsletters that appear on the News & Updates page.</p>
                     </div>
                     <div class="table-container">
                         <div class="table-header">
@@ -796,9 +836,69 @@
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: MATCHES
-                ============================================================ -->
+                <div id="panel-testimonials" class="content-panel">
+                    <div class="page-header">
+                        <h1>Testimonials</h1>
+                        <p>Approve or reject testimonials submitted by the community.</p>
+                    </div>
+
+                    <div class="table-container" style="margin-bottom:20px;">
+                        <div class="table-header">
+                            <h2>Pending Approval</h2>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Testimonial</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingTestimonialsBody">
+                                <tr><td colspan="5" style="text-align:center;color:#888;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h2>Approved Testimonials</h2>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Testimonial</th>
+                                    <th>Approved</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="approvedTestimonialsBody">
+                                <tr><td colspan="5" style="text-align:center;color:#888;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="panel-gallery" class="content-panel">
+                    <div class="page-header">
+                        <h1>Gallery</h1>
+                        <p>Upload and manage team photos that appear on the public gallery page.</p>
+                    </div>
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h2>All Photos</h2>
+                            <button class="btn-add" onclick="openGalleryModal()"><i class="fas fa-plus"></i> Upload Photo</button>
+                        </div>
+                        <div class="gallery-grid" id="galleryGrid">
+                            <p style="text-align:center;color:#888;grid-column:1/-1;">Loading photos...</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="panel-matches" class="content-panel">
                     <div class="page-header">
                         <h1>Matches</h1>
@@ -829,9 +929,6 @@
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: PREDICTIONS
-                ============================================================ -->
                 <div id="panel-predictions" class="content-panel">
                     <div class="page-header">
                         <h1>Match Predictions</h1>
@@ -846,19 +943,17 @@
                                     <th>Match</th>
                                     <th>Predicted Score</th>
                                     <th>Actual Score</th>
+                                    <th>Points</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody id="predictionsTableBody">
-                                <tr><td colspan="5" style="text-align:center;color:#888;">Loading predictions...</td></tr>
+                                <tr><td colspan="6" style="text-align:center;color:#888;">Loading predictions...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: PLAYERS
-                ============================================================ -->
                 <div id="panel-players" class="content-panel">
                     <div class="page-header">
                         <h1>Players</h1>
@@ -888,9 +983,6 @@
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: STAFF
-                ============================================================ -->
                 <div id="panel-staff" class="content-panel">
                     <div class="page-header">
                         <h1>Staff</h1>
@@ -918,9 +1010,6 @@
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: FINANCE
-                ============================================================ -->
                 <div id="panel-finance" class="content-panel">
                     <div class="page-header">
                         <h1>Finance</h1>
@@ -944,9 +1033,6 @@
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: INVENTORY
-                ============================================================ -->
                 <div id="panel-inventory" class="content-panel">
                     <div class="page-header">
                         <h1>Inventory</h1>
@@ -975,186 +1061,142 @@
                     </div>
                 </div>
 
-                <!-- ============================================================
-                PANEL: DONORS
-                ============================================================ -->
-                <div id="panel-donors" class="content-panel">
-                    <div class="page-header">
-                        <h1>Donors</h1>
-                        <p>Manage donors and sponsors.</p>
-                    </div>
-                    <div class="table-container">
-                        <div class="table-header">
-                            <h2>All Donors</h2>
-                            <button class="btn-add" onclick="openDonorModal()"><i class="fas fa-plus"></i> Add Donor</button>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="donorsTableBody">
-                                <tr><td colspan="4" style="text-align:center;color:#888;">Loading donors...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
             </main>
         </div>
 
-        <!-- ============================================================
-        FOOTER
-        ============================================================ -->
-        <footer class="footer" style="background:#0a0a1a; color:#fff; padding:25px 0 20px; text-align:center; border-top:1px solid rgba(255,255,255,0.05);">
+        <footer class="footer" style="background:#0a1a33; color:#fff; padding:25px 0 20px; text-align:center; border-top:1px solid rgba(255,255,255,0.05);">
             <div class="container">
                 <div style="color:#888; font-size:14px; line-height:1.8; margin-bottom:10px;">
                     <strong style="color:#fff;">Fiat Grounds, Soweto</strong> • Johannesburg, South Africa<br />
                     <a href="tel:+27639111277" style="color:#aaa; text-decoration:none;">+27 63 911 1277</a> •
-                    <a href="mailto:admin@dynastyfc.co.za" style="color:#aaa; text-decoration:none;">admin@dynastyfc.co.za</a> •
-                    <a href="https://dynastyfc.co.za/" target="_blank" style="color:#aaa; text-decoration:none;">Website</a>
+                    <a href="mailto:dynastyfcadmin@gmail.com" style="color:#aaa; text-decoration:none;">dynastyfcadmin@gmail.com</a> •
+                    <a href="https://www.instagram.com/dynastyfc_2016" target="_blank" style="color:#aaa; text-decoration:none;">Instagram</a>
                 </div>
                 <p style="color:#666; font-size:13px;">&copy; 2026 Dynasty Football Club. All rights reserved.</p>
             </div>
         </footer>
     </div>
 
-    <!-- ============================================================
-    MODALS
-    ============================================================ -->
-
-    <!-- Newsletter Modal -->
-    <div id="newsletterModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
-        <div style="background:#fff; padding:30px; border-radius:12px; max-width:500px; width:100%;">
+    <div id="newsletterModal" class="modal-bg">
+        <div class="modal-box">
             <h2>Add Newsletter</h2>
             <form onsubmit="createNewsletter(event)">
-                <input type="text" id="newsletterTitle" placeholder="Title" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <textarea id="newsletterContent" placeholder="Content" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px; height:100px;" required></textarea>
-                <input type="url" id="newsletterImage" placeholder="Image URL (optional)" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" />
-                <button type="submit" style="background:#ffcc00; border:none; padding:12px; border-radius:8px; font-weight:700; width:100%; cursor:pointer;">Publish Newsletter</button>
-                <button type="button" onclick="closeModal('newsletterModal')" style="margin-top:10px; background:#dc3545; color:#fff; border:none; padding:10px; border-radius:8px; width:100%; cursor:pointer;">Cancel</button>
+                <input type="text" id="newsletterTitle" placeholder="Title" required />
+                <textarea id="newsletterContent" placeholder="Content" rows="5" required></textarea>
+                <input type="url" id="newsletterImage" placeholder="Image URL (optional)" />
+                <button type="submit" class="btn-submit">Publish Newsletter</button>
+                <button type="button" onclick="closeModal('newsletterModal')" class="btn-cancel">Cancel</button>
             </form>
         </div>
     </div>
 
-    <!-- Match Modal -->
-    <div id="matchModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
-        <div style="background:#fff; padding:30px; border-radius:12px; max-width:500px; width:100%;">
+    <div id="galleryModal" class="modal-bg">
+        <div class="modal-box">
+            <h2>Upload Photo</h2>
+            <form onsubmit="uploadGalleryPhoto(event)">
+                <input type="file" id="galleryFile" accept="image/*" required />
+                <input type="text" id="galleryTitle" placeholder="Title (optional)" />
+                <textarea id="galleryCaption" placeholder="Caption (optional)" rows="2"></textarea>
+                <select id="galleryTeam">
+                    <option value="General">General</option>
+                    <option value="Dynamights">Dynamights</option>
+                    <option value="Diamond Divas">Diamond Divas</option>
+                </select>
+                <button type="submit" class="btn-submit" id="galleryUploadBtn">
+                    <i class="fas fa-upload"></i> Upload Photo
+                </button>
+                <button type="button" onclick="closeModal('galleryModal')" class="btn-cancel">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="matchModal" class="modal-bg">
+        <div class="modal-box">
             <h2>Add Match</h2>
             <form onsubmit="createMatch(event)">
-                <select id="matchTeam" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required>
+                <select id="matchTeam" required>
                     <option value="Dynamights">Dynamights</option>
                     <option value="Diamond Divas">Diamond Divas</option>
                 </select>
-                <input type="text" id="matchHome" placeholder="Home Team" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="text" id="matchAway" placeholder="Away Team" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="date" id="matchDate" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="time" id="matchTime" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="text" id="matchVenue" placeholder="Venue" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <button type="submit" style="background:#ffcc00; border:none; padding:12px; border-radius:8px; font-weight:700; width:100%; cursor:pointer;">Add Match</button>
-                <button type="button" onclick="closeModal('matchModal')" style="margin-top:10px; background:#dc3545; color:#fff; border:none; padding:10px; border-radius:8px; width:100%; cursor:pointer;">Cancel</button>
+                <input type="text" id="matchHome" placeholder="Home Team" required />
+                <input type="text" id="matchAway" placeholder="Away Team" required />
+                <input type="date" id="matchDate" required />
+                <input type="time" id="matchTime" required />
+                <input type="text" id="matchVenue" placeholder="Venue" required />
+                <button type="submit" class="btn-submit">Add Match</button>
+                <button type="button" onclick="closeModal('matchModal')" class="btn-cancel">Cancel</button>
             </form>
         </div>
     </div>
 
-    <!-- Player Modal -->
-    <div id="playerModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
-        <div style="background:#fff; padding:30px; border-radius:12px; max-width:500px; width:100%;">
+    <div id="playerModal" class="modal-bg">
+        <div class="modal-box">
             <h2>Add Player</h2>
             <form onsubmit="createPlayer(event)">
-                <input type="text" id="playerFirstName" placeholder="First Name" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="text" id="playerLastName" placeholder="Last Name" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="text" id="playerPosition" placeholder="Position" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="text" id="playerNumber" placeholder="Jersey Number" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <select id="playerTeam" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required>
+                <input type="text" id="playerFirstName" placeholder="First Name" required />
+                <input type="text" id="playerLastName" placeholder="Last Name" required />
+                <input type="text" id="playerPosition" placeholder="Position" required />
+                <input type="text" id="playerNumber" placeholder="Jersey Number" required />
+                <select id="playerTeam" required>
                     <option value="Dynamights">Dynamights</option>
                     <option value="Diamond Divas">Diamond Divas</option>
                 </select>
-                <select id="playerAgeGroup" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required>
+                <select id="playerAgeGroup" required>
                     <option value="U15">Under 15</option>
                     <option value="U10">Under 10</option>
                 </select>
-                <select id="playerStatus" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required>
+                <select id="playerStatus" required>
                     <option value="fit">Fit</option>
                     <option value="injured">Injured</option>
                 </select>
-                <button type="submit" style="background:#ffcc00; border:none; padding:12px; border-radius:8px; font-weight:700; width:100%; cursor:pointer;">Add Player</button>
-                <button type="button" onclick="closeModal('playerModal')" style="margin-top:10px; background:#dc3545; color:#fff; border:none; padding:10px; border-radius:8px; width:100%; cursor:pointer;">Cancel</button>
+                <button type="submit" class="btn-submit">Add Player</button>
+                <button type="button" onclick="closeModal('playerModal')" class="btn-cancel">Cancel</button>
             </form>
         </div>
     </div>
 
-    <!-- Staff Modal -->
-    <div id="staffModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
-        <div style="background:#fff; padding:30px; border-radius:12px; max-width:500px; width:100%;">
+    <div id="staffModal" class="modal-bg">
+        <div class="modal-box">
             <h2>Add Staff</h2>
             <form onsubmit="createStaff(event)">
-                <input type="text" id="staffFirstName" placeholder="First Name" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="text" id="staffLastName" placeholder="Last Name" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="text" id="staffRole" placeholder="Role" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <select id="staffStatus" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required>
+                <input type="text" id="staffFirstName" placeholder="First Name" required />
+                <input type="text" id="staffLastName" placeholder="Last Name" required />
+                <input type="text" id="staffRole" placeholder="Role" required />
+                <select id="staffStatus" required>
                     <option value="Full-time">Full-time</option>
                     <option value="Part-time">Part-time</option>
                     <option value="Volunteer">Volunteer</option>
                     <option value="Contract">Contract</option>
                 </select>
-                <input type="email" id="staffEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="text" id="staffPhone" placeholder="Phone" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" />
-                <button type="submit" style="background:#ffcc00; border:none; padding:12px; border-radius:8px; font-weight:700; width:100%; cursor:pointer;">Add Staff</button>
-                <button type="button" onclick="closeModal('staffModal')" style="margin-top:10px; background:#dc3545; color:#fff; border:none; padding:10px; border-radius:8px; width:100%; cursor:pointer;">Cancel</button>
+                <input type="email" id="staffEmail" placeholder="Email" required />
+                <input type="text" id="staffPhone" placeholder="Phone" />
+                <button type="submit" class="btn-submit">Add Staff</button>
+                <button type="button" onclick="closeModal('staffModal')" class="btn-cancel">Cancel</button>
             </form>
         </div>
     </div>
 
-    <!-- Inventory Modal -->
-    <div id="inventoryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
-        <div style="background:#fff; padding:30px; border-radius:12px; max-width:500px; width:100%;">
+    <div id="inventoryModal" class="modal-bg">
+        <div class="modal-box">
             <h2>Add Inventory Item</h2>
             <form onsubmit="createInventory(event)">
-                <input type="text" id="itemName" placeholder="Item Name" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="text" id="itemCategory" placeholder="Category" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <input type="number" id="itemQuantity" placeholder="Quantity" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <select id="itemCondition" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required>
+                <input type="text" id="itemName" placeholder="Item Name" required />
+                <input type="text" id="itemCategory" placeholder="Category" required />
+                <input type="number" id="itemQuantity" placeholder="Quantity" required />
+                <select id="itemCondition" required>
                     <option value="New">New</option>
                     <option value="Good">Good</option>
                     <option value="Worn">Worn</option>
                     <option value="Damaged">Damaged</option>
                 </select>
-                <input type="text" id="itemLocation" placeholder="Storage Location" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <button type="submit" style="background:#ffcc00; border:none; padding:12px; border-radius:8px; font-weight:700; width:100%; cursor:pointer;">Add Item</button>
-                <button type="button" onclick="closeModal('inventoryModal')" style="margin-top:10px; background:#dc3545; color:#fff; border:none; padding:10px; border-radius:8px; width:100%; cursor:pointer;">Cancel</button>
+                <input type="text" id="itemLocation" placeholder="Storage Location" required />
+                <button type="submit" class="btn-submit">Add Item</button>
+                <button type="button" onclick="closeModal('inventoryModal')" class="btn-cancel">Cancel</button>
             </form>
         </div>
     </div>
 
-    <!-- Donor Modal -->
-    <div id="donorModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
-        <div style="background:#fff; padding:30px; border-radius:12px; max-width:500px; width:100%;">
-            <h2>Add Donor</h2>
-            <form onsubmit="createDonor(event)">
-                <input type="text" id="donorName" placeholder="Donor Name" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <select id="donorType" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required>
-                    <option value="Donor">Donor</option>
-                    <option value="Sponsor">Sponsor</option>
-                </select>
-                <input type="number" id="donorAmount" placeholder="Amount (R)" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px;" required />
-                <button type="submit" style="background:#ffcc00; border:none; padding:12px; border-radius:8px; font-weight:700; width:100%; cursor:pointer;">Add Donor</button>
-                <button type="button" onclick="closeModal('donorModal')" style="margin-top:10px; background:#dc3545; color:#fff; border:none; padding:10px; border-radius:8px; width:100%; cursor:pointer;">Cancel</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ============================================================
-    JAVASCRIPT
-    ============================================================ -->
     <script>
-        // ============================================================
-        // CHECK LOGIN STATUS
-        // ============================================================
         async function checkLoginStatus() {
             try {
                 const response = await fetch('/api/check-session');
@@ -1163,6 +1205,8 @@
                 if (data.logged_in) {
                     document.getElementById('loginOverlay').style.display = 'none';
                     document.getElementById('dashboardContent').style.display = 'block';
+                    document.getElementById('userName').textContent = data.username || 'Admin';
+                    document.getElementById('userRole').textContent = data.role || 'Staff';
                     loadAllData();
                 } else {
                     document.getElementById('loginOverlay').style.display = 'flex';
@@ -1173,12 +1217,8 @@
             }
         }
 
-        // ============================================================
-        // STAFF LOGIN
-        // ============================================================
         async function handleStaffLogin(event) {
             event.preventDefault();
-
             const email = document.getElementById('staffEmail').value;
             const password = document.getElementById('staffPassword').value;
             const errorMessage = document.getElementById('errorMessage');
@@ -1203,6 +1243,8 @@
                 if (data.success) {
                     document.getElementById('loginOverlay').style.display = 'none';
                     document.getElementById('dashboardContent').style.display = 'block';
+                    document.getElementById('userName').textContent = data.username || 'Admin';
+                    document.getElementById('userRole').textContent = data.role || 'Staff';
                     loadAllData();
                 } else {
                     errorMessage.textContent = data.message || 'Invalid email or password.';
@@ -1214,43 +1256,31 @@
             }
         }
 
-        // ============================================================
-        // LOAD ALL DATA
-        // ============================================================
         function loadAllData() {
             loadDashboardStats();
             loadMessages();
             loadVolunteers();
             loadNewsletters();
+            loadTestimonials();
+            loadGallery();
             loadMatches();
             loadPlayers();
             loadStaff();
             loadFinance();
             loadInventory();
-            loadDonors();
         }
 
-        // ============================================================
-        // LOAD DASHBOARD STATS
-        // ============================================================
         async function loadDashboardStats() {
             try {
-                const playersRes = await fetch('/api/players-teams');
-                const players = await playersRes.json();
-
-                const messagesRes = await fetch('/api/messages');
-                const messages = await messagesRes.json();
-
-                const volunteersRes = await fetch('/api/volunteer');
-                const volunteers = await volunteersRes.json();
-
-                const documentsRes = await fetch('/api/documents');
-                const documents = await documentsRes.json();
+                const players = await (await fetch('/api/players-teams')).json();
+                const messages = await (await fetch('/api/messages')).json();
+                const volunteers = await (await fetch('/api/volunteer')).json();
+                const photos = await (await fetch('/api/gallery')).json();
 
                 document.getElementById('statPlayers').textContent = players.length || 0;
                 document.getElementById('statMessages').textContent = messages.length || 0;
                 document.getElementById('statVolunteers').textContent = volunteers.length || 0;
-                document.getElementById('statDocuments').textContent = documents.length || 0;
+                document.getElementById('statPhotos').textContent = photos.length || 0;
 
                 const unreadCount = messages.filter(m => !m.is_read).length;
                 document.getElementById('unreadBadge').textContent = unreadCount;
@@ -1260,44 +1290,157 @@
                     <div class="activity-item"><span>📋 ${players.length} players in the system</span><span class="time">Now</span></div>
                     <div class="activity-item"><span>💬 ${messages.length} messages received</span><span class="time">Now</span></div>
                     <div class="activity-item"><span>🙋 ${volunteers.length} volunteer applications</span><span class="time">Now</span></div>
-                    <div class="activity-item"><span>📄 ${documents.length} documents stored</span><span class="time">Now</span></div>
+                    <div class="activity-item"><span>🖼️ ${photos.length} gallery photos</span><span class="time">Now</span></div>
                 `;
             } catch (error) {
                 console.error('Error loading dashboard stats:', error);
             }
         }
 
-        // ============================================================
-        // SHOW PANEL
-        // ============================================================
         function showPanel(panel) {
             document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
 
             document.getElementById('panel-' + panel).classList.add('active');
             event.target.closest('a').classList.add('active');
+
+            if (panel === 'gallery') loadGallery();
+            if (panel === 'testimonials') loadTestimonials();
         }
 
-        // ============================================================
-        // LOGOUT
-        // ============================================================
         async function logout() {
             const response = await fetch('/api/logout', { method: 'POST' });
             const data = await response.json();
             window.location.href = data.redirect;
         }
 
-        // ============================================================
-        // CLOSE MODAL
-        // ============================================================
         function closeModal(id) {
             document.getElementById(id).style.display = 'none';
-            document.getElementById(id).querySelector('form')?.reset();
+            const form = document.getElementById(id).querySelector('form');
+            if (form) form.reset();
         }
 
-        // ============================================================
-        // NEWSLETTERS
-        // ============================================================
+        async function loadMessages() {
+            try {
+                const response = await fetch('/api/messages');
+                const messages = await response.json();
+                const tbody = document.getElementById('messagesTableBody');
+
+                if (messages.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;">No messages received.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = messages.map(m => {
+                    const safeName = (m.name || '').replace(/'/g, "\\'");
+                    const safeEmail = (m.email || '').replace(/'/g, "\\'");
+                    const safeMessage = (m.message || '').replace(/`/g, '`').replace(/'/g, "\\'");
+                    return `
+                    <tr>
+                        <td><strong>${m.name}</strong><br><small style="color:#888;">${m.email}</small></td>
+                        <td>${m.subject}</td>
+                        <td>${m.message.substring(0, 50)}${m.message.length > 50 ? '...' : ''}</td>
+                        <td>${new Date(m.created_at).toLocaleDateString()}</td>
+                        <td><span class="status-badge ${m.is_read ? 'read' : 'unread'}">${m.is_read ? 'Read' : 'Unread'}</span></td>
+                        <td>
+                            <button class="btn-action view" onclick="viewMessage('${safeName}', '${safeEmail}', '${safeMessage}')">View</button>
+                            ${!m.is_read ? `<button class="btn-action view" onclick="markMessageRead(${m.message_id})">Mark Read</button>` : ''}
+                            <button class="btn-action delete" onclick="deleteMessage(${m.message_id})"><i class="fas fa-trash"></i> Delete</button>
+                        </td>
+                    </tr>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+
+        async function markMessageRead(message_id) {
+            try {
+                await fetch(`/api/messages/${message_id}/read`, { method: 'PUT' });
+                loadMessages();
+                loadDashboardStats();
+            } catch (error) {
+                console.error('Error marking message read:', error);
+            }
+        }
+
+        async function deleteMessage(message_id) {
+            if (!confirm('Delete this message permanently?')) return;
+            try {
+                const res = await fetch(`/api/messages/${message_id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    loadMessages();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to delete'));
+                }
+            } catch (err) {
+                alert('Network error');
+                console.error(err);
+            }
+        }
+
+        function viewMessage(name, email, message) {
+            alert(`From: ${name}\nEmail: ${email}\n\n${message}`);
+        }
+
+        async function loadVolunteers() {
+            try {
+                const response = await fetch('/api/volunteer');
+                const volunteers = await response.json();
+                const tbody = document.getElementById('volunteersTableBody');
+
+                if (volunteers.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;">No volunteer applications.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = volunteers.map(v => {
+                    const safeName = (v.name || '').replace(/'/g, "\\'");
+                    const safeEmail = (v.email || '').replace(/'/g, "\\'");
+                    const safeRole = (v.role || '').replace(/'/g, "\\'");
+                    const safeMessage = (v.message || 'N/A').replace(/'/g, "\\'");
+                    return `
+                    <tr>
+                        <td><strong>${v.name}</strong></td>
+                        <td>${v.email}</td>
+                        <td>${v.role}</td>
+                        <td>${v.availability || '-'}</td>
+                        <td>${new Date(v.created_at).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn-action view" onclick="viewVolunteer('${safeName}', '${safeEmail}', '${safeRole}', '${safeMessage}')">View</button>
+                            <button class="btn-action delete" onclick="deleteVolunteer(${v.volunteer_id})"><i class="fas fa-trash"></i> Delete</button>
+                        </td>
+                    </tr>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading volunteers:', error);
+            }
+        }
+
+        async function deleteVolunteer(id) {
+            if (!confirm('Delete this volunteer application?')) return;
+            try {
+                const res = await fetch(`/api/volunteer/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    loadVolunteers();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to delete'));
+                }
+            } catch (err) {
+                alert('Network error');
+            }
+        }
+
+        function viewVolunteer(name, email, role, message) {
+            alert(`Name: ${name}\nEmail: ${email}\nRole: ${role}\n\n${message}`);
+        }
+
         async function loadNewsletters() {
             try {
                 const response = await fetch('/api/newsletters');
@@ -1315,7 +1458,7 @@
                         <td>${n.content.substring(0, 50)}...</td>
                         <td>${n.is_published ? '✅ Published' : '❌ Draft'}</td>
                         <td>
-                            <button class="btn-action view" onclick="alert('View: ${n.title}')">View</button>
+                            <button class="btn-action delete" onclick="deleteNewsletter(${n.newsletter_id})"><i class="fas fa-trash"></i> Delete</button>
                         </td>
                     </tr>
                 `).join('');
@@ -1353,9 +1496,222 @@
             }
         }
 
-        // ============================================================
-        // MATCHES
-        // ============================================================
+        async function deleteNewsletter(id) {
+            if (!confirm('Delete this newsletter?')) return;
+            try {
+                const res = await fetch(`/api/newsletters/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    loadNewsletters();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed'));
+                }
+            } catch (err) {
+                alert('Network error');
+            }
+        }
+
+        async function loadTestimonials() {
+            try {
+                const [pendingRes, approvedRes] = await Promise.all([
+                    fetch('/api/testimonials?status=pending'),
+                    fetch('/api/testimonials?status=approved')
+                ]);
+
+                const pending = await pendingRes.json();
+                const approved = await approvedRes.json();
+
+                const badge = document.getElementById('pendingTestimonialsBadge');
+                if (badge) badge.textContent = pending.length;
+
+                const pendingBody = document.getElementById('pendingTestimonialsBody');
+                if (pending.length === 0) {
+                    pendingBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;">No pending testimonials.</td></tr>';
+                } else {
+                    pendingBody.innerHTML = pending.map(t => `
+                        <tr>
+                            <td><strong>${t.author_name}</strong></td>
+                            <td>${t.author_role}</td>
+                            <td>${t.content.substring(0, 60)}${t.content.length > 60 ? '...' : ''}</td>
+                            <td>${new Date(t.created_at).toLocaleDateString()}</td>
+                            <td>
+                                <button class="btn-action view" onclick="viewTestimonial('${t.author_name.replace(/'/g, "\\'")}', '${t.content.replace(/'/g, "\\'")}')">View</button>
+                                <button class="btn-action approve" onclick="updateTestimonialStatus(${t.testimonial_id}, 'approved')"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn-action reject" onclick="updateTestimonialStatus(${t.testimonial_id}, 'rejected')"><i class="fas fa-times"></i> Reject</button>
+                                <button class="btn-action delete" onclick="deleteTestimonial(${t.testimonial_id})"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+
+                const approvedBody = document.getElementById('approvedTestimonialsBody');
+                if (approved.length === 0) {
+                    approvedBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;">No approved testimonials yet.</td></tr>';
+                } else {
+                    approvedBody.innerHTML = approved.map(t => `
+                        <tr>
+                            <td><strong>${t.author_name}</strong></td>
+                            <td>${t.author_role}</td>
+                            <td>${t.content.substring(0, 60)}${t.content.length > 60 ? '...' : ''}</td>
+                            <td>${t.approved_at ? new Date(t.approved_at).toLocaleDateString() : '-'}</td>
+                            <td>
+                                <button class="btn-action reject" onclick="updateTestimonialStatus(${t.testimonial_id}, 'pending')"><i class="fas fa-undo"></i> Unpublish</button>
+                                <button class="btn-action delete" onclick="deleteTestimonial(${t.testimonial_id})"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading testimonials:', error);
+            }
+        }
+
+        function viewTestimonial(name, content) {
+            alert(`${name} wrote:\n\n"${content}"`);
+        }
+
+        async function updateTestimonialStatus(id, status) {
+            try {
+                const res = await fetch(`/api/testimonials/${id}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    loadTestimonials();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed'));
+                }
+            } catch (err) {
+                alert('Network error');
+            }
+        }
+
+        async function deleteTestimonial(id) {
+            if (!confirm('Delete this testimonial permanently?')) return;
+            try {
+                const res = await fetch(`/api/testimonials/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    loadTestimonials();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed'));
+                }
+            } catch (err) {
+                alert('Network error');
+            }
+        }
+
+        async function loadGallery() {
+            try {
+                const response = await fetch('/api/gallery');
+                const photos = await response.json();
+                const grid = document.getElementById('galleryGrid');
+
+                if (photos.length === 0) {
+                    grid.innerHTML = '<p style="text-align:center;color:#888;grid-column:1/-1;">No photos uploaded yet. Click "Upload Photo" to add one.</p>';
+                    return;
+                }
+
+                grid.innerHTML = photos.map(p => `
+                    <div class="gallery-item">
+                        <img src="${p.file_path}" alt="${p.title || 'Gallery photo'}" loading="lazy" />
+                        <button class="gallery-delete" onclick="deleteGalleryPhoto(${p.photo_id})" title="Delete photo">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <div class="gallery-info">
+                            <h4>${p.title || 'Untitled'}</h4>
+                            <p>${p.caption || p.team_group || ''}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading gallery:', error);
+            }
+        }
+
+        function openGalleryModal() {
+            document.getElementById('galleryModal').style.display = 'flex';
+        }
+
+        async function uploadGalleryPhoto(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('galleryFile');
+            const title = document.getElementById('galleryTitle').value;
+            const caption = document.getElementById('galleryCaption').value;
+            const team_group = document.getElementById('galleryTeam').value;
+            const btn = document.getElementById('galleryUploadBtn');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Please choose a file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+            try {
+                const uploadRes = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const uploadData = await uploadRes.json();
+
+                if (!uploadData.success) {
+                    alert('Upload failed: ' + (uploadData.error || 'unknown'));
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-upload"></i> Upload Photo';
+                    return;
+                }
+
+                const saveRes = await fetch('/api/gallery', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title,
+                        caption,
+                        team_group,
+                        file_path: uploadData.url
+                    })
+                });
+                const saveData = await saveRes.json();
+
+                if (saveData.success) {
+                    alert('Photo uploaded!');
+                    closeModal('galleryModal');
+                    loadGallery();
+                    loadDashboardStats();
+                } else {
+                    alert('Error saving to gallery: ' + (saveData.error || 'unknown'));
+                }
+            } catch (err) {
+                alert('Network error: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-upload"></i> Upload Photo';
+            }
+        }
+
+        async function deleteGalleryPhoto(photoId) {
+            if (!confirm('Delete this photo permanently?')) return;
+            try {
+                const res = await fetch(`/api/gallery/${photoId}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    loadGallery();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed'));
+                }
+            } catch (err) {
+                alert('Network error');
+            }
+        }
+
         async function loadMatches() {
             try {
                 const response = await fetch('/api/team-matches');
@@ -1377,13 +1733,27 @@
                         <td>${m.is_completed ? m.home_score + ' - ' + m.away_score : 'TBD'}</td>
                         <td>${m.is_completed ? '✅ Completed' : '⏳ Upcoming'}</td>
                         <td>
-                            <button class="btn-action view" onclick="alert('View match details')">View</button>
-                            ${!m.is_completed ? `<button class="btn-action view" onclick="alert('Add result for match')">Add Result</button>` : ''}
+                            <button class="btn-action delete" onclick="deleteMatch(${m.match_id})"><i class="fas fa-trash"></i> Delete</button>
                         </td>
                     </tr>
                 `).join('');
             } catch (error) {
                 console.error('Error loading matches:', error);
+            }
+        }
+
+        async function deleteMatch(id) {
+            if (!confirm('Delete this match? (Will also delete any predictions/votes)')) return;
+            try {
+                const res = await fetch(`/api/team-matches/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    loadMatches();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed'));
+                }
+            } catch (err) {
+                alert('Network error');
             }
         }
 
@@ -1419,9 +1789,39 @@
             }
         }
 
-        // ============================================================
-        // PLAYERS
-        // ============================================================
+        async function loadPredictions() {
+            try {
+                const res = await fetch('/api/all-predictions');
+                const preds = await res.json();
+                const tbody = document.getElementById('predictionsTableBody');
+
+                if (preds.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;">No predictions yet.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = preds.map(p => {
+                    let pointsBadge = '<span style="color:#888;">—</span>';
+                    if (p.points === 3) pointsBadge = '<span class="status-badge approved">🏆 Exact! 3pts</span>';
+                    else if (p.points === 1) pointsBadge = '<span class="status-badge pending">✅ Winner 1pt</span>';
+                    else if (p.points === 0) pointsBadge = '<span class="status-badge rejected">❌ 0pts</span>';
+
+                    return `
+                    <tr>
+                        <td><strong>${p.username}</strong></td>
+                        <td>${p.home_team} vs ${p.away_team}</td>
+                        <td><strong>${p.predicted_home} - ${p.predicted_away}</strong></td>
+                        <td>${p.is_completed ? `${p.actual_home} - ${p.actual_away}` : 'Pending'}</td>
+                        <td>${pointsBadge}</td>
+                        <td>${new Date(p.predicted_at).toLocaleDateString()}</td>
+                    </tr>
+                    `;
+                }).join('');
+            } catch (err) {
+                console.error('Error loading predictions:', err);
+            }
+        }
+
         async function loadPlayers() {
             try {
                 const response = await fetch('/api/players-teams');
@@ -1439,16 +1839,31 @@
                         <td>${p.position || '-'}</td>
                         <td>${p.team_group || '-'}</td>
                         <td>${p.age_group || '-'}</td>
-                        <td>#${p.fifa_number || '-'}</td>
+                        <td>#${p.jersey_number || '-'}</td>
                         <td><span class="status-badge ${p.is_active ? 'read' : 'unread'}">${p.is_active ? 'Active' : 'Inactive'}</span></td>
                         <td>
-                            <button class="btn-action view" onclick="alert('Edit: ${p.first_name} ${p.last_name}')">Edit</button>
-                            <button class="btn-action delete" onclick="alert('Delete: ${p.first_name} ${p.last_name}')">Delete</button>
+                            <button class="btn-action delete" onclick="deletePlayer(${p.player_id})"><i class="fas fa-trash"></i> Delete</button>
                         </td>
                     </tr>
                 `).join('');
             } catch (error) {
                 console.error('Error loading players:', error);
+            }
+        }
+
+        async function deletePlayer(id) {
+            if (!confirm('Delete this player?')) return;
+            try {
+                const res = await fetch(`/api/players/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    loadPlayers();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed'));
+                }
+            } catch (err) {
+                alert('Network error');
             }
         }
 
@@ -1461,10 +1876,10 @@
             const first_name = document.getElementById('playerFirstName').value;
             const last_name = document.getElementById('playerLastName').value;
             const position = document.getElementById('playerPosition').value;
-            const fifa_number = document.getElementById('playerNumber').value;
+            const jersey_number = document.getElementById('playerNumber').value;
             const team_group = document.getElementById('playerTeam').value;
             const age_group = document.getElementById('playerAgeGroup').value;
-            const is_active = document.getElementById('playerStatus').value === 'fit';
+            const is_active = document.getElementById('playerStatus').value === 'fit' ? 1 : 0;
 
             try {
                 const response = await fetch('/api/players', {
@@ -1476,6 +1891,7 @@
                         last_name,
                         date_of_birth: '2005-01-01',
                         position,
+                        jersey_number,
                         contact_email: first_name.toLowerCase() + '@dynastyfc.co.za',
                         contact_phone: '0000000000',
                         team_group,
@@ -1496,9 +1912,6 @@
             }
         }
 
-        // ============================================================
-        // STAFF
-        // ============================================================
         async function loadStaff() {
             try {
                 const response = await fetch('/api/staff');
@@ -1517,13 +1930,27 @@
                         <td><span class="status-badge ${s.employment_status === 'Full-time' ? 'read' : 'unread'}">${s.employment_status}</span></td>
                         <td>${s.contact_email || '-'}</td>
                         <td>
-                            <button class="btn-action view" onclick="alert('Edit: ${s.first_name} ${s.last_name}')">Edit</button>
-                            <button class="btn-action delete" onclick="alert('Delete: ${s.first_name} ${s.last_name}')">Delete</button>
+                            <button class="btn-action delete" onclick="deleteStaff(${s.staff_id})"><i class="fas fa-trash"></i> Delete</button>
                         </td>
                     </tr>
                 `).join('');
             } catch (error) {
                 console.error('Error loading staff:', error);
+            }
+        }
+
+        async function deleteStaff(id) {
+            if (!confirm('Delete this staff member?')) return;
+            try {
+                const res = await fetch(`/api/staff/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    loadStaff();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed'));
+                }
+            } catch (err) {
+                alert('Network error');
             }
         }
 
@@ -1544,7 +1971,11 @@
                 const response = await fetch('/api/staff', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ first_name, last_name, role, employment_status, contact_email, contact_phone, date_joined: new Date().toISOString().split('T')[0] })
+                    body: JSON.stringify({
+                        first_name, last_name, role, employment_status,
+                        contact_email, contact_phone,
+                        date_joined: new Date().toISOString().split('T')[0]
+                    })
                 });
                 const data = await response.json();
                 if (data.success) {
@@ -1559,9 +1990,6 @@
             }
         }
 
-        // ============================================================
-        // FINANCE
-        // ============================================================
         async function loadFinance() {
             try {
                 const response = await fetch('/api/finance');
@@ -1586,9 +2014,6 @@
             }
         }
 
-        // ============================================================
-        // INVENTORY
-        // ============================================================
         async function loadInventory() {
             try {
                 const response = await fetch('/api/inventory');
@@ -1609,7 +2034,6 @@
                         <td>${item.storage_location || '-'}</td>
                         <td>
                             <button class="btn-action view" onclick="alert('Edit: ${item.item_name}')">Edit</button>
-                            <button class="btn-action delete" onclick="alert('Delete: ${item.item_name}')">Delete</button>
                         </td>
                     </tr>
                 `).join('');
@@ -1649,142 +2073,6 @@
             }
         }
 
-        // ============================================================
-        // MESSAGES
-        // ============================================================
-        async function loadMessages() {
-            try {
-                const response = await fetch('/api/messages');
-                const messages = await response.json();
-                const tbody = document.getElementById('messagesTableBody');
-
-                if (messages.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;">No messages received.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = messages.map(m => `
-                    <tr>
-                        <td><strong>${m.name}</strong><br><small style="color:#888;">${m.email}</small></td>
-                        <td>${m.subject}</td>
-                        <td>${m.message.substring(0, 50)}${m.message.length > 50 ? '...' : ''}</td>
-                        <td>${new Date(m.created_at).toLocaleDateString()}</td>
-                        <td><span class="status-badge ${m.is_read ? 'read' : 'unread'}">${m.is_read ? 'Read' : 'Unread'}</span></td>
-                        <td>
-                            <button class="btn-action view" onclick="alert('From: ${m.name}\\nEmail: ${m.email}\\nMessage: ${m.message}')">View</button>
-                            ${!m.is_read ? `<button class="btn-action view" onclick="markMessageRead(${m.message_id})">Mark Read</button>` : ''}
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (error) {
-                console.error('Error loading messages:', error);
-            }
-        }
-
-        async function markMessageRead(message_id) {
-            try {
-                await fetch(`/api/messages/${message_id}/read`, { method: 'PUT' });
-                loadMessages();
-                loadDashboardStats();
-            } catch (error) {
-                console.error('Error marking message read:', error);
-            }
-        }
-
-        // ============================================================
-        // VOLUNTEERS
-        // ============================================================
-        async function loadVolunteers() {
-            try {
-                const response = await fetch('/api/volunteer');
-                const volunteers = await response.json();
-                const tbody = document.getElementById('volunteersTableBody');
-
-                if (volunteers.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#888;">No volunteer applications.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = volunteers.map(v => `
-                    <tr>
-                        <td><strong>${v.name}</strong></td>
-                        <td>${v.email}</td>
-                        <td>${v.role}</td>
-                        <td>${v.availability || '-'}</td>
-                        <td>${new Date(v.created_at).toLocaleDateString()}</td>
-                        <td><span class="status-badge ${v.status === 'Pending' ? 'unread' : 'read'}">${v.status}</span></td>
-                        <td>
-                            <button class="btn-action view" onclick="alert('Name: ${v.name}\\nEmail: ${v.email}\\nRole: ${v.role}\\nMessage: ${v.message || 'N/A'}')">View</button>
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (error) {
-                console.error('Error loading volunteers:', error);
-            }
-        }
-
-        // ============================================================
-        // DONORS
-        // ============================================================
-        async function loadDonors() {
-            try {
-                const response = await fetch('/api/donors-page');
-                const donors = await response.json();
-                const tbody = document.getElementById('donorsTableBody');
-
-                if (donors.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888;">No donors added yet.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = donors.map(d => `
-                    <tr>
-                        <td><strong>${d.name}</strong></td>
-                        <td>${d.donor_type}</td>
-                        <td>R${parseFloat(d.amount).toFixed(2)}</td>
-                        <td>
-                            <button class="btn-action view" onclick="alert('View: ${d.name}')">View</button>
-                            <button class="btn-action delete" onclick="alert('Delete: ${d.name}')">Delete</button>
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (error) {
-                console.error('Error loading donors:', error);
-            }
-        }
-
-        function openDonorModal() {
-            document.getElementById('donorModal').style.display = 'flex';
-        }
-
-        async function createDonor(event) {
-            event.preventDefault();
-            const name = document.getElementById('donorName').value;
-            const donor_type = document.getElementById('donorType').value;
-            const amount = document.getElementById('donorAmount').value;
-
-            try {
-                const response = await fetch('/api/donors-page', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, donor_type, amount })
-                });
-                const data = await response.json();
-                if (data.success) {
-                    alert('Donor added successfully!');
-                    closeModal('donorModal');
-                    loadDonors();
-                } else {
-                    alert('Error: ' + data.error);
-                }
-            } catch (error) {
-                alert('An error occurred.');
-            }
-        }
-
-        // ============================================================
-        // RUN ON PAGE LOAD
-        // ============================================================
         document.addEventListener('DOMContentLoaded', checkLoginStatus);
     </script>
 

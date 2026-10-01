@@ -20,7 +20,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10, 20, 10, 0.75);
+            background: rgba(6, 15, 31, 0.78);
             z-index: 0;
         }
         .teams-page .container {
@@ -32,14 +32,14 @@
         }
         .teams-page h1 {
             font-size: 42px;
-            border-left: 5px solid #ffcc00;
+            border-left: 5px solid #b8944a;
             padding-left: 15px;
             margin-bottom: 5px;
             color: #fff;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
         .teams-page .subtitle {
-            color: #88ddbb;
+            color: #a8c8b8;
             margin-bottom: 30px;
             font-size: 16px;
         }
@@ -56,38 +56,49 @@
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
-            background: rgba(255,255,255,0.1);
-            color: #88ddff;
+            background: rgba(255,255,255,0.08);
+            color: #cfd6dd;
             border: 2px solid rgba(255,255,255,0.2);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
         .team-badge:hover {
-            border-color: #ffcc00;
-            background: rgba(255,204,0,0.15);
+            border-color: #b8944a;
+            background: rgba(184,148,74,0.15);
             transform: translateY(-2px);
         }
         .team-badge.active {
-            border-color: #ffcc00;
-            background: #ffcc00;
-            color: #0a0a1a;
-            box-shadow: 0 4px 20px rgba(255,204,0,0.3);
+            border-color: #b8944a;
+            background: #b8944a;
+            color: #0a1a33;
+            box-shadow: 0 4px 20px rgba(184,148,74,0.35);
+        }
+        /* Team-specific active colours */
+        .team-badge.active[data-team="dynamights"] {
+            border-color: #4aa8e0;
+            background: #4aa8e0;
+            box-shadow: 0 4px 20px rgba(74,168,224,0.4);
+        }
+        .team-badge.active[data-team="diamonddivas"] {
+            border-color: #e8a0c8;
+            background: #e8a0c8;
+            box-shadow: 0 4px 20px rgba(232,160,200,0.4);
         }
         .team-badge .count {
-            background: rgba(0,0,0,0.2);
-            color: #88ddff;
+            background: rgba(0,0,0,0.25);
+            color: inherit;
             border-radius: 50%;
             padding: 0 10px;
             font-size: 12px;
             margin-left: 5px;
         }
         .team-badge.active .count {
-            background: rgba(255,255,255,0.2);
-            color: #0a0a1a;
+            background: rgba(255,255,255,0.3);
+            color: #0a1a33;
         }
         .team-section {
             display: none;
-            background: rgba(10, 30, 20, 0.85);
+            background: rgba(10, 26, 51, 0.88);
             backdrop-filter: blur(10px);
             border-radius: 16px;
             padding: 30px;
@@ -96,21 +107,26 @@
             margin-bottom: 30px;
         }
         .team-section.active { display: block; }
+        /* Team-coloured left border on active section */
+        .team-section#team-dynamights.active { border-top: 3px solid #4aa8e0; }
+        .team-section#team-diamonddivas.active { border-top: 3px solid #e8a0c8; }
         .team-section .team-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
+            border-bottom: 2px solid rgba(255,255,255,0.08);
         }
         .team-section .team-header h2 {
             font-size: 28px;
             color: #fff;
         }
-        .team-section .team-header h2 i { color: #ffcc00; }
+        .team-section .team-header h2 i { color: #b8944a; }
+        .team-section#team-dynamights .team-header h2 i { color: #4aa8e0; }
+        .team-section#team-diamonddivas .team-header h2 i { color: #e8a0c8; }
         .team-section .team-header .team-count {
-            color: #88ddbb;
+            color: #a8c8b8;
             font-size: 14px;
             background: rgba(255,255,255,0.1);
             padding: 5px 15px;
@@ -121,39 +137,51 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            background: linear-gradient(135deg, rgba(255,204,0,0.15), rgba(255,204,0,0.05));
-            border: 2px solid rgba(255,204,0,0.3);
+            background: linear-gradient(135deg, rgba(184,148,74,0.15), rgba(184,148,74,0.05));
+            border: 2px solid rgba(184,148,74,0.3);
             border-radius: 14px;
             padding: 18px 22px;
             margin-bottom: 25px;
+        }
+        .team-section#team-dynamights .coach-card {
+            background: linear-gradient(135deg, rgba(74,168,224,0.15), rgba(74,168,224,0.05));
+            border-color: rgba(74,168,224,0.35);
+        }
+        .team-section#team-diamonddivas .coach-card {
+            background: linear-gradient(135deg, rgba(232,160,200,0.18), rgba(232,160,200,0.05));
+            border-color: rgba(232,160,200,0.35);
         }
         .coach-card .coach-avatar {
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: #ffcc00;
-            color: #0a0a1a;
+            background: #b8944a;
+            color: #0a1a33;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 26px;
             flex-shrink: 0;
         }
+        .team-section#team-dynamights .coach-avatar { background: #4aa8e0; }
+        .team-section#team-diamonddivas .coach-avatar { background: #e8a0c8; }
         .coach-card .coach-info .coach-label {
-            color: #ffcc00;
+            color: #b8944a;
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 700;
             margin-bottom: 4px;
         }
+        .team-section#team-dynamights .coach-label { color: #4aa8e0; }
+        .team-section#team-diamonddivas .coach-label { color: #e8a0c8; }
         .coach-card .coach-info .coach-name {
             color: #fff;
             font-size: 20px;
             font-weight: 800;
         }
         .coach-card .coach-info .coach-role {
-            color: #88ddbb;
+            color: #a8c8b8;
             font-size: 13px;
             margin-top: 2px;
         }
@@ -171,17 +199,25 @@
             font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
-            background: rgba(255,255,255,0.1);
-            color: #88ddbb;
+            background: rgba(255,255,255,0.08);
+            color: #a8c8b8;
         }
         .tab-btn:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.15);
             color: #fff;
         }
         .tab-btn.active {
-            background: #ffcc00;
-            color: #0a0a1a;
-            box-shadow: 0 4px 15px rgba(255,204,0,0.3);
+            background: #b8944a;
+            color: #0a1a33;
+            box-shadow: 0 4px 15px rgba(184,148,74,0.35);
+        }
+        .team-section#team-dynamights .tab-btn.active {
+            background: #4aa8e0;
+            box-shadow: 0 4px 15px rgba(74,168,224,0.4);
+        }
+        .team-section#team-diamonddivas .tab-btn.active {
+            background: #e8a0c8;
+            box-shadow: 0 4px 15px rgba(232,160,200,0.4);
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -191,7 +227,7 @@
             gap: 15px;
         }
         .player-card {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.06);
             backdrop-filter: blur(5px);
             border-radius: 12px;
             padding: 20px 15px;
@@ -202,15 +238,15 @@
         }
         .player-card:hover {
             transform: translateY(-5px);
-            background: rgba(255,255,255,0.15);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.35);
         }
         .player-card .jersey-badge {
             position: absolute;
             top: 12px;
             right: 12px;
-            background: #ffcc00;
-            color: #0a0a1a;
+            background: #b8944a;
+            color: #0a1a33;
             font-weight: 900;
             font-size: 16px;
             width: 42px;
@@ -219,21 +255,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(255,204,0,0.4);
-            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 12px rgba(184,148,74,0.4);
+            border: 2px solid rgba(255,255,255,0.25);
         }
         .player-card .player-avatar {
             width: 65px;
             height: 65px;
             border-radius: 50%;
-            background: rgba(255,204,0,0.2);
-            color: #ffcc00;
+            background: rgba(184,148,74,0.2);
+            color: #d4af6a;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 12px;
             font-size: 26px;
-            border: 2px solid rgba(255,204,0,0.3);
+            border: 2px solid rgba(184,148,74,0.3);
         }
         .player-card .player-avatar.position-goalkeeper { background: rgba(59,130,246,0.2); color: #60a5fa; border-color: rgba(59,130,246,0.4); }
         .player-card .player-avatar.position-defender   { background: rgba(34,197,94,0.2);  color: #4ade80; border-color: rgba(34,197,94,0.4); }
@@ -247,7 +283,7 @@
         }
         .player-card .player-position {
             font-size: 13px;
-            color: #88ddbb;
+            color: #a8c8b8;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -265,7 +301,7 @@
         .no-players {
             text-align: center;
             padding: 30px;
-            color: #88ddbb;
+            color: #a8c8b8;
             font-size: 16px;
             grid-column: 1 / -1;
         }
@@ -281,7 +317,7 @@
             font-size: 20px;
             color: #fff;
             margin-bottom: 15px;
-            border-left: 5px solid #ffcc00;
+            border-left: 5px solid #b8944a;
             padding-left: 15px;
         }
         .match-card {
@@ -303,7 +339,7 @@
         }
         .match-card .match-info .match-date {
             font-weight: 600;
-            color: #ffcc00;
+            color: #d4af6a;
             min-width: 80px;
         }
         .match-card .match-info .match-teams {
@@ -311,13 +347,13 @@
             color: #fff;
         }
         .match-card .match-info .match-teams .vs {
-            color: #88ddbb;
+            color: #a8c8b8;
             margin: 0 8px;
             font-weight: 400;
         }
         .match-card .match-info .match-venue {
             font-size: 13px;
-            color: #88ddbb;
+            color: #a8c8b8;
         }
         .match-card .match-result {
             font-weight: 700;
@@ -325,43 +361,41 @@
         }
         .match-card .match-result .win { color: #28a745; }
         .match-card .match-result .loss { color: #dc3545; }
-        .match-card .match-result .draw { color: #ffc107; }
+        .match-card .match-result .draw { color: #d4af6a; }
         .match-card .btn-view-match {
             padding: 8px 20px;
-            border: 2px solid #ffcc00;
+            border: 2px solid #b8944a;
             border-radius: 25px;
             background: transparent;
             cursor: pointer;
             font-weight: 600;
             font-size: 13px;
             transition: all 0.3s;
-            color: #ffcc00;
+            color: #d4af6a;
         }
         .match-card .btn-view-match:hover {
-            background: #ffcc00;
-            color: #0a0a1a;
+            background: #b8944a;
+            color: #0a1a33;
         }
         .match-card .btn-view-match .predict-icon { margin-right: 5px; }
         .no-matches {
             text-align: center;
             padding: 20px;
-            color: #88ddbb;
+            color: #a8c8b8;
             font-size: 14px;
         }
 
-        /* ============================================================
-           TOAST NOTIFICATION (LOG IN FIRST)
-           ============================================================ */
+        /* TOAST NOTIFICATION */
         .toast-notice {
             position: fixed;
             top: 90px;
             right: 30px;
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
-            border: 2px solid #ffcc00;
+            background: linear-gradient(135deg, #0a1a33 0%, #162a4a 100%);
+            border: 2px solid #b8944a;
             border-radius: 14px;
             padding: 20px 25px;
             max-width: 380px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(255,204,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(184,148,74,0.3);
             z-index: 10000;
             display: flex;
             align-items: flex-start;
@@ -378,8 +412,8 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: #ffcc00;
-            color: #0a0a1a;
+            background: #b8944a;
+            color: #0a1a33;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -388,11 +422,11 @@
             animation: pulse 1.5s ease-in-out infinite;
         }
         @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,204,0,0.7); }
-            50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255,204,0,0); }
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(184,148,74,0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(184,148,74,0); }
         }
         .toast-notice .toast-content h4 {
-            color: #ffcc00;
+            color: #d4af6a;
             font-size: 16px;
             font-weight: 800;
             margin-bottom: 6px;
@@ -412,7 +446,7 @@
         .toast-notice .toast-redirect {
             margin-top: 10px;
             font-size: 12px;
-            color: #88ddbb;
+            color: #a8c8b8;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -448,7 +482,7 @@
         }
         .match-modal.active { display: flex; }
         .match-modal .modal-content {
-            background: linear-gradient(145deg, #0a1a0a, #1a2a1a);
+            background: linear-gradient(145deg, #0a1a33, #162a4a);
             border-radius: 16px;
             padding: 40px;
             max-width: 550px;
@@ -462,11 +496,11 @@
             float: right;
             font-size: 28px;
             cursor: pointer;
-            color: #88ddbb;
+            color: #a8c8b8;
             background: none;
             border: none;
         }
-        .match-modal .modal-content .close-modal:hover { color: #ffcc00; }
+        .match-modal .modal-content .close-modal:hover { color: #d4af6a; }
         .match-modal .modal-content h2 {
             font-size: 24px;
             color: #fff;
@@ -480,11 +514,11 @@
             margin-bottom: 5px;
         }
         .match-modal .modal-content .match-teams-modal .vs {
-            color: #88ddbb;
+            color: #a8c8b8;
             margin: 0 10px;
         }
         .match-modal .modal-content .match-detail {
-            color: #88ddbb;
+            color: #a8c8b8;
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -501,13 +535,13 @@
             gap: 20px;
             font-size: 28px;
             font-weight: 700;
-            color: #ffcc00;
+            color: #d4af6a;
         }
         .match-modal .modal-content .countdown .numbers span {
             display: block;
             font-size: 12px;
             font-weight: 400;
-            color: #88ddbb;
+            color: #a8c8b8;
         }
         .match-modal .modal-content .predict-section { margin: 20px 0; }
         .match-modal .modal-content .predict-section h4 {
@@ -533,27 +567,27 @@
             color: #fff;
         }
         .match-modal .modal-content .predict-section .score-input input:focus {
-            border-color: #ffcc00;
+            border-color: #b8944a;
             outline: none;
         }
         .match-modal .modal-content .predict-section .score-input .vs-text {
             font-weight: 700;
-            color: #88ddbb;
+            color: #a8c8b8;
         }
         .match-modal .modal-content .btn-predict {
             width: 100%;
             padding: 14px;
-            background: #ffcc00;
+            background: #b8944a;
             border: none;
             border-radius: 8px;
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
-            color: #0a0a1a;
+            color: #0a1a33;
             margin-top: 10px;
         }
         .match-modal .modal-content .btn-predict:hover {
-            background: #e6b800;
+            background: #d4af6a;
         }
         .match-modal .modal-content .vote-section {
             margin-top: 15px;
@@ -580,13 +614,13 @@
             color: #fff;
         }
         .match-modal .modal-content .vote-section .vote-options button:hover {
-            border-color: #ffcc00;
-            background: rgba(255,204,0,0.15);
+            border-color: #b8944a;
+            background: rgba(184,148,74,0.15);
         }
         .match-modal .modal-content .vote-section .vote-options button.selected {
-            border-color: #ffcc00;
-            background: rgba(255,204,0,0.2);
-            color: #ffcc00;
+            border-color: #b8944a;
+            background: rgba(184,148,74,0.2);
+            color: #d4af6a;
         }
 
         @media (max-width: 768px) {
@@ -613,7 +647,7 @@
 </head>
 <body>
 
-    <!-- ✅ TOAST NOTIFICATION FOR "LOG IN FIRST" -->
+    <!-- TOAST -->
     <div class="toast-notice" id="loginToast">
         <div class="toast-icon"><i class="fas fa-lock"></i></div>
         <div class="toast-content">
@@ -632,10 +666,10 @@
             <p class="subtitle">Discover the champions of Dynasty FC</p>
 
             <div class="team-badges">
-                <button class="team-badge active" onclick="switchTeam('dynamights')">
+                <button class="team-badge active" data-team="dynamights" onclick="switchTeam('dynamights', this)">
                     <i class="fas fa-bolt"></i> Dynamights <span class="count" id="count-dynamights">0</span>
                 </button>
-                <button class="team-badge" onclick="switchTeam('diamonddivas')">
+                <button class="team-badge" data-team="diamonddivas" onclick="switchTeam('diamonddivas', this)">
                     <i class="fas fa-gem"></i> Diamond Divas <span class="count" id="count-diamonddivas">0</span>
                 </button>
             </div>
@@ -655,8 +689,8 @@
                     </div>
                 </div>
                 <div class="tab-container">
-                    <button class="tab-btn active" onclick="switchTab('dynamights', 'u15')">🏆 UNDER 15</button>
-                    <button class="tab-btn" onclick="switchTab('dynamights', 'u10')">🌟 UNDER 10</button>
+                    <button class="tab-btn active" onclick="switchTab('dynamights', 'u15', this)">🏆 UNDER 15</button>
+                    <button class="tab-btn" onclick="switchTab('dynamights', 'u10', this)">🌟 UNDER 10</button>
                 </div>
                 <div id="dynamights-u15" class="tab-content active">
                     <div class="player-grid" id="dynamights-u15-grid">
@@ -689,8 +723,8 @@
                     </div>
                 </div>
                 <div class="tab-container">
-                    <button class="tab-btn active" onclick="switchTab('diamonddivas', 'u15')">🏆 UNDER 15</button>
-                    <button class="tab-btn" onclick="switchTab('diamonddivas', 'u10')">🌟 UNDER 10</button>
+                    <button class="tab-btn active" onclick="switchTab('diamonddivas', 'u15', this)">🏆 UNDER 15</button>
+                    <button class="tab-btn" onclick="switchTab('diamonddivas', 'u10', this)">🌟 UNDER 10</button>
                 </div>
                 <div id="diamonddivas-u15" class="tab-content active">
                     <div class="player-grid" id="diamonddivas-u15-grid">
@@ -750,19 +784,19 @@
     <script>
         var currentMatchId = null;
 
-        function switchTeam(team) {
+        function switchTeam(team, btn) {
             document.querySelectorAll('.team-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.team-badge').forEach(b => b.classList.remove('active'));
             document.getElementById('team-' + team).classList.add('active');
-            event.target.closest('.team-badge').classList.add('active');
+            btn.classList.add('active');
         }
 
-        function switchTab(team, age) {
+        function switchTab(team, age, btn) {
             var parent = document.getElementById('team-' + team);
             parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(team + '-' + age).classList.add('active');
-            event.target.classList.add('active');
+            btn.classList.add('active');
         }
 
         function getPositionInfo(position) {
@@ -925,21 +959,16 @@
             }
         }
 
-        // ============================================================
-        // ✅ CHECK LOGIN BEFORE PREDICTING (with toast notification)
-        // ============================================================
         async function checkLoginAndPredict(matchId, homeTeam, awayTeam, date, time, venue) {
             try {
                 const res = await fetch('/api/check-session');
                 const data = await res.json();
 
                 if (!data.logged_in) {
-                    // ✅ NOT LOGGED IN — Show toast notification, then redirect
                     showLoginToastAndRedirect();
                     return;
                 }
 
-                // ✅ LOGGED IN — Open prediction modal
                 openMatchModal(matchId, homeTeam, awayTeam, date, time, venue);
             } catch (err) {
                 alert('Network error. Please try again.');
@@ -950,7 +979,6 @@
             const toast = document.getElementById('loginToast');
             toast.classList.add('show');
 
-            // Redirect after 2.5 seconds so user can read the message
             setTimeout(() => {
                 window.location.href = '/login?next=' + encodeURIComponent('/teams');
             }, 2500);
