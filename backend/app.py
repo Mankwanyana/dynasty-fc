@@ -207,7 +207,7 @@ def register_page(): return render_template('register.html')
 def get_involved(): return render_template('get-involved.html')
 
 @app.route('/news-updates')
-def news_updates(): return render_template('news_updates.html')
+def news_updates(): return render_template('news-updates.html')
 
 @app.route('/team-news')
 def team_news(): return redirect('/news-updates')

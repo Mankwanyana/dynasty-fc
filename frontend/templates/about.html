@@ -29,9 +29,7 @@
             line-height: 1.7;
         }
 
-        /* ============================================================
-           NAVBAR
-           ============================================================ */
+        /* NAVBAR */
         .navbar {
             background: var(--navy-deep);
             padding: 18px 0;
@@ -62,9 +60,7 @@
         }
         .nav-menu a:hover, .nav-menu .active { color: var(--gold-soft); }
 
-        /* ============================================================
-           HERO — KEPT WITH IMAGE
-           ============================================================ */
+        /* HERO */
         .about-hero {
             position: relative;
             min-height: 85vh;
@@ -156,9 +152,7 @@
             50% { transform: translateX(-50%) translateY(10px); }
         }
 
-        /* ============================================================
-           SECTION LABEL
-           ============================================================ */
+        /* SECTION LABEL */
         .section-label {
             display: block;
             font-size: 12px;
@@ -169,9 +163,7 @@
             margin-bottom: 22px;
         }
 
-        /* ============================================================
-           INTRO
-           ============================================================ */
+        /* INTRO */
         .intro-section {
             padding: 130px 30px 100px;
             background: var(--white);
@@ -201,9 +193,7 @@
             font-weight: 300;
         }
 
-        /* ============================================================
-           PHILOSOPHY + OBJECTIVE
-           ============================================================ */
+        /* PHILOSOPHY */
         .philosophy-section {
             padding: 120px 30px;
             background: var(--cream);
@@ -243,9 +233,7 @@
         .philosophy-section .final-lines span { display: block; }
         .philosophy-section .final-lines span:last-child { color: var(--gold); }
 
-        /* ============================================================
-           MISSION & VISION — DARK NAVY SECTION
-           ============================================================ */
+        /* MISSION & VISION */
         .mission-section {
             padding: 130px 30px;
             background: var(--navy);
@@ -285,9 +273,7 @@
             margin: 70px 0;
         }
 
-        /* ============================================================
-           VALUES — WITH IMAGE ON THE SIDE
-           ============================================================ */
+        /* VALUES */
         .values-section {
             padding: 130px 30px;
             background: var(--white);
@@ -305,7 +291,6 @@
         }
         .values-section h2 span { color: var(--gold); font-weight: 500; }
 
-        /* Two-column layout: image left, values right */
         .values-layout {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
@@ -313,9 +298,7 @@
             align-items: center;
         }
 
-        .values-image-wrap {
-            position: relative;
-        }
+        .values-image-wrap { position: relative; }
         .values-image-wrap img {
             width: 100%;
             height: auto;
@@ -325,7 +308,6 @@
             box-shadow: 0 20px 60px rgba(10, 26, 51, 0.15);
             display: block;
         }
-        /* Decorative gold accent behind image */
         .values-image-wrap::before {
             content: '';
             position: absolute;
@@ -338,9 +320,6 @@
             z-index: -1;
         }
 
-        .values-list {
-            /* right column */
-        }
         .value-item {
             margin-bottom: 42px;
             opacity: 0;
@@ -371,15 +350,16 @@
         }
 
         /* ============================================================
-           HISTORY — DARK NAVY
+           HISTORY — SCROLL-ACTIVATED TIMELINE
            ============================================================ */
         .history-section {
             padding: 130px 30px;
             background: var(--navy-deep);
             color: #e8ecf2;
+            position: relative;
         }
         .history-section .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
         }
         .history-section h2 {
@@ -387,51 +367,97 @@
             font-weight: 300;
             color: #fff;
             letter-spacing: -0.5px;
-            margin-bottom: 70px;
+            margin-bottom: 90px;
+            text-align: center;
         }
         .history-section h2 span { color: var(--gold-soft); font-weight: 500; }
+
         .timeline {
             position: relative;
+            padding-left: 20px;
         }
+
+        /* vertical line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 34px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background: rgba(184, 148, 74, 0.2);
+            z-index: 0;
+        }
+
         .timeline-item {
+            position: relative;
             display: flex;
-            gap: 45px;
-            margin-bottom: 50px;
-            padding-bottom: 50px;
-            border-bottom: 1px solid rgba(184, 148, 74, 0.15);
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            gap: 40px;
+            margin-bottom: 70px;
+            padding-left: 20px;
+            z-index: 1;
         }
-        .timeline-item.in-view {
+        .timeline-item:last-child { margin-bottom: 0; }
+
+        /* year bubble */
+        .timeline-item .year-bubble {
+            flex-shrink: 0;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: rgba(184, 148, 74, 0.12);
+            border: 2px solid rgba(184, 148, 74, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold-soft);
+            letter-spacing: 1px;
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item .timeline-text {
+            padding-top: 15px;
+            opacity: 0.4;
+            transform: translateX(-20px);
+            transition: all 0.7s ease;
+        }
+        .timeline-item .timeline-text h3 {
+            font-size: 24px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 10px;
+            letter-spacing: -0.3px;
+            transition: color 0.6s ease;
+        }
+        .timeline-item .timeline-text p {
+            font-size: 17px;
+            color: rgba(200, 209, 224, 0.4);
+            line-height: 1.85;
+            font-weight: 300;
+            transition: color 0.6s ease;
+        }
+
+        /* ACTIVE STATE — when scrolled into view */
+        .timeline-item.in-view .year-bubble {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--navy-deep);
+            box-shadow: 0 0 0 8px rgba(184, 148, 74, 0.15), 0 0 30px rgba(184, 148, 74, 0.4);
+        }
+        .timeline-item.in-view .timeline-text {
             opacity: 1;
             transform: translateX(0);
         }
-        .timeline-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-            margin-bottom: 0;
+        .timeline-item.in-view .timeline-text h3 {
+            color: #fff;
         }
-        .timeline-item .year {
-            flex-shrink: 0;
-            font-size: 28px;
-            font-weight: 300;
-            color: var(--gold-soft);
-            letter-spacing: -0.5px;
-            min-width: 90px;
-            line-height: 1.2;
-        }
-        .timeline-item .desc {
-            font-size: 18px;
+        .timeline-item.in-view .timeline-text p {
             color: #b8c1d1;
-            line-height: 1.9;
-            flex: 1;
-            font-weight: 300;
         }
 
-        /* ============================================================
-           LEADERSHIP — WITH JOURNEY IMAGE
-           ============================================================ */
+        /* LEADERSHIP */
         .leadership-section {
             padding: 130px 30px;
             background: var(--cream);
@@ -498,9 +524,7 @@
             font-weight: 300;
         }
 
-        /* ============================================================
-           FINAL CTA
-           ============================================================ */
+        /* FINAL CTA */
         .final-cta {
             padding: 140px 30px;
             background: var(--navy);
@@ -557,9 +581,7 @@
         }
         .final-cta .btn-cta:hover i { transform: translateX(6px); }
 
-        /* ============================================================
-           FOOTER
-           ============================================================ */
+        /* FOOTER */
         .footer {
             background: #04080f;
             color: #fff;
@@ -583,9 +605,7 @@
         .footer .footer-info a:hover { color: var(--gold-soft); }
         .footer p { color: #566175; font-size: 12px; letter-spacing: 1px; }
 
-        /* ============================================================
-           SCROLL REVEAL
-           ============================================================ */
+        /* SCROLL REVEAL */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
@@ -596,9 +616,7 @@
             transform: translateY(0);
         }
 
-        /* ============================================================
-           RESPONSIVE
-           ============================================================ */
+        /* RESPONSIVE */
         @media (max-width: 1024px) {
             .values-layout {
                 grid-template-columns: 1fr;
@@ -608,9 +626,7 @@
                 max-width: 500px;
                 margin: 0 auto;
             }
-            .values-image-wrap::before {
-                display: none; /* hide gold offset on smaller screens */
-            }
+            .values-image-wrap::before { display: none; }
             .leader-card {
                 grid-template-columns: 300px 1fr;
                 gap: 40px;
@@ -649,12 +665,15 @@
             .philosophy-section h2 { font-size: 13px; letter-spacing: 3px; }
             .philosophy-section p,
             .mission-section p,
-            .value-item p,
-            .timeline-item .desc { font-size: 17px; }
+            .value-item p { font-size: 17px; }
             .philosophy-section .final-lines { font-size: 20px; }
 
-            .timeline-item { flex-direction: column; gap: 12px; }
-            .timeline-item .year { font-size: 22px; }
+            .timeline { padding-left: 0; }
+            .timeline::before { left: 24px; }
+            .timeline-item { gap: 20px; padding-left: 10px; }
+            .timeline-item .year-bubble { width: 60px; height: 60px; font-size: 13px; }
+            .timeline-item .timeline-text h3 { font-size: 20px; }
+            .timeline-item .timeline-text p { font-size: 15px; }
 
             .mission-section .big-title { font-size: 30px; }
 
@@ -742,6 +761,12 @@
                 model that shapes young South Africans not only into skilled
                 footballers, but into individuals of character, integrity and ambition.
             </p>
+            <p>
+                Our structured player development system is built on consistency,
+                accountability and long-term growth rather than short-term results.
+                We prioritise clear progression, high standards and an environment
+                where players are developed not just placed.
+            </p>
         </div>
     </section>
 
@@ -778,6 +803,11 @@
                 individuals who can navigate life with purpose and a strong foundation
                 of values.
             </p>
+            <p>
+                We aim to provide a platform for aspiring footballers to develop their
+                skills, knowledge, and character, enabling them to reach their full
+                potential on and off the field.
+            </p>
 
             <div class="final-lines">
                 <span>Winning is not the ultimate goal.</span>
@@ -790,7 +820,7 @@
     <section class="mission-section">
         <div class="container reveal">
             <h1 class="big-title">Our <span>Mission</span></h1>
-            <p class="subtitle">Who we are &amp; what we do</p>
+            <p class="subtitle">Who we are and what we do</p>
             <p>
                 Dynasty Football Club is committed to becoming a force in youth
                 development and coaching in South Africa. Our foundation provides our
@@ -800,7 +830,7 @@
             </p>
             <p>
                 We aim to provide a platform for aspiring footballers to develop their
-                skills, knowledge, and character — enabling them to reach their full
+                skills, knowledge, and character, enabling them to reach their full
                 potential on and off the field.
             </p>
 
@@ -809,7 +839,7 @@
             <h1 class="big-title">Our <span>Vision</span></h1>
             <p class="subtitle">What we aspire to be</p>
             <p>
-                To be one of South Africa's leading youth development institutions —
+                To be one of South Africa's leading youth development institutions,
                 using football as a platform to produce not only talented players, but
                 disciplined, educated and purpose-driven young people who make a
                 lasting impact in their communities and on the world stage.
@@ -817,23 +847,21 @@
         </div>
     </section>
 
-    <!-- VALUES — WITH IMAGE -->
+    <!-- VALUES -->
     <section class="values-section">
         <div class="container">
             <h2 class="reveal">Our Core <span>Values</span></h2>
 
             <div class="values-layout">
 
-                <!-- VALUES IMAGE (our-values.png) -->
                 <div class="values-image-wrap reveal">
                     <img src="/images/our-values.png" alt="Dynasty FC Core Values" />
                 </div>
 
-                <!-- VALUES LIST -->
                 <div class="values-list">
                     <div class="value-item">
                         <h4>Honour</h4>
-                        <p>Acting with integrity, respect, and fairness — both on and off the field.</p>
+                        <p>Acting with integrity, respect, and fairness both on and off the field.</p>
                     </div>
                     <div class="value-item">
                         <h4>Family</h4>
@@ -841,7 +869,7 @@
                     </div>
                     <div class="value-item">
                         <h4>Positivity</h4>
-                        <p>Maintaining a winning mindset — even in the face of setbacks.</p>
+                        <p>Maintaining a winning mindset even in the face of setbacks.</p>
                     </div>
                     <div class="value-item">
                         <h4>Excellence</h4>
@@ -849,7 +877,7 @@
                     </div>
                     <div class="value-item">
                         <h4>Growth</h4>
-                        <p>Continuous learning, development, and self-improvement — on the pitch and in life.</p>
+                        <p>Continuous learning, development, and self-improvement on the pitch and in life.</p>
                     </div>
                 </div>
 
@@ -857,79 +885,96 @@
         </div>
     </section>
 
-    <!-- HISTORY -->
+    <!-- HISTORY — SCROLL-ACTIVATED TIMELINE -->
     <section class="history-section">
         <div class="container">
             <h2 class="reveal">History of the <span>Club</span></h2>
 
             <div class="timeline">
                 <div class="timeline-item">
-                    <div class="year">2016</div>
-                    <div class="desc">
-                        Dynasty Football Club is born in Johannesburg with a vision to
-                        unite diverse communities through sport. The first intake of boys
-                        was drawn from communities within driving distance.
+                    <div class="year-bubble">2016</div>
+                    <div class="timeline-text">
+                        <h3>2016</h3>
+                        <p>
+                            Dynasty Football Club is born in Johannesburg with a vision to
+                            unite diverse communities through sport. The first intake of boys
+                            was drawn from communities within driving distance.
+                        </p>
                     </div>
                 </div>
 
                 <div class="timeline-item">
-                    <div class="year">2017</div>
-                    <div class="desc">
-                        The club achieves official NPO status, standardising operations
-                        and establishing solid roots within local community structures.
+                    <div class="year-bubble">2017</div>
+                    <div class="timeline-text">
+                        <h3>2017</h3>
+                        <p>
+                            The club achieves official NPO status, standardising operations
+                            and establishing solid roots within local community structures.
+                        </p>
                     </div>
                 </div>
 
                 <div class="timeline-item">
-                    <div class="year">2021</div>
-                    <div class="desc">
-                        Branching out to include dedicated youth development squads
-                        across Under 10 and Under 15 age groups.
+                    <div class="year-bubble">2021</div>
+                    <div class="timeline-text">
+                        <h3>2021</h3>
+                        <p>
+                            Branching out to include dedicated youth development squads
+                            across Under 10 and Under 15 age groups.
+                        </p>
                     </div>
                 </div>
 
                 <div class="timeline-item">
-                    <div class="year">2024</div>
-                    <div class="desc">
-                        Launch of a highly competitive women's football division — the
-                        Diamond Divas — expanding our impact and reach across Gauteng.
+                    <div class="year-bubble">2024</div>
+                    <div class="timeline-text">
+                        <h3>2024</h3>
+                        <p>
+                            Launch of a highly competitive women's football division, the
+                            Diamond Divas, expanding our impact and reach across Gauteng.
+                        </p>
                     </div>
                 </div>
 
                 <div class="timeline-item">
-                    <div class="year">2025</div>
-                    <div class="desc">
-                        Cementing our place in SAFA regional frameworks, hosting
-                        wide-scale trials and serving as a launchpad for elite young
-                        talent in Gauteng.
+                    <div class="year-bubble">2025</div>
+                    <div class="timeline-text">
+                        <h3>2025</h3>
+                        <p>
+                            Cementing our place in SAFA regional frameworks, hosting
+                            wide-scale trials and serving as a launchpad for elite young
+                            talent in Gauteng.
+                        </p>
                     </div>
                 </div>
 
                 <div class="timeline-item">
-                    <div class="year">2026</div>
-                    <div class="desc">
-                        Dynasty FC continues to grow as a regional force — with over 44
-                        registered players across four competitive teams and a growing
-                        community of supporters.
+                    <div class="year-bubble">2026</div>
+                    <div class="timeline-text">
+                        <h3>2026</h3>
+                        <p>
+                            Dynasty FC continues to grow as a regional force, with over 44
+                            registered players across four competitive teams and a growing
+                            community of supporters.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- LEADERSHIP — WITH JOURNEY IMAGE -->
+    <!-- LEADERSHIP -->
     <section class="leadership-section">
         <div class="container">
             <h2 class="reveal">Meet Our <span>Leadership</span> Team</h2>
 
             <div class="leader-card">
-                <!-- JOURNEY IMAGE -->
                 <div class="leader-photo">
                     <img src="/images/journey.png" alt="Dynasty FC Journey" />
                 </div>
 
                 <div class="leader-info">
-                    <div class="small-label">Founder &amp; Director</div>
+                    <div class="small-label">Founder and Director</div>
                     <h3>Dynasty FC Leadership</h3>
                     <p>
                         Our leadership team brings decades of combined experience in
@@ -941,7 +986,7 @@
                     <p>
                         From the coaching staff to the club's administrative backbone,
                         the Dynasty FC team is driven by a shared commitment to
-                        developing young champions — on and off the pitch.
+                        developing young champions on and off the pitch.
                     </p>
                 </div>
             </div>
@@ -952,7 +997,7 @@
     <section class="final-cta">
         <div class="container reveal">
             <h2>Every Player <span>Matters.</span></h2>
-            <p>Support Dynasty FC and help shape the next generation of champions — on and off the pitch.</p>
+            <p>Support Dynasty FC and help shape the next generation of champions, on and off the pitch.</p>
             <a href="/get-involved" class="btn-cta">
                 Get Involved <i class="fas fa-arrow-right"></i>
             </a>
@@ -1003,14 +1048,14 @@
             }, opts);
             valueItems.forEach(el => valueObserver.observe(el));
 
+            // Timeline: highlight each year as it scrolls into view
             const timelineObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
+                entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        setTimeout(() => entry.target.classList.add('in-view'), index * 120);
-                        timelineObserver.unobserve(entry.target);
+                        entry.target.classList.add('in-view');
                     }
                 });
-            }, opts);
+            }, { threshold: 0.35, rootMargin: '0px 0px -100px 0px' });
             timelineItems.forEach(el => timelineObserver.observe(el));
         });
     </script>
