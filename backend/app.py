@@ -25,6 +25,7 @@ from security import (
     limiter, init_talisman, harden_session,
     init_error_handlers, clean_str, is_valid_email
 )
+from email_template import render_email, info_block, message_block
 
 app = Flask(__name__,
             static_folder='../frontend',
@@ -323,8 +324,22 @@ def google_callback():
             session['role'] = 'Player'
 
             try:
-                send_email(google_email, "Welcome to Dynasty FC!",
-                    f"<h2>Welcome, {google_name}!</h2><p>Your account is active.</p>")
+                body_html = (
+                    f'<p>Hi <b>{google_name}</b>,</p>'
+                    f'<p>Welcome to Dynasty FC. Your account is now active and you can '
+                    f'start predicting match scores, writing testimonials, and following '
+                    f'the club.</p>'
+                    f'<p style="margin-top:20px;color:#7a8699;">'
+                    f'If you did not create this account, please reply to this email.</p>'
+                )
+                html = render_email(
+                    title=f"Welcome to Dynasty FC, {google_name}",
+                    body_html=body_html,
+                    preview="Your Dynasty FC account is ready",
+                    cta_text="Explore the Club",
+                    cta_url=f"{APP_BASE_URL}/"
+                )
+                send_email(google_email, "Welcome to Dynasty FC!", html)
             except Exception as e:
                 print(f"Email error: {e}")
 
@@ -414,7 +429,19 @@ def register_api():
         new_user_id = cursor.lastrowid
 
         try:
-            send_email(email, "Welcome to Dynasty FC!", f"<h2>Welcome, {username}!</h2>")
+            body_html = (
+                f'<p>Hi <b>{username}</b>,</p>'
+                f'<p>Welcome to Dynasty FC. Your account has been created and you can '
+                f'now log in to predict match scores and follow the club.</p>'
+            )
+            html = render_email(
+                title=f"Welcome to Dynasty FC, {username}",
+                body_html=body_html,
+                preview="Your Dynasty FC account is ready",
+                cta_text="Log In",
+                cta_url=f"{APP_BASE_URL}/login"
+            )
+            send_email(email, "Welcome to Dynasty FC!", html)
         except Exception as e:
             print(f"Email error: {e}")
 
@@ -568,17 +595,19 @@ def create_testimonial():
         conn.commit()
 
         try:
-            send_email(
-                ADMIN_EMAIL,
-                f"New Testimonial Submitted by {author_name}",
-                f"""
-                <h2>New Testimonial Awaiting Approval</h2>
-                <p><b>Name:</b> {author_name}</p>
-                <p><b>Role:</b> {author_role}</p>
-                <p><b>Testimonial:</b></p>
-                <blockquote>{content}</blockquote>
-                """
+            body_html = (
+                info_block("Name", author_name) +
+                info_block("Role", author_role) +
+                message_block(content)
             )
+            html = render_email(
+                title="New Testimonial Awaiting Approval",
+                body_html=body_html,
+                preview=f"{author_name} shared a testimonial",
+                cta_text="Review in Dashboard",
+                cta_url=f"{APP_BASE_URL}/dashboard"
+            )
+            send_email(ADMIN_EMAIL, f"New Testimonial: {author_name}", html)
         except Exception as e:
             print(f"Email error: {e}")
 
@@ -789,8 +818,20 @@ def send_message():
         if cursor: cursor.close()
         if conn: conn.close()
     try:
-        send_email(ADMIN_EMAIL, f"New Contact: {data['subject']}",
-                   f"<p>{data['name']} ({data['email']}): {data['message']}</p>")
+        body_html = (
+            info_block("From", data['name']) +
+            info_block("Email", data['email']) +
+            info_block("Subject", data['subject']) +
+            message_block(data['message'])
+        )
+        html = render_email(
+            title="New Contact Message",
+            body_html=body_html,
+            preview=f"{data['name']} sent a message",
+            cta_text="Open Dashboard",
+            cta_url=f"{APP_BASE_URL}/dashboard"
+        )
+        send_email(ADMIN_EMAIL, f"New Contact: {data['subject']}", html)
     except Exception as e:
         print(f"Email error: {e}")
     return jsonify({'success': True, 'message': 'Message sent'})
@@ -861,7 +902,22 @@ def apply_volunteer():
         if cursor: cursor.close()
         if conn: conn.close()
     try:
-        send_email(ADMIN_EMAIL, f"New Volunteer: {data['name']}", f"<p>{data['email']}</p>")
+        body_html = (
+            info_block("Name", data['name']) +
+            info_block("Email", data['email']) +
+            info_block("Phone", data.get('phone') or "Not provided") +
+            info_block("Role", data['role']) +
+            info_block("Availability", data.get('availability') or "Not specified") +
+            message_block(data.get('message') or "")
+        )
+        html = render_email(
+            title="New Volunteer Application",
+            body_html=body_html,
+            preview=f"{data['name']} applied to volunteer",
+            cta_text="Review Application",
+            cta_url=f"{APP_BASE_URL}/dashboard"
+        )
+        send_email(ADMIN_EMAIL, f"New Volunteer: {data['name']}", html)
     except Exception as e:
         print(f"Email error: {e}")
     return jsonify({'success': True, 'message': 'Application submitted'})
