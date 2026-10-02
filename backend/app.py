@@ -21,10 +21,10 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 load_dotenv()
 
 from database.db import get_db_connection, test_connection
-
-# ============================================================
-# APP SETUP
-# ============================================================
+from security import (
+    limiter, init_talisman, harden_session,
+    init_error_handlers, clean_str, is_valid_email
+)
 
 app = Flask(__name__,
             static_folder='../frontend',
@@ -33,9 +33,10 @@ CORS(app)
 
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'dynasty-fc-secret-key-2026')
 
-# ============================================================
-# UPLOAD CONFIG
-# ============================================================
+harden_session(app)
+init_talisman(app)
+init_error_handlers(app)
+limiter.init_app(app)
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'frontend', 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -44,31 +45,16 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx'}
 
-# ============================================================
-# APP BASE URL (for Google OAuth + emails)
-# ============================================================
-
 APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5001')
-
-# ============================================================
-# GOOGLE OAUTH CONFIG
-# ============================================================
 
 GOOGLE_CLIENT_ID     = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
-
-# ============================================================
-# SENDGRID CONFIG
-# ============================================================
 
 SENDGRID_API_KEY    = os.getenv('SENDGRID_API_KEY')
 SENDGRID_FROM_EMAIL = os.getenv('SENDGRID_FROM_EMAIL')
 SENDGRID_FROM_NAME  = os.getenv('SENDGRID_FROM_NAME', 'Dynasty FC')
 ADMIN_EMAIL         = os.getenv('ADMIN_EMAIL', SENDGRID_FROM_EMAIL)
 
-# ============================================================
-# HELPERS
-# ============================================================
 
 def _serialize_row(row):
     clean = {}
@@ -98,7 +84,7 @@ def _serialize_rows(rows):
 
 def send_email(to_email, subject, html_content):
     if not SENDGRID_API_KEY or not SENDGRID_FROM_EMAIL:
-        print("⚠️ SendGrid not configured")
+        print("SendGrid not configured")
         return False
     try:
         url = 'https://api.sendgrid.com/v3/mail/send'
@@ -114,12 +100,12 @@ def send_email(to_email, subject, html_content):
         }
         r = requests.post(url, json=payload, headers=headers, timeout=10)
         if r.status_code in (200, 202):
-            print(f"✅ Email sent to {to_email}")
+            print(f"Email sent to {to_email}")
             return True
-        print(f"❌ SendGrid error {r.status_code}: {r.text}")
+        print(f"SendGrid error {r.status_code}: {r.text}")
         return False
     except Exception as e:
-        print(f"❌ Email failed: {e}")
+        print(f"Email failed: {e}")
         return False
 
 
@@ -140,10 +126,6 @@ def get_redirect_url(role):
         return '/dashboard'
     return '/'
 
-
-# ============================================================
-# DECORATORS
-# ============================================================
 
 def login_required(f):
     @wraps(f)
@@ -177,10 +159,6 @@ def role_required(allowed_roles):
         return decorated_function
     return decorator
 
-
-# ============================================================
-# PUBLIC PAGES
-# ============================================================
 
 @app.route('/')
 def home(): return render_template('index.html')
@@ -216,10 +194,6 @@ def team_news(): return redirect('/news-updates')
 def upcoming_events(): return redirect('/news-updates')
 
 
-# ============================================================
-# STAFF PAGES
-# ============================================================
-
 @app.route('/staff-login')
 def staff_login_page():
     if 'user_id' in session and session.get('role') in ['System Administrator', 'Club Administrator']:
@@ -250,10 +224,6 @@ def finance(): return render_template('finance.html')
 @staff_required
 def donors(): return render_template('donors.html')
 
-
-# ============================================================
-# GOOGLE OAUTH
-# ============================================================
 
 @app.route('/auth/google')
 def google_login():
@@ -298,7 +268,7 @@ def google_callback():
     try:
         token_json = requests.post('https://oauth2.googleapis.com/token', data=token_data, timeout=10).json()
     except Exception as e:
-        print(f"❌ Token exchange failed: {e}")
+        print(f"Token exchange failed: {e}")
         return redirect('/login?error=google_token_failed')
 
     if 'id_token' not in token_json:
@@ -309,7 +279,7 @@ def google_callback():
             token_json['id_token'], google_requests.Request(), GOOGLE_CLIENT_ID
         )
     except Exception as e:
-        print(f"❌ ID token verify failed: {e}")
+        print(f"ID token verify failed: {e}")
         return redirect('/login?error=google_verify_failed')
 
     google_email = idinfo.get('email', '').lower().strip()
@@ -360,18 +330,15 @@ def google_callback():
 
         return redirect('/')
     except Exception as e:
-        print(f"❌ Google DB error: {e}")
+        print(f"Google DB error: {e}")
         return redirect('/login?error=google_db_error')
     finally:
         if cursor: cursor.close()
         if conn: conn.close()
 
 
-# ============================================================
-# AUTH API
-# ============================================================
-
 @app.route('/api/login', methods=['POST'])
+@limiter.limit("5 per minute")
 def login_api():
     data = request.json
     email = data.get('email')
@@ -412,6 +379,7 @@ def logout_api():
 
 
 @app.route('/api/register', methods=['POST'])
+@limiter.limit("3 per minute")
 def register_api():
     data = request.json
     username = (data.get('username') or '').strip()
@@ -485,6 +453,7 @@ def check_staff_session():
 
 
 @app.route('/api/staff-login', methods=['POST'])
+@limiter.limit("5 per minute")
 def staff_login_api():
     data = request.json
     email = data.get('email')
@@ -522,10 +491,6 @@ def staff_login_api():
     })
 
 
-# ============================================================
-# TESTIMONIALS
-# ============================================================
-
 @app.route('/api/testimonials/public', methods=['GET'])
 def get_public_testimonials():
     conn = None; cursor = None
@@ -540,7 +505,7 @@ def get_public_testimonials():
         """)
         return jsonify(_serialize_rows(cursor.fetchall()))
     except Exception as e:
-        print(f"❌ /api/testimonials/public ERROR: {e}")
+        print(f"/api/testimonials/public ERROR: {e}")
         return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
@@ -570,7 +535,7 @@ def get_all_testimonials():
         cursor.execute(query, params)
         return jsonify(_serialize_rows(cursor.fetchall()))
     except Exception as e:
-        print(f"❌ /api/testimonials ERROR: {e}")
+        print(f"/api/testimonials ERROR: {e}")
         return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
@@ -579,6 +544,7 @@ def get_all_testimonials():
 
 @app.route('/api/testimonials', methods=['POST'])
 @login_required
+@limiter.limit("3 per hour")
 def create_testimonial():
     data = request.json
     author_name = (data.get('author_name') or '').strip()
@@ -618,7 +584,7 @@ def create_testimonial():
 
         return jsonify({'success': True, 'message': 'Testimonial submitted for review'})
     except Exception as e:
-        print(f"❌ /api/testimonials POST ERROR: {e}")
+        print(f"/api/testimonials POST ERROR: {e}")
         return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
@@ -676,10 +642,6 @@ def delete_testimonial(tid):
         if conn: conn.close()
 
 
-# ============================================================
-# GALLERY
-# ============================================================
-
 @app.route('/api/gallery', methods=['GET'])
 def get_gallery():
     conn = None; cursor = None
@@ -694,7 +656,7 @@ def get_gallery():
         """)
         return jsonify(_serialize_rows(cursor.fetchall()))
     except Exception as e:
-        print(f"❌ /api/gallery ERROR: {e}")
+        print(f"/api/gallery ERROR: {e}")
         return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
@@ -731,7 +693,7 @@ def upload_gallery_photo():
             'photo_id': cursor.lastrowid
         })
     except Exception as e:
-        print(f"❌ /api/gallery POST ERROR: {e}")
+        print(f"/api/gallery POST ERROR: {e}")
         return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
@@ -754,10 +716,6 @@ def delete_gallery_photo(photo_id):
         if cursor: cursor.close()
         if conn: conn.close()
 
-
-# ============================================================
-# NEWSLETTERS
-# ============================================================
 
 @app.route('/api/newsletters', methods=['GET'])
 def get_newsletters():
@@ -814,11 +772,8 @@ def delete_newsletter(newsletter_id):
         if conn: conn.close()
 
 
-# ============================================================
-# MESSAGES
-# ============================================================
-
 @app.route('/api/messages', methods=['POST'])
+@limiter.limit("3 per minute")
 def send_message():
     data = request.json
     if not all([data.get('name'), data.get('email'), data.get('subject'), data.get('message')]):
@@ -887,11 +842,8 @@ def delete_message(message_id):
         if conn: conn.close()
 
 
-# ============================================================
-# VOLUNTEER
-# ============================================================
-
 @app.route('/api/volunteer', methods=['POST'])
+@limiter.limit("3 per minute")
 def apply_volunteer():
     data = request.json
     if not all([data.get('name'), data.get('email'), data.get('role')]):
@@ -946,10 +898,6 @@ def delete_volunteer(volunteer_id):
         if conn: conn.close()
 
 
-# ============================================================
-# DONORS PAGE (Staff-managed — public-facing page removed)
-# ============================================================
-
 @app.route('/api/donors-page', methods=['GET'])
 def get_donors_page():
     conn = None; cursor = None
@@ -1000,10 +948,6 @@ def delete_donor_page(donor_id):
         if cursor: cursor.close()
         if conn: conn.close()
 
-
-# ============================================================
-# DOCUMENTS VAULT
-# ============================================================
 
 @app.route('/api/documents', methods=['GET'])
 @staff_required
@@ -1057,10 +1001,6 @@ def delete_document(document_id):
         if conn: conn.close()
 
 
-# ============================================================
-# TEAMS / PLAYERS
-# ============================================================
-
 @app.route('/api/players-teams', methods=['GET'])
 def get_players_by_team():
     team_group = request.args.get('team_group')
@@ -1082,16 +1022,12 @@ def get_players_by_team():
         cursor.execute(query, params)
         return jsonify(_serialize_rows(cursor.fetchall()))
     except Exception as e:
-        print(f"❌ /api/players-teams ERROR: {e}")
+        print(f"/api/players-teams ERROR: {e}")
         return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
         if conn: conn.close()
 
-
-# ============================================================
-# MATCHES
-# ============================================================
 
 @app.route('/api/team-matches', methods=['GET'])
 def get_team_matches():
@@ -1120,7 +1056,7 @@ def get_team_matches():
         raw_rows = cursor.fetchall()
         return jsonify(_serialize_rows(raw_rows))
     except Exception as e:
-        print(f"❌ /api/team-matches ERROR: {e}")
+        print(f"/api/team-matches ERROR: {e}")
         return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
@@ -1193,10 +1129,6 @@ def delete_team_match(match_id):
         if cursor: cursor.close()
         if conn: conn.close()
 
-
-# ============================================================
-# PREDICTIONS
-# ============================================================
 
 @app.route('/api/match-predictions', methods=['POST'])
 @login_required
@@ -1290,7 +1222,7 @@ def get_all_predictions():
 
         return jsonify(_serialize_rows(rows))
     except Exception as e:
-        print(f"❌ /api/all-predictions ERROR: {e}")
+        print(f"/api/all-predictions ERROR: {e}")
         return jsonify({'error': str(e)}), 500
     finally:
         if cursor: cursor.close()
@@ -1334,10 +1266,6 @@ def get_vote_results(match_id):
         if conn: conn.close()
 
 
-# ============================================================
-# DONATIONS (Staff-only view — no public payment)
-# ============================================================
-
 @app.route('/api/donations', methods=['GET'])
 @staff_required
 def list_donations():
@@ -1355,7 +1283,6 @@ def list_donations():
 @app.route('/api/donations', methods=['POST'])
 @staff_required
 def record_donation():
-    """Staff manually records a donation received (e.g. bank transfer)."""
     data = request.json
     name = (data.get('donor_name') or '').strip()
     email = (data.get('donor_email') or '').strip()
@@ -1407,10 +1334,6 @@ def delete_donation(donation_id):
         if cursor: cursor.close()
         if conn: conn.close()
 
-
-# ============================================================
-# GENERIC DATA
-# ============================================================
 
 @app.route('/api/players', methods=['GET'])
 def get_players():
@@ -1516,10 +1439,6 @@ def get_attendance():
         if cursor: cursor.close()
         if conn: conn.close()
 
-
-# ============================================================
-# CRUD APIs
-# ============================================================
 
 @app.route('/api/players', methods=['POST'])
 @staff_required
@@ -1655,10 +1574,6 @@ def serve_upload(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-# ============================================================
-# STATIC FILES
-# ============================================================
-
 @app.route('/css/<path:filename>')
 def serve_css(filename): return send_from_directory('../frontend/css', filename)
 
@@ -1669,21 +1584,17 @@ def serve_js(filename): return send_from_directory('../frontend/js', filename)
 def serve_images(filename): return send_from_directory('../frontend/images', filename)
 
 
-# ============================================================
-# START SERVER
-# ============================================================
-
 if __name__ == '__main__':
     if test_connection():
         print("=" * 60)
-        print("🚀 DYNASTY FC SERVER RUNNING")
+        print("DYNASTY FC SERVER RUNNING")
         print("=" * 60)
-        print("📱 On your phone (same WiFi):")
+        print("On your phone (same WiFi):")
         print("   http://192.168.1.76:5001")
         print("")
-        print("💻 On this Mac:")
+        print("On this Mac:")
         print("   http://127.0.0.1:5001")
         print("=" * 60)
         app.run(debug=True, host='0.0.0.0', port=5001)
     else:
-        print("❌ Database connection failed. Check your credentials.")
+        print("Database connection failed. Check your credentials.")

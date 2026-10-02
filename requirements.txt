@@ -9,3 +9,7 @@ google-auth
 google-auth-oauthlib
 google-auth-httplib2
 gunicorn
+Flask-Limiter
+Flask-Talisman
+Flask-WTF
+Flask-SeaSurf

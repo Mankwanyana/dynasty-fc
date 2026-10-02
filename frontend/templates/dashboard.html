@@ -363,6 +363,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .table-container .table-header h2 {
@@ -384,6 +386,52 @@
         .table-container .table-header .btn-add:hover {
             background: #d4af6a;
             transform: translateY(-2px);
+        }
+
+        .table-search {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .table-search i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b8944a;
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        .table-search input {
+            width: 100%;
+            padding: 11px 15px 11px 42px;
+            border: 2px solid #e8eaee;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fafbfc;
+            transition: all 0.25s;
+            color: #0a1a33;
+        }
+
+        .table-search input:focus {
+            outline: none;
+            border-color: #b8944a;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(184,148,74,0.12);
+        }
+
+        .table-search input::placeholder {
+            color: #a8b0bf;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 25px;
+            color: #888;
+            font-size: 14px;
+            font-style: italic;
         }
 
         table {
@@ -767,6 +815,10 @@
                     </div>
                     <div class="table-container">
                         <h2>All Messages</h2>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by name, email, subject or message..." oninput="filterTable('messagesTableBody', this.value)">
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -792,6 +844,10 @@
                     </div>
                     <div class="table-container">
                         <h2>All Applications</h2>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by name, email, role or availability..." oninput="filterTable('volunteersTableBody', this.value)">
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -820,6 +876,10 @@
                             <h2>All Newsletters</h2>
                             <button class="btn-add" onclick="openNewsletterModal()"><i class="fas fa-plus"></i> Add Newsletter</button>
                         </div>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by title or content..." oninput="filterTable('newslettersTableBody', this.value)">
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -846,6 +906,10 @@
                         <div class="table-header">
                             <h2>Pending Approval</h2>
                         </div>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search pending testimonials..." oninput="filterTable('pendingTestimonialsBody', this.value)">
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -865,6 +929,10 @@
                     <div class="table-container">
                         <div class="table-header">
                             <h2>Approved Testimonials</h2>
+                        </div>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search approved testimonials..." oninput="filterTable('approvedTestimonialsBody', this.value)">
                         </div>
                         <table>
                             <thead>
@@ -909,6 +977,10 @@
                             <h2>All Matches</h2>
                             <button class="btn-add" onclick="openMatchModal()"><i class="fas fa-plus"></i> Add Match</button>
                         </div>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by team, venue or date..." oninput="filterTable('matchesTableBody', this.value)">
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -936,6 +1008,10 @@
                     </div>
                     <div class="table-container">
                         <h2>All Predictions</h2>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by user or match..." oninput="filterTable('predictionsTableBody', this.value)">
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -963,6 +1039,10 @@
                         <div class="table-header">
                             <h2>All Players</h2>
                             <button class="btn-add" onclick="openPlayerModal()"><i class="fas fa-plus"></i> Add Player</button>
+                        </div>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by name, position or team..." oninput="filterTable('playersTableBody', this.value)">
                         </div>
                         <table>
                             <thead>
@@ -993,6 +1073,10 @@
                             <h2>All Staff</h2>
                             <button class="btn-add" onclick="openStaffModal()"><i class="fas fa-plus"></i> Add Staff</button>
                         </div>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by name, role or email..." oninput="filterTable('staffTableBody', this.value)">
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -1017,6 +1101,10 @@
                     </div>
                     <div class="table-container">
                         <h2>All Transactions</h2>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by month, description or category..." oninput="filterTable('financeTableBody', this.value)">
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -1042,6 +1130,10 @@
                         <div class="table-header">
                             <h2>All Items</h2>
                             <button class="btn-add" onclick="openInventoryModal()"><i class="fas fa-plus"></i> Add Item</button>
+                        </div>
+                        <div class="table-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by item, category, condition or location..." oninput="filterTable('inventoryTableBody', this.value)">
                         </div>
                         <table>
                             <thead>
@@ -1197,6 +1289,89 @@
     </div>
 
     <script>
+        function exportTableToCSV(tbodyId, filename) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+
+    const table = tbody.closest('table');
+    const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+
+    const rows = [];
+    tbody.querySelectorAll('tr').forEach(tr => {
+        if (tr.querySelector('td[colspan]')) return;
+        if (tr.style.display === 'none') return;
+
+        const cells = Array.from(tr.querySelectorAll('td')).map(td => {
+            let text = td.textContent.trim().replace(/\s+/g, ' ');
+            if (text.includes('"') || text.includes(',') || text.includes('\n')) {
+                text = '"' + text.replace(/"/g, '""') + '"';
+            }
+            return text;
+        });
+        rows.push(cells);
+    });
+
+    if (rows.length === 0) {
+        alert('No rows to export.');
+        return;
+    }
+
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+        function filterTable(tbodyId, query) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+
+            const rows = tbody.querySelectorAll('tr');
+            const q = query.toLowerCase().trim();
+
+            if (q === '') {
+                rows.forEach(row => {
+                    if (!row.querySelector('td[colspan]')) row.style.display = '';
+                });
+                removeNoResults(tbody);
+                return;
+            }
+
+            let visibleCount = 0;
+            rows.forEach(row => {
+                if (row.querySelector('td[colspan]')) return;
+                const text = row.textContent.toLowerCase();
+                const match = text.includes(q);
+                row.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+
+            if (visibleCount === 0) {
+                showNoResults(tbody);
+            } else {
+                removeNoResults(tbody);
+            }
+        }
+
+        function showNoResults(tbody) {
+            if (tbody.querySelector('.no-results-row')) return;
+            const colCount = tbody.closest('table').querySelectorAll('thead th').length || 1;
+            const tr = document.createElement('tr');
+            tr.className = 'no-results-row';
+            tr.innerHTML = `<td colspan="${colCount}" class="no-results">No matching results found.</td>`;
+            tbody.appendChild(tr);
+        }
+
+        function removeNoResults(tbody) {
+            const existing = tbody.querySelector('.no-results-row');
+            if (existing) existing.remove();
+        }
+
         async function checkLoginStatus() {
             try {
                 const response = await fetch('/api/check-session');
@@ -1264,6 +1439,7 @@
             loadTestimonials();
             loadGallery();
             loadMatches();
+            loadPredictions();
             loadPlayers();
             loadStaff();
             loadFinance();
@@ -1306,6 +1482,7 @@
 
             if (panel === 'gallery') loadGallery();
             if (panel === 'testimonials') loadTestimonials();
+            if (panel === 'predictions') loadPredictions();
         }
 
         async function logout() {
@@ -1456,7 +1633,7 @@
                     <tr>
                         <td><strong>${n.title}</strong></td>
                         <td>${n.content.substring(0, 50)}...</td>
-                        <td>${n.is_published ? '✅ Published' : '❌ Draft'}</td>
+                        <td>${n.is_published ? 'Published' : 'Draft'}</td>
                         <td>
                             <button class="btn-action delete" onclick="deleteNewsletter(${n.newsletter_id})"><i class="fas fa-trash"></i> Delete</button>
                         </td>
@@ -1731,7 +1908,7 @@
                         <td>${m.match_date}</td>
                         <td>${m.venue}</td>
                         <td>${m.is_completed ? m.home_score + ' - ' + m.away_score : 'TBD'}</td>
-                        <td>${m.is_completed ? '✅ Completed' : '⏳ Upcoming'}</td>
+                        <td>${m.is_completed ? 'Completed' : 'Upcoming'}</td>
                         <td>
                             <button class="btn-action delete" onclick="deleteMatch(${m.match_id})"><i class="fas fa-trash"></i> Delete</button>
                         </td>
@@ -1802,9 +1979,9 @@
 
                 tbody.innerHTML = preds.map(p => {
                     let pointsBadge = '<span style="color:#888;">—</span>';
-                    if (p.points === 3) pointsBadge = '<span class="status-badge approved">🏆 Exact! 3pts</span>';
-                    else if (p.points === 1) pointsBadge = '<span class="status-badge pending">✅ Winner 1pt</span>';
-                    else if (p.points === 0) pointsBadge = '<span class="status-badge rejected">❌ 0pts</span>';
+                    if (p.points === 3) pointsBadge = '<span class="status-badge approved">Exact! 3pts</span>';
+                    else if (p.points === 1) pointsBadge = '<span class="status-badge pending">Winner 1pt</span>';
+                    else if (p.points === 0) pointsBadge = '<span class="status-badge rejected">0pts</span>';
 
                     return `
                     <tr>
