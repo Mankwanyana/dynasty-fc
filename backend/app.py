@@ -801,6 +801,112 @@ def delete_newsletter(newsletter_id):
         if conn: conn.close()
 
 
+@app.route('/api/newsletters/<int:newsletter_id>/recipients', methods=['GET'])
+@staff_required
+def get_newsletter_recipients(newsletter_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM newsletters WHERE newsletter_id = %s", (newsletter_id,))
+        newsletter = cursor.fetchone()
+        if not newsletter:
+            return jsonify({'error': 'Newsletter not found'}), 404
+
+        cursor.execute("""
+            SELECT COUNT(*) AS total
+            FROM users
+            WHERE email IS NOT NULL
+              AND email <> ''
+              AND is_active = 1
+              AND role = 'Player'
+        """)
+        total = cursor.fetchone()['total']
+
+        return jsonify({
+            'success': True,
+            'newsletter_title': newsletter['title'],
+            'recipient_count': total
+        })
+    except Exception as e:
+        print(f"/api/newsletters recipients ERROR: {e}")
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
+@app.route('/api/newsletters/<int:newsletter_id>/broadcast', methods=['POST'])
+@staff_required
+@limiter.limit("1 per 5 minutes")
+def broadcast_newsletter(newsletter_id):
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM newsletters WHERE newsletter_id = %s", (newsletter_id,))
+        newsletter = cursor.fetchone()
+        if not newsletter:
+            return jsonify({'error': 'Newsletter not found'}), 404
+
+        cursor.execute("""
+            SELECT email, username
+            FROM users
+            WHERE email IS NOT NULL
+              AND email <> ''
+              AND is_active = 1
+              AND role = 'Player'
+        """)
+        recipients = cursor.fetchall()
+
+        if not recipients:
+            return jsonify({'error': 'No recipients found'}), 400
+
+        body_html = (
+            f'<p style="color:#7a8699;font-size:12px;letter-spacing:3px;'
+            f'text-transform:uppercase;font-weight:700;margin-bottom:14px;">'
+            f'Club Announcement</p>'
+            f'<div style="color:#2a2a35;font-size:16px;line-height:1.75;'
+            f'white-space:pre-wrap;">{newsletter["content"]}</div>'
+        )
+
+        html = render_email(
+            title=newsletter['title'],
+            body_html=body_html,
+            preview=newsletter['title'],
+            cta_text="Visit Dynasty FC",
+            cta_url=f"{APP_BASE_URL}/news-updates"
+        )
+
+        sent = 0
+        failed = 0
+        for r in recipients:
+            try:
+                ok = send_email(r['email'], newsletter['title'], html)
+                if ok:
+                    sent += 1
+                else:
+                    failed += 1
+            except Exception as e:
+                failed += 1
+                print(f"Broadcast error for {r['email']}: {e}")
+
+        return jsonify({
+            'success': True,
+            'sent': sent,
+            'failed': failed,
+            'total': len(recipients)
+        })
+    except Exception as e:
+        print(f"/api/newsletters broadcast ERROR: {e}")
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
 @app.route('/api/messages', methods=['POST'])
 @limiter.limit("3 per minute")
 def send_message():
@@ -817,6 +923,7 @@ def send_message():
     finally:
         if cursor: cursor.close()
         if conn: conn.close()
+
     try:
         body_html = (
             info_block("From", data['name']) +
@@ -834,6 +941,30 @@ def send_message():
         send_email(ADMIN_EMAIL, f"New Contact: {data['subject']}", html)
     except Exception as e:
         print(f"Email error: {e}")
+
+    try:
+        reply_body = (
+            f'<p>Hi <b>{data["name"]}</b>,</p>'
+            f'<p>Thank you for reaching out to Dynasty FC. We have received your message '
+            f'and our team will get back to you within 24 hours.</p>'
+            f'<p style="margin-top:24px;color:#7a8699;font-size:13px;text-transform:uppercase;letter-spacing:2px;">'
+            f'Your message</p>'
+            f'<div style="margin-top:8px;padding:16px 20px;background:#f8f6f1;'
+            f'border-left:3px solid #b8944a;border-radius:6px;color:#2a2a35;'
+            f'font-size:15px;line-height:1.7;white-space:pre-wrap;">'
+            f'<b>{data["subject"]}</b><br><br>{data["message"]}</div>'
+        )
+        reply_html = render_email(
+            title="We received your message",
+            body_html=reply_body,
+            preview="Thanks for contacting Dynasty FC",
+            cta_text="Visit Our Website",
+            cta_url=f"{APP_BASE_URL}/"
+        )
+        send_email(data['email'], "We received your message - Dynasty FC", reply_html)
+    except Exception as e:
+        print(f"Auto-reply error: {e}")
+
     return jsonify({'success': True, 'message': 'Message sent'})
 
 

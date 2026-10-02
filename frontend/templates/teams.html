@@ -43,6 +43,132 @@
             margin-bottom: 30px;
             font-size: 16px;
         }
+
+        /* NEXT MATCH COUNTDOWN BANNER */
+        .next-match-banner {
+            display: none;
+            background: linear-gradient(135deg, rgba(10,26,51,0.95) 0%, rgba(22,42,74,0.95) 100%);
+            border: 1px solid rgba(184,148,74,0.35);
+            border-left: 4px solid #b8944a;
+            border-radius: 14px;
+            padding: 22px 26px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            backdrop-filter: blur(6px);
+        }
+        .next-match-banner.show { display: block; }
+
+        .next-match-banner .nm-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: #d4af6a;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .next-match-banner .nm-label i {
+            color: #b8944a;
+            animation: nmPulse 1.8s ease-in-out infinite;
+        }
+        @keyframes nmPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.85; }
+        }
+
+        .next-match-banner .nm-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .next-match-banner .nm-info {
+            flex: 1;
+            min-width: 240px;
+        }
+        .next-match-banner .nm-teams {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+        .next-match-banner .nm-teams .vs {
+            color: #a8c8b8;
+            font-weight: 400;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        .next-match-banner .nm-meta {
+            font-size: 13px;
+            color: #a8c8b8;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .next-match-banner .nm-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .next-match-banner .nm-meta i { color: #b8944a; font-size: 12px; }
+
+        .next-match-banner .nm-countdown {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .next-match-banner .nm-countdown .nm-unit {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(184,148,74,0.25);
+            border-radius: 10px;
+            padding: 10px 14px;
+            min-width: 68px;
+            text-align: center;
+        }
+        .next-match-banner .nm-countdown .nm-num {
+            display: block;
+            font-size: 26px;
+            font-weight: 800;
+            color: #d4af6a;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+        .next-match-banner .nm-countdown .nm-lbl {
+            display: block;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: #a8c8b8;
+            text-transform: uppercase;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            .next-match-banner { padding: 18px 18px; }
+            .next-match-banner .nm-body {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 18px;
+            }
+            .next-match-banner .nm-teams { font-size: 18px; }
+            .next-match-banner .nm-countdown {
+                justify-content: space-between;
+                gap: 8px;
+            }
+            .next-match-banner .nm-countdown .nm-unit {
+                min-width: 0;
+                flex: 1;
+                padding: 8px 6px;
+            }
+            .next-match-banner .nm-countdown .nm-num { font-size: 20px; }
+            .next-match-banner .nm-countdown .nm-lbl { font-size: 8px; letter-spacing: 1px; }
+        }
+
         .team-badges {
             display: flex;
             gap: 15px;
@@ -73,7 +199,6 @@
             color: #0a1a33;
             box-shadow: 0 4px 20px rgba(184,148,74,0.35);
         }
-        /* Team-specific active colours */
         .team-badge.active[data-team="dynamights"] {
             border-color: #4aa8e0;
             background: #4aa8e0;
@@ -107,7 +232,6 @@
             margin-bottom: 30px;
         }
         .team-section.active { display: block; }
-        /* Team-coloured left border on active section */
         .team-section#team-dynamights.active { border-top: 3px solid #4aa8e0; }
         .team-section#team-diamonddivas.active { border-top: 3px solid #e8a0c8; }
         .team-section .team-header {
@@ -385,7 +509,6 @@
             font-size: 14px;
         }
 
-        /* TOAST NOTIFICATION */
         .toast-notice {
             position: fixed;
             top: 90px;
@@ -468,7 +591,6 @@
             }
         }
 
-        /* MODAL */
         .match-modal {
             display: none;
             position: fixed;
@@ -647,7 +769,6 @@
 </head>
 <body>
 
-    <!-- TOAST -->
     <div class="toast-notice" id="loginToast">
         <div class="toast-icon"><i class="fas fa-lock"></i></div>
         <div class="toast-content">
@@ -665,6 +786,29 @@
             <h1>⚽ Our Teams</h1>
             <p class="subtitle">Discover the champions of Dynasty FC</p>
 
+            <!-- NEXT MATCH COUNTDOWN BANNER -->
+            <div class="next-match-banner" id="nextMatchBanner">
+                <div class="nm-label">
+                    <i class="fas fa-clock"></i> Next Match
+                </div>
+                <div class="nm-body">
+                    <div class="nm-info">
+                        <div class="nm-teams" id="nmTeams">Team A <span class="vs">vs</span> Team B</div>
+                        <div class="nm-meta">
+                            <span><i class="fas fa-calendar-alt"></i> <span id="nmDate">—</span></span>
+                            <span><i class="fas fa-clock"></i> <span id="nmTime">—</span></span>
+                            <span><i class="fas fa-map-pin"></i> <span id="nmVenue">—</span></span>
+                        </div>
+                    </div>
+                    <div class="nm-countdown" id="nmCountdown">
+                        <div class="nm-unit"><span class="nm-num" id="nmDays">0</span><span class="nm-lbl">Days</span></div>
+                        <div class="nm-unit"><span class="nm-num" id="nmHours">0</span><span class="nm-lbl">Hrs</span></div>
+                        <div class="nm-unit"><span class="nm-num" id="nmMinutes">0</span><span class="nm-lbl">Min</span></div>
+                        <div class="nm-unit"><span class="nm-num" id="nmSeconds">0</span><span class="nm-lbl">Sec</span></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="team-badges">
                 <button class="team-badge active" data-team="dynamights" onclick="switchTeam('dynamights', this)">
                     <i class="fas fa-bolt"></i> Dynamights <span class="count" id="count-dynamights">0</span>
@@ -674,7 +818,6 @@
                 </button>
             </div>
 
-            <!-- DYNAMIGHTS -->
             <div id="team-dynamights" class="team-section active">
                 <div class="team-header">
                     <h2><i class="fas fa-bolt"></i> Dynamights</h2>
@@ -708,7 +851,6 @@
                 </div>
             </div>
 
-            <!-- DIAMOND DIVAS -->
             <div id="team-diamonddivas" class="team-section">
                 <div class="team-header">
                     <h2><i class="fas fa-gem"></i> Diamond Divas</h2>
@@ -783,6 +925,7 @@
 
     <script>
         var currentMatchId = null;
+        var nextMatchInterval = null;
 
         function switchTeam(team, btn) {
             document.querySelectorAll('.team-section').forEach(s => s.classList.remove('active'));
@@ -921,6 +1064,14 @@
             return d.getDate() + ' ' + months[d.getMonth()];
         }
 
+        function formatLongDate(dateStr) {
+            if (!dateStr) return '—';
+            const d = new Date(dateStr);
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()];
+        }
+
         async function updatePlayerCounts() {
             try {
                 const dRes = await fetch('/api/players-teams?team_group=Dynamights');
@@ -957,6 +1108,87 @@
             } catch (err) {
                 console.error('Error loading coaches:', err);
             }
+        }
+
+        async function loadNextMatch() {
+            try {
+                const [dynRes, divRes] = await Promise.all([
+                    fetch('/api/team-matches?team_group=Dynamights&is_completed=false'),
+                    fetch('/api/team-matches?team_group=Diamond Divas&is_completed=false')
+                ]);
+
+                const dyn = await dynRes.json();
+                const div = await divRes.json();
+                const all = [...(dyn || []), ...(div || [])];
+
+                if (all.length === 0) {
+                    document.getElementById('nextMatchBanner').classList.remove('show');
+                    return;
+                }
+
+                all.sort((a, b) => {
+                    const aTime = new Date(a.match_date + 'T' + (a.match_time || '00:00')).getTime();
+                    const bTime = new Date(b.match_date + 'T' + (b.match_time || '00:00')).getTime();
+                    return aTime - bTime;
+                });
+
+                const now = Date.now();
+                const next = all.find(m => {
+                    const t = new Date(m.match_date + 'T' + (m.match_time || '00:00')).getTime();
+                    return t > now;
+                }) || all[0];
+
+                document.getElementById('nmTeams').innerHTML =
+                    `${next.home_team} <span class="vs">vs</span> ${next.away_team}`;
+                document.getElementById('nmDate').textContent = formatLongDate(next.match_date);
+                document.getElementById('nmTime').textContent = next.match_time || 'TBC';
+                document.getElementById('nmVenue').textContent = next.venue || 'TBC';
+
+                document.getElementById('nextMatchBanner').classList.add('show');
+
+                if (nextMatchInterval) clearInterval(nextMatchInterval);
+                startNextMatchCountdown(next.match_date, next.match_time);
+            } catch (err) {
+                console.error('Error loading next match:', err);
+                document.getElementById('nextMatchBanner').classList.remove('show');
+            }
+        }
+
+        function startNextMatchCountdown(matchDate, matchTime) {
+            const timeStr = (matchTime && matchTime.length >= 5) ? matchTime : '18:00';
+            const target = new Date(matchDate + 'T' + timeStr + ':00').getTime();
+
+            function update() {
+                const now = Date.now();
+                const diff = target - now;
+
+                const daysEl = document.getElementById('nmDays');
+                const hoursEl = document.getElementById('nmHours');
+                const minsEl = document.getElementById('nmMinutes');
+                const secsEl = document.getElementById('nmSeconds');
+                if (!daysEl) return;
+
+                if (diff <= 0) {
+                    daysEl.textContent = '0';
+                    hoursEl.textContent = '0';
+                    minsEl.textContent = '0';
+                    secsEl.textContent = '0';
+                    return;
+                }
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                daysEl.textContent = d;
+                hoursEl.textContent = String(h).padStart(2, '0');
+                minsEl.textContent = String(m).padStart(2, '0');
+                secsEl.textContent = String(s).padStart(2, '0');
+            }
+
+            update();
+            nextMatchInterval = setInterval(update, 1000);
         }
 
         async function checkLoginAndPredict(matchId, homeTeam, awayTeam, date, time, venue) {
@@ -1035,7 +1267,7 @@
                 });
                 const data = await response.json();
                 if (data.success) {
-                    alert('Prediction saved! 🍀 It will appear on the staff dashboard.');
+                    alert('Prediction saved! It will appear on the staff dashboard.');
                     closeMatchModal();
                 } else {
                     alert('Error: ' + (data.error || 'Please log in to predict.'));
@@ -1057,7 +1289,7 @@
                 if (data.success) {
                     document.querySelectorAll('.vote-options button').forEach(b => b.classList.remove('selected'));
                     element.classList.add('selected');
-                    alert('Vote recorded! 🗳️');
+                    alert('Vote recorded!');
                 } else {
                     alert('Error: ' + (data.error || 'Please log in to vote.'));
                 }
@@ -1077,6 +1309,7 @@
 
             updatePlayerCounts();
             loadCoaches();
+            loadNextMatch();
         });
     </script>
 

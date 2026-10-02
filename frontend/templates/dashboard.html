@@ -6,6 +6,7 @@
     <title>Dashboard - Dynasty Integrated System</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         .login-overlay {
             position: fixed;
@@ -426,12 +427,169 @@
             color: #a8b0bf;
         }
 
+        .search-with-export {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
+            margin-bottom: 15px;
+        }
+
+        .search-with-export .table-search {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .btn-export-csv {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 20px;
+            background: #0a1a33;
+            color: #d4af6a;
+            border: 2px solid #b8944a;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-export-csv:hover {
+            background: #b8944a;
+            color: #0a1a33;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184,148,74,0.35);
+        }
+
+        .btn-export-csv i {
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .search-with-export {
+                flex-direction: column;
+            }
+            .btn-export-csv {
+                justify-content: center;
+            }
+        }
+
         .no-results {
             text-align: center;
             padding: 25px;
             color: #888;
             font-size: 14px;
             font-style: italic;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 22px 24px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid #b8944a;
+        }
+
+        .chart-card .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 18px;
+        }
+
+        .chart-card .chart-header h3 {
+            font-size: 16px;
+            color: #0a1a33;
+            font-weight: 700;
+        }
+
+        .chart-card .chart-header .chart-sub {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chart-card .chart-body {
+            position: relative;
+            height: 240px;
+        }
+
+        .chart-card .chart-body canvas {
+            max-height: 240px;
+        }
+
+        .btn-broadcast {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: #0a1a33;
+            color: #d4af6a;
+            border: 2px solid #b8944a;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s;
+            margin-right: 4px;
+        }
+
+        .btn-broadcast:hover {
+            background: #b8944a;
+            color: #0a1a33;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(184,148,74,0.35);
+        }
+
+        .btn-broadcast:disabled {
+            background: #ccc;
+            color: #666;
+            border-color: #aaa;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .broadcast-info {
+            padding: 16px 20px;
+            background: #f8f6f1;
+            border-left: 4px solid #b8944a;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            color: #2a2a35;
+            line-height: 1.6;
+        }
+
+        .broadcast-info strong {
+            color: #0a1a33;
+            font-weight: 700;
+        }
+
+        .broadcast-info .recipient-count {
+            color: #b8944a;
+            font-size: 22px;
+            font-weight: 800;
+            display: block;
+            margin: 6px 0;
+        }
+
+        @media (max-width: 480px) {
+            .chart-card { padding: 18px 16px; }
+            .chart-card .chart-body { height: 200px; }
         }
 
         table {
@@ -797,6 +955,28 @@
                             <i class="fas fa-envelope"></i>
                             <h4>Messages</h4>
                             <p>View messages</p>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid" style="margin-top:30px;">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Messages Over Time</h3>
+                                <span class="chart-sub">Last 6 months</span>
+                            </div>
+                            <div class="chart-body">
+                                <canvas id="messagesChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Volunteer Applications</h3>
+                                <span class="chart-sub">Last 6 months</span>
+                            </div>
+                            <div class="chart-body">
+                                <canvas id="volunteersChart"></canvas>
+                            </div>
                         </div>
                     </div>
 
@@ -1182,6 +1362,27 @@
         </div>
     </div>
 
+    <div id="broadcastModal" class="modal-bg">
+        <div class="modal-box">
+            <h2>Broadcast Newsletter</h2>
+
+            <div class="broadcast-info">
+                <div>You are about to email <strong>every registered user</strong> in the system.</div>
+                <span class="recipient-count" id="broadcastCount">...</span>
+                <div id="broadcastNewsletterTitle" style="font-style:italic;">—</div>
+            </div>
+
+            <p style="font-size:13px;color:#888;margin-bottom:20px;">
+                This cannot be undone. Staff and admins will not receive this email.
+            </p>
+
+            <button type="button" class="btn-submit" id="broadcastConfirmBtn" onclick="confirmBroadcast()">
+                <i class="fas fa-paper-plane"></i> Send to All Users
+            </button>
+            <button type="button" onclick="closeModal('broadcastModal')" class="btn-cancel">Cancel</button>
+        </div>
+    </div>
+
     <div id="galleryModal" class="modal-bg">
         <div class="modal-box">
             <h2>Upload Photo</h2>
@@ -1290,43 +1491,84 @@
 
     <script>
         function exportTableToCSV(tbodyId, filename) {
-    const tbody = document.getElementById(tbodyId);
-    if (!tbody) return;
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
 
-    const table = tbody.closest('table');
-    const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+            const table = tbody.closest('table');
+            const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
 
-    const rows = [];
-    tbody.querySelectorAll('tr').forEach(tr => {
-        if (tr.querySelector('td[colspan]')) return;
-        if (tr.style.display === 'none') return;
+            const rows = [];
+            tbody.querySelectorAll('tr').forEach(tr => {
+                if (tr.querySelector('td[colspan]')) return;
+                if (tr.style.display === 'none') return;
 
-        const cells = Array.from(tr.querySelectorAll('td')).map(td => {
-            let text = td.textContent.trim().replace(/\s+/g, ' ');
-            if (text.includes('"') || text.includes(',') || text.includes('\n')) {
-                text = '"' + text.replace(/"/g, '""') + '"';
+                const cells = Array.from(tr.querySelectorAll('td')).map(td => {
+                    let text = td.textContent.trim().replace(/\s+/g, ' ');
+                    if (text.includes('"') || text.includes(',') || text.includes('\n')) {
+                        text = '"' + text.replace(/"/g, '""') + '"';
+                    }
+                    return text;
+                });
+                rows.push(cells);
+            });
+
+            if (rows.length === 0) {
+                alert('No rows to export.');
+                return;
             }
-            return text;
-        });
-        rows.push(cells);
-    });
 
-    if (rows.length === 0) {
-        alert('No rows to export.');
-        return;
-    }
+            const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
 
-    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-}
+        function injectExportButtons() {
+            const tables = [
+                { tbody: 'messagesTableBody', file: 'messages.csv' },
+                { tbody: 'volunteersTableBody', file: 'volunteers.csv' },
+                { tbody: 'newslettersTableBody', file: 'newsletters.csv' },
+                { tbody: 'pendingTestimonialsBody', file: 'testimonials_pending.csv' },
+                { tbody: 'approvedTestimonialsBody', file: 'testimonials_approved.csv' },
+                { tbody: 'matchesTableBody', file: 'matches.csv' },
+                { tbody: 'predictionsTableBody', file: 'predictions.csv' },
+                { tbody: 'playersTableBody', file: 'players.csv' },
+                { tbody: 'staffTableBody', file: 'staff.csv' },
+                { tbody: 'financeTableBody', file: 'finance.csv' },
+                { tbody: 'inventoryTableBody', file: 'inventory.csv' }
+            ];
+
+            tables.forEach(({ tbody, file }) => {
+                const tbodyEl = document.getElementById(tbody);
+                if (!tbodyEl) return;
+
+                const tableContainer = tbodyEl.closest('.table-container');
+                if (!tableContainer) return;
+
+                const searchBox = tableContainer.querySelector('.table-search');
+                if (!searchBox) return;
+
+                if (searchBox.parentNode.querySelector('.btn-export-csv')) return;
+
+                const btn = document.createElement('button');
+                btn.className = 'btn-export-csv';
+                btn.innerHTML = '<i class="fas fa-download"></i> Export CSV';
+                btn.onclick = () => exportTableToCSV(tbody, file);
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'search-with-export';
+                searchBox.parentNode.insertBefore(wrapper, searchBox);
+                wrapper.appendChild(searchBox);
+                wrapper.appendChild(btn);
+            });
+        }
+
         function filterTable(tbodyId, query) {
             const tbody = document.getElementById(tbodyId);
             if (!tbody) return;
@@ -1370,6 +1612,206 @@
         function removeNoResults(tbody) {
             const existing = tbody.querySelector('.no-results-row');
             if (existing) existing.remove();
+        }
+
+        function getLastSixMonths() {
+            const months = [];
+            const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const now = new Date();
+
+            for (let i = 5; i >= 0; i--) {
+                const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                months.push({
+                    key: d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'),
+                    label: labels[d.getMonth()] + ' ' + String(d.getFullYear()).slice(-2),
+                    count: 0
+                });
+            }
+            return months;
+        }
+
+        function countByMonth(items) {
+            const months = getLastSixMonths();
+            items.forEach(item => {
+                if (!item.created_at) return;
+                const d = new Date(item.created_at);
+                const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+                const match = months.find(m => m.key === key);
+                if (match) match.count++;
+            });
+            return months;
+        }
+
+        let messagesChartInstance = null;
+        let volunteersChartInstance = null;
+
+        function renderCharts(messages, volunteers) {
+            const msgMonths = countByMonth(messages);
+            const volMonths = countByMonth(volunteers);
+
+            const labels = msgMonths.map(m => m.label);
+            const msgData = msgMonths.map(m => m.count);
+            const volData = volMonths.map(m => m.count);
+
+            if (messagesChartInstance) messagesChartInstance.destroy();
+            if (volunteersChartInstance) volunteersChartInstance.destroy();
+
+            const msgCtx = document.getElementById('messagesChart');
+            const volCtx = document.getElementById('volunteersChart');
+            if (!msgCtx || !volCtx) return;
+
+            messagesChartInstance = new Chart(msgCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Messages',
+                        data: msgData,
+                        borderColor: '#b8944a',
+                        backgroundColor: 'rgba(184,148,74,0.12)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#b8944a',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0a1a33',
+                            titleColor: '#d4af6a',
+                            bodyColor: '#fff',
+                            padding: 12,
+                            borderColor: '#b8944a',
+                            borderWidth: 1,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#888', precision: 0 },
+                            grid: { color: '#f0f0f5' }
+                        },
+                        x: {
+                            ticks: { color: '#888' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            volunteersChartInstance = new Chart(volCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Volunteers',
+                        data: volData,
+                        backgroundColor: '#0a1a33',
+                        hoverBackgroundColor: '#b8944a',
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        barThickness: 'flex',
+                        maxBarThickness: 48
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0a1a33',
+                            titleColor: '#d4af6a',
+                            bodyColor: '#fff',
+                            padding: 12,
+                            borderColor: '#b8944a',
+                            borderWidth: 1,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#888', precision: 0 },
+                            grid: { color: '#f0f0f5' }
+                        },
+                        x: {
+                            ticks: { color: '#888' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        let currentBroadcastId = null;
+
+        async function openBroadcastModal(newsletterId) {
+            currentBroadcastId = newsletterId;
+
+            const countEl = document.getElementById('broadcastCount');
+            const titleEl = document.getElementById('broadcastNewsletterTitle');
+            countEl.textContent = '...';
+            titleEl.textContent = 'Loading...';
+
+            document.getElementById('broadcastModal').style.display = 'flex';
+
+            try {
+                const res = await fetch(`/api/newsletters/${newsletterId}/recipients`);
+                const data = await res.json();
+
+                if (data.success) {
+                    countEl.textContent = `${data.recipient_count} recipient${data.recipient_count === 1 ? '' : 's'}`;
+                    titleEl.textContent = `"${data.newsletter_title}"`;
+                } else {
+                    countEl.textContent = '—';
+                    titleEl.textContent = data.error || 'Could not load recipients';
+                }
+            } catch (err) {
+                countEl.textContent = '—';
+                titleEl.textContent = 'Network error';
+            }
+        }
+
+        async function confirmBroadcast() {
+            if (!currentBroadcastId) return;
+
+            if (!confirm('Send this newsletter to all users? This cannot be undone.')) return;
+
+            const btn = document.getElementById('broadcastConfirmBtn');
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            try {
+                const res = await fetch(`/api/newsletters/${currentBroadcastId}/broadcast`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    alert(`Broadcast complete.\n\nSent: ${data.sent}\nFailed: ${data.failed}\nTotal: ${data.total}`);
+                    closeModal('broadcastModal');
+                    currentBroadcastId = null;
+                } else {
+                    alert('Error: ' + (data.error || 'Broadcast failed'));
+                }
+            } catch (err) {
+                alert('Network error. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = original;
+            }
         }
 
         async function checkLoginStatus() {
@@ -1461,12 +1903,14 @@
                 const unreadCount = messages.filter(m => !m.is_read).length;
                 document.getElementById('unreadBadge').textContent = unreadCount;
 
+                renderCharts(messages, volunteers);
+
                 const activity = document.getElementById('recentActivity');
                 activity.innerHTML = `
-                    <div class="activity-item"><span>📋 ${players.length} players in the system</span><span class="time">Now</span></div>
-                    <div class="activity-item"><span>💬 ${messages.length} messages received</span><span class="time">Now</span></div>
-                    <div class="activity-item"><span>🙋 ${volunteers.length} volunteer applications</span><span class="time">Now</span></div>
-                    <div class="activity-item"><span>🖼️ ${photos.length} gallery photos</span><span class="time">Now</span></div>
+                    <div class="activity-item"><span>${players.length} players in the system</span><span class="time">Now</span></div>
+                    <div class="activity-item"><span>${messages.length} messages received</span><span class="time">Now</span></div>
+                    <div class="activity-item"><span>${volunteers.length} volunteer applications</span><span class="time">Now</span></div>
+                    <div class="activity-item"><span>${photos.length} gallery photos</span><span class="time">Now</span></div>
                 `;
             } catch (error) {
                 console.error('Error loading dashboard stats:', error);
@@ -1635,6 +2079,9 @@
                         <td>${n.content.substring(0, 50)}...</td>
                         <td>${n.is_published ? 'Published' : 'Draft'}</td>
                         <td>
+                            <button class="btn-broadcast" onclick="openBroadcastModal(${n.newsletter_id})">
+                                <i class="fas fa-paper-plane"></i> Broadcast
+                            </button>
                             <button class="btn-action delete" onclick="deleteNewsletter(${n.newsletter_id})"><i class="fas fa-trash"></i> Delete</button>
                         </td>
                     </tr>
@@ -2250,7 +2697,10 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            injectExportButtons();
+        });
     </script>
 
 </body>
