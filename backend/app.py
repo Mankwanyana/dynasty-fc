@@ -27,9 +27,12 @@ from security import (
 )
 from email_template import render_email, info_block, message_block
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.join(BASE_DIR, '..', 'frontend')
+
 app = Flask(__name__,
-            static_folder='../frontend',
-            template_folder='../frontend/templates')
+            static_folder=FRONTEND_DIR,
+            template_folder=os.path.join(FRONTEND_DIR, 'templates'))
 CORS(app)
 
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'dynasty-fc-secret-key-2026')
@@ -39,7 +42,7 @@ init_talisman(app)
 init_error_handlers(app)
 limiter.init_app(app)
 
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'frontend', 'uploads')
+UPLOAD_FOLDER = os.path.join(FRONTEND_DIR, 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -1762,13 +1765,16 @@ def serve_upload(filename):
 
 
 @app.route('/css/<path:filename>')
-def serve_css(filename): return send_from_directory('../frontend/css', filename)
+def serve_css(filename):
+    return send_from_directory(os.path.join(FRONTEND_DIR, 'css'), filename)
 
 @app.route('/js/<path:filename>')
-def serve_js(filename): return send_from_directory('../frontend/js', filename)
+def serve_js(filename):
+    return send_from_directory(os.path.join(FRONTEND_DIR, 'js'), filename)
 
 @app.route('/images/<path:filename>')
-def serve_images(filename): return send_from_directory('../frontend/images', filename)
+def serve_images(filename):
+    return send_from_directory(os.path.join(FRONTEND_DIR, 'images'), filename)
 
 
 if __name__ == '__main__':
