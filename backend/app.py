@@ -1585,6 +1585,44 @@ def get_finance():
         if conn: conn.close()
 
 
+@app.route('/api/finance', methods=['POST'])
+@staff_required
+def create_finance_transaction():
+    data = request.json
+    if not data.get('transaction_date') or data.get('amount') is None:
+        return jsonify({'error': 'Date and amount required'}), 400
+
+    try:
+        amount = float(data['amount'])
+    except (TypeError, ValueError):
+        return jsonify({'error': 'Invalid amount'}), 400
+
+    conn = None; cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO finance_transactions 
+            (transaction_date, transaction_type, amount, category, description, created_by)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (
+            data['transaction_date'],
+            data.get('transaction_type', 'Income'),
+            amount,
+            data.get('category', ''),
+            data.get('description', ''),
+            session['user_id']
+        ))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Transaction added'})
+    except Exception as e:
+        print(f"/api/finance POST ERROR: {e}")
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+
 @app.route('/api/donors', methods=['GET'])
 def get_donors():
     conn = None; cursor = None

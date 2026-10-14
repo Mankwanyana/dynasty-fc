@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -689,6 +690,81 @@
 
         table .btn-action.delete:hover { background: #c82333; }
 
+        /* ============================================================
+           FINANCE — ADD TRANSACTION FORM
+           ============================================================ */
+        .finance-form {
+            background: #f8f9fc;
+            border: 2px dashed #b8944a;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 25px;
+        }
+
+        .finance-form h3 {
+            font-size: 16px;
+            color: #0a1a33;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .finance-form h3 i {
+            color: #b8944a;
+        }
+
+        .finance-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .finance-form-grid input,
+        .finance-form-grid select {
+            padding: 11px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fff;
+            color: #0a1a33;
+            transition: border-color 0.3s;
+        }
+
+        .finance-form-grid input:focus,
+        .finance-form-grid select:focus {
+            outline: none;
+            border-color: #b8944a;
+        }
+
+        .finance-form .btn-submit-finance {
+            padding: 12px 32px;
+            background: #b8944a;
+            color: #0a1a33;
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .finance-form .btn-submit-finance:hover {
+            background: #d4af6a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184,148,74,0.4);
+        }
+
+        .finance-form .finance-msg {
+            margin-top: 12px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -1279,6 +1355,25 @@
                         <h1>Finance</h1>
                         <p>Track income and expenses.</p>
                     </div>
+
+                    <div class="finance-form">
+                        <h3><i class="fas fa-plus-circle"></i> Add Transaction</h3>
+                        <div class="finance-form-grid">
+                            <input type="date" id="financeDate" required />
+                            <select id="financeType">
+                                <option value="Income">Income</option>
+                                <option value="Expense">Expense</option>
+                            </select>
+                            <input type="number" id="financeAmount" placeholder="Amount (R)" step="0.01" min="0" required />
+                            <input type="text" id="financeCategory" placeholder="Category (e.g. Donation, Kit, Travel)" />
+                            <input type="text" id="financeDescription" placeholder="Description" />
+                        </div>
+                        <button class="btn-submit-finance" onclick="addFinanceTransaction()">
+                            <i class="fas fa-plus"></i> Add Transaction
+                        </button>
+                        <div class="finance-msg" id="financeMsg"></div>
+                    </div>
+
                     <div class="table-container">
                         <h2>All Transactions</h2>
                         <div class="table-search">
@@ -1288,14 +1383,15 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Date</th>
+                                    <th>Month</th>
                                     <th>Description</th>
-                                    <th>Amount</th>
-                                    <th>Category</th>
+                                    <th>Income</th>
+                                    <th>Expenses</th>
+                                    <th>Balance</th>
                                 </tr>
                             </thead>
                             <tbody id="financeTableBody">
-                                <tr><td colspan="4" style="text-align:center;color:#888;">Loading transactions...</td></tr>
+                                <tr><td colspan="5" style="text-align:center;color:#888;">Loading transactions...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1927,6 +2023,7 @@
             if (panel === 'gallery') loadGallery();
             if (panel === 'testimonials') loadTestimonials();
             if (panel === 'predictions') loadPredictions();
+            if (panel === 'finance') loadFinance();
         }
 
         async function logout() {
@@ -1939,6 +2036,57 @@
             document.getElementById(id).style.display = 'none';
             const form = document.getElementById(id).querySelector('form');
             if (form) form.reset();
+        }
+
+        /* ============================================================
+           ADD FINANCE TRANSACTION
+           ============================================================ */
+        async function addFinanceTransaction() {
+            const date = document.getElementById('financeDate').value;
+            const type = document.getElementById('financeType').value;
+            const amount = document.getElementById('financeAmount').value;
+            const category = document.getElementById('financeCategory').value;
+            const description = document.getElementById('financeDescription').value;
+            const msg = document.getElementById('financeMsg');
+
+            if (!date || !amount) {
+                msg.textContent = '⚠️ Please fill in date and amount';
+                msg.style.color = '#dc3545';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/finance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        transaction_date: date,
+                        transaction_type: type,
+                        amount: parseFloat(amount),
+                        category: category,
+                        description: description
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    msg.textContent = '✅ Transaction added successfully';
+                    msg.style.color = '#28a745';
+
+                    document.getElementById('financeAmount').value = '';
+                    document.getElementById('financeCategory').value = '';
+                    document.getElementById('financeDescription').value = '';
+
+                    loadFinance();
+                } else {
+                    msg.textContent = '❌ ' + (data.error || 'Failed to add');
+                    msg.style.color = '#dc3545';
+                }
+            } catch (err) {
+                msg.textContent = '❌ Network error';
+                msg.style.color = '#dc3545';
+            }
         }
 
         async function loadMessages() {
@@ -2621,16 +2769,17 @@
                 const tbody = document.getElementById('financeTableBody');
 
                 if (finance.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888;">No transactions found.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;">No transactions found.</td></tr>';
                     return;
                 }
 
                 tbody.innerHTML = finance.map(f => `
                     <tr>
-                        <td>${f.month}</td>
+                        <td><strong>${f.month || '-'}</strong></td>
                         <td>${f.description || 'Monthly summary'}</td>
-                        <td style="color:${f.income > 0 ? '#28a745' : '#dc3545'}">R${parseFloat(f.income || 0).toFixed(2)}</td>
-                        <td>${f.expenses ? 'R' + parseFloat(f.expenses).toFixed(2) : '-'}</td>
+                        <td style="color:#28a745; font-weight:600;">R${parseFloat(f.income || 0).toFixed(2)}</td>
+                        <td style="color:#dc3545; font-weight:600;">R${parseFloat(f.expenses || 0).toFixed(2)}</td>
+                        <td style="font-weight:700;">R${parseFloat(f.balance || 0).toFixed(2)}</td>
                     </tr>
                 `).join('');
             } catch (error) {
