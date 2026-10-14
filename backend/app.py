@@ -364,18 +364,33 @@ def login_api():
     if not email or not password:
         return jsonify({'success': False, 'message': 'Email and password required'}), 400
 
+    print(f"=== /api/login attempt for email: {email} ===")
+
     conn = None; cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM users WHERE email = %s AND is_active = 1", (email,))
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
+        print(f"=== User found: {user is not None} ===")
+        if user:
+            print(f"=== User details: user_id={user.get('user_id')}, role={user.get('role')}, is_active={user.get('is_active')} ===")
+            print(f"=== Password match: {verify_password(password, user['password_hash'])} ===")
+    except Exception as e:
+        print(f"=== Login DB error: {e} ===")
+        return jsonify({'success': False, 'message': f'Database error: {e}'}), 500
     finally:
         if cursor: cursor.close()
         if conn: conn.close()
 
-    if not user or not verify_password(password, user['password_hash']):
-        return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
+    if not user:
+        return jsonify({'success': False, 'message': 'User not found'}), 401
+
+    if not user.get('is_active'):
+        return jsonify({'success': False, 'message': 'Account is not active'}), 401
+
+    if not verify_password(password, user['password_hash']):
+        return jsonify({'success': False, 'message': 'Password incorrect'}), 401
 
     session['user_id'] = user['user_id']
     session['username'] = user['username']
@@ -491,22 +506,36 @@ def staff_login_api():
     if not email or not password:
         return jsonify({'success': False, 'message': 'Email and password required'}), 400
 
+    print(f"=== /api/staff-login attempt for email: {email} ===")
+
     conn = None; cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("""
-            SELECT * FROM users 
-            WHERE email = %s AND is_active = 1 
-            AND role IN ('System Administrator', 'Club Administrator')
-        """, (email,))
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
+        print(f"=== User found: {user is not None} ===")
+        if user:
+            print(f"=== User details: user_id={user.get('user_id')}, role={user.get('role')}, is_active={user.get('is_active')} ===")
+            print(f"=== Password match: {verify_password(password, user['password_hash'])} ===")
+    except Exception as e:
+        print(f"=== Staff login DB error: {e} ===")
+        return jsonify({'success': False, 'message': f'Database error: {e}'}), 500
     finally:
         if cursor: cursor.close()
         if conn: conn.close()
 
-    if not user or not verify_password(password, user['password_hash']):
-        return jsonify({'success': False, 'message': 'Invalid staff credentials'}), 401
+    if not user:
+        return jsonify({'success': False, 'message': 'User not found'}), 401
+
+    if not user.get('is_active'):
+        return jsonify({'success': False, 'message': 'Account is not active'}), 401
+
+    if user.get('role') not in ['System Administrator', 'Club Administrator']:
+        return jsonify({'success': False, 'message': f"Your role is '{user.get('role')}', not staff"}), 403
+
+    if not verify_password(password, user['password_hash']):
+        return jsonify({'success': False, 'message': 'Password incorrect'}), 401
 
     session['user_id'] = user['user_id']
     session['username'] = user['username']
